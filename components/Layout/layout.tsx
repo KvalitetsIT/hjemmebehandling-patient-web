@@ -2,7 +2,8 @@ import { Box, Typography } from '@material-ui/core';
 import React, { Component } from 'react';
 import { Topbar } from './Topbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
+import UnAnsweredPage from '../../pages/questionnaire/unanswered';
+import AnsweredPage from '../../pages/questionnaire/answered';
 
 export interface State {
   drawerIsOpen: boolean
@@ -27,21 +28,19 @@ constructor(props : {}){
 <Box sx={{ display: 'flex' }}>
       
 
-        <Router>
-        
-        <Box component="main" sx={{ flexGrow: 1 }}>
-        
+    <Router>
+      
+      <Box component="main" sx={{ flexGrow: 1 }}>
         <Topbar/>
-          
-          <Box paddingBottom={3}>
-          </Box>
-          
-            <Switch>              
-              <Route path="/"><Typography>Hello world - This is patient!</Typography></Route>
-            </Switch>
-            </Box>
-        </Router>
-        </Box>
+        <Switch>              
+          <Route path="/questionnaire/unanswered" render={(props) => <UnAnsweredPage {...props}/>}/>
+          <Route path="/questionnaire/answered" render={(props) => <AnsweredPage {...props}/>}/>
+          <Route path="/"><Typography>Hello world - This is patient!</Typography></Route>
+        </Switch>
+      </Box>
+
+    </Router>
+</Box>
         </>
     );
   }

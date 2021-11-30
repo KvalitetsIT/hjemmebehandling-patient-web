@@ -61,6 +61,28 @@ const THEME = createTheme({
     }
   },
   components : {
+    MuiDrawer : {
+      defaultProps : {
+        PaperProps : {
+          style : {
+            backgroundColor : "#942B40",
+            color : "white",
+            borderRadius : '0 20px 20px 0'
+          }
+        }
+      }
+    },
+    MuiSvgIcon : {
+      variants : [
+        {
+          props : {className : "sidebarIcon"},
+          style : {
+            color : "white",
+            fontSize : 40
+          }
+        }
+      ]
+    },
     MuiAppBar : {
       variants : [
         {
