@@ -50,6 +50,7 @@ function MyApp({ Component, pageProps }: AppProps) : JSX.Element{
 }
 
 const mainBackground = "#F2F2F2"
+const regionMidtRed = "rgb(153,0,51)"
 
 const THEME = createTheme({
   typography: {
@@ -65,7 +66,7 @@ const THEME = createTheme({
       defaultProps : {
         PaperProps : {
           style : {
-            backgroundColor : "#942B40",
+            backgroundColor : regionMidtRed,
             color : "white",
             borderRadius : '0 20px 20px 0'
           }
@@ -78,7 +79,7 @@ const THEME = createTheme({
           props : {className : "sidebarIcon"},
           style : {
             color : "white",
-            fontSize : 40
+            fontSize : 30
           }
         }
       ]
@@ -89,7 +90,7 @@ const THEME = createTheme({
           props : {color : "primary"},
           style : {
             backgroundColor : "white",
-            color : "#9A2A35",
+            color : regionMidtRed,
             borderRadius : '0 0 10px 10px'
           }
         }

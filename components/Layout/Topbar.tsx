@@ -8,6 +8,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import PhoneIcon from '@mui/icons-material/Phone';
 import { Link } from 'react-router-dom';
 
 export interface State {
@@ -54,11 +55,11 @@ export class Topbar extends Component<{},State> {
         </Toolbar>
       </AppBar>
       <Drawer
-          variant="temporary"
+            variant="temporary"
             open={this.state.drawerIsOpen}
             onClose={()=>this.toogleMenu()}
           >
-            <List>
+            <List sx={{width:350}}>
               <ListItem button component={Link} to="/" key="home">              
                   <ListItemIcon>
                     <HomeIcon className="sidebarIcon"/>
@@ -92,6 +93,15 @@ export class Topbar extends Component<{},State> {
                   </ListItemIcon>
                   <ListItemText>
                     Besvaret spørgeskemaer
+                  </ListItemText>
+                </ListItem>
+
+                <ListItem button component={Link} to="/contact" key="contact">              
+                  <ListItemIcon>
+                    <PhoneIcon className="sidebarIcon"/>
+                  </ListItemIcon>
+                  <ListItemText>
+                    Kontakt hospitalet
                   </ListItemText>
                 </ListItem>
             </List>
