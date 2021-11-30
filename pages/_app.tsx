@@ -49,18 +49,6 @@ function MyApp({ Component, pageProps }: AppProps) : JSX.Element{
   
 }
 
-const greenBg = "rgb(208,239,219)"
-const greenText = "green"
-
-const yellowBg = "rgb(253,239,208)"
-const yellowText = "rgb(224,158,70)"
-
-const redBg = "rgb(247,216,216)"
-const redText = "rgb(234,124,123)"
-
-const blueBg = "rgb(232,239,247)"
-const blueText = "rgb(133,135,138)"
-
 const mainBackground = "#F2F2F2"
 
 const THEME = createTheme({
@@ -73,82 +61,17 @@ const THEME = createTheme({
     }
   },
   components : {
-    MuiAvatar : {
-      styleOverrides : {
-        root : {
-          borderRadius : 10
-        }
-      }
-    },
-    MuiAlert : {
-      styleOverrides : {
-        root : {
-          borderRadius : 28
-        }
-      }
-    },
-    MuiCard : {
-      styleOverrides : {
-        root : {
-          borderRadius : 20
-        }
-      }
-    },
-    MuiChip : {
-      styleOverrides : {
-        root : {
-          borderRadius : 28,
-        },
-        label : {
-          padding : 0
-        }
-      },
+    MuiAppBar : {
       variants : [
         {
-          props: { className:"round" },
-          style: {
-            height : 50,
-            width : 50,
-            borderRadius : 100,
-            fontWeight : "bold",
-          },
-        },
-        {
-          props: { variant: "filled", color: "success", },
-          style: {
-            backgroundColor : greenBg,
-            color : greenText
-          },
-        },
-        {
-          props : {variant: "filled", color : "warning"},
+          props : {color : "primary"},
           style : {
-            backgroundColor : yellowBg,
-            color : yellowText
-          }
-        },
-        {
-          props : {variant: "filled", color : "error"},
-          style : {
-            backgroundColor : redBg,
-            color : redText
-          }
-        },
-        {
-          props : {variant: "filled", color : "primary"},
-          style : {
-            backgroundColor : blueBg,
-            color : blueText
+            backgroundColor : "white",
+            color : "#9A2A35",
+            borderRadius : '0 0 10px 10px'
           }
         }
       ]
-    },
-    MuiButton : {
-      styleOverrides : {
-        root : {
-          borderRadius : 28
-        }
-      }
     }
   }
 });

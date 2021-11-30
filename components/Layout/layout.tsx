@@ -28,10 +28,10 @@ constructor(props : {}){
       
 
         <Router>
-
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         
-          <Topbar/>
+        <Box component="main" sx={{ flexGrow: 1 }}>
+        
+        <Topbar/>
           
           <Box paddingBottom={3}>
           </Box>
