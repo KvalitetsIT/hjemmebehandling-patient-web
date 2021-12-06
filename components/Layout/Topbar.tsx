@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 
 export interface State {
   
-  drawerIsOpen: boolean
+  drawerIsOpen: boolean,
 }
 
 export class Topbar extends Component<{},State> {
@@ -60,7 +60,7 @@ export class Topbar extends Component<{},State> {
             onClose={()=>this.toogleMenu()}
           >
             <List sx={{width:350}}>
-              <ListItem button component={Link} to="/" key="home">              
+              <ListItem button onClick={()=>this.setState({drawerIsOpen : false})} component={Link} to="/" key="home">              
                   <ListItemIcon>
                     <HomeIcon className="sidebarIcon"/>
                   </ListItemIcon>
@@ -69,7 +69,7 @@ export class Topbar extends Component<{},State> {
                   </ListItemText>
                 </ListItem>
 
-                <ListItem button component={Link} to="/questionnaire/unanswered" key="unansweredquestionnaires">              
+                <ListItem button onClick={()=>this.setState({drawerIsOpen : false})} component={Link} to="/questionnaire/unanswered" key="unansweredquestionnaires">              
                   <ListItemIcon>
                     <AssignmentIcon className="sidebarIcon"/>
                   </ListItemIcon>
@@ -78,7 +78,7 @@ export class Topbar extends Component<{},State> {
                   </ListItemText>
                 </ListItem>
 
-                <ListItem button component={Link} to="/measurements" key="measurements">              
+                <ListItem button onClick={()=>this.setState({drawerIsOpen : false})} component={Link} to="/measurements" key="measurements">              
                   <ListItemIcon>
                     <AssessmentIcon className="sidebarIcon"/>
                   </ListItemIcon>
@@ -87,7 +87,7 @@ export class Topbar extends Component<{},State> {
                   </ListItemText>
                 </ListItem>
 
-                <ListItem button component={Link} to="/questionnaire/answered/" key="answeredquestionnaires">              
+                <ListItem button onClick={()=>this.setState({drawerIsOpen : false})} component={Link} to="/questionnaire/answered/" key="answeredquestionnaires">              
                   <ListItemIcon>
                     <AssignmentTurnedInIcon className="sidebarIcon"/>
                   </ListItemIcon>
@@ -96,7 +96,7 @@ export class Topbar extends Component<{},State> {
                   </ListItemText>
                 </ListItem>
 
-                <ListItem button component={Link} to="/contact" key="contact">              
+                <ListItem button onClick={()=>this.setState({drawerIsOpen : false})} component={Link} to="/contact" key="contact">              
                   <ListItemIcon>
                     <PhoneIcon className="sidebarIcon"/>
                   </ListItemIcon>

@@ -12,8 +12,17 @@ import { CollectionHelper } from '../globalHelpers/danishImpl/CollectionHelper';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ErrorBoundary } from '../components/Layout/ErrorBoundary';
+import FakeQuestionnaireResponseApi from '../apis/FakeImpl/FakeQuestionnaireResponseApi';
+import QuestionnaireResponseService from '../services/QuestionnaireResponseService';
+
+import CareplanService from '../services/CareplanService';
+import FakeCareplanApi from '../apis/FakeImpl/FakeCareplanApi';
 
 function MyApp({ Component, pageProps }: AppProps) : JSX.Element{
+
+
+  const questionnaireResponseApi = new FakeQuestionnaireResponseApi();
+  const careplanApi = new FakeCareplanApi();
 
   if (process?.env.NODE_ENV === 'development') {
 
@@ -28,9 +37,11 @@ function MyApp({ Component, pageProps }: AppProps) : JSX.Element{
     <ApiContext.Provider
       value={{
         //Services
-        validationService : new ValidationService(),
-        
+        questionnaireResponseService : new QuestionnaireResponseService(questionnaireResponseApi),
+        careplanService : new CareplanService(careplanApi),
+
         //Helpers
+        validationService : new ValidationService(),
         dateHelper : new DanishDateHelper(),
         collectionHelper : new CollectionHelper()
       }}
