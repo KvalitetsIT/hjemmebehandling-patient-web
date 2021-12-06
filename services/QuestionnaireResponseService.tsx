@@ -10,6 +10,13 @@ export default class QuestionnaireResponseService extends BaseService implements
         super()
         this.api = api;
     }
+    async GetQuestionnaireResponse(questionnaireResponseId: string) : Promise<QuestionnaireResponse>{
+        try {
+            return await this.api.GetQuestionnaireResponse(questionnaireResponseId);
+        }catch (error){
+            return this.HandleError(error);
+        }
+    }
 
     async GetQuestionnaireResponses(carePlanId: string, questionnaireIds: string[], page : number, pagesize : number = 5) : Promise<QuestionnaireResponse[]>{
         try{

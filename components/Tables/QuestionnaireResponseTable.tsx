@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Card, ButtonGroup,Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { PatientCareplan } from "../Models/PatientCareplan";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../Models/QuestionnaireResponse";
-import ListIsEmptyCard from "../Cards/ListIsEmptyCard"
+import IsEmptyCard from "../Cards/IsEmptyCard"
 import ApiContext from "../../pages/_context";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
 import { LoadingBackdropComponent } from "../Layout/LoadingBackdropComponent";
@@ -10,6 +10,7 @@ import IDateHelper from "../../globalHelpers/interfaces/IDateHelper";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Link } from "react-router-dom";
 
 
 interface Props {
@@ -75,7 +76,7 @@ export default class QuestionnaireResponseTable extends Component<Props,State>{
             hasMorePages = true;
 
         return (
-            <ListIsEmptyCard textWhenEmpty="Ingen besvarelser fundet" list={this.state.questionnaireResponses}>
+            <IsEmptyCard textWhenEmpty="Ingen besvarelser fundet" list={this.state.questionnaireResponses}>
                 <TableContainer component={Card}>
                 <Table>
                     <TableHead>
@@ -101,7 +102,7 @@ export default class QuestionnaireResponseTable extends Component<Props,State>{
                                     <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
                                     <TableCell>{this.GetStatusName(questionnaireResponse.status)}</TableCell>
                                     <TableCell>
-                                        <LoadingButton endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
+                                        <LoadingButton component={Link} to={"../"+questionnaire?.id + "/response/"+questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
                                     </TableCell> 
                                 </TableRow>
                             )
@@ -114,7 +115,7 @@ export default class QuestionnaireResponseTable extends Component<Props,State>{
                         <Button variant="text" disabled >{this.state.page}</Button>
                         <Button variant="text" disabled={!hasMorePages} onClick={ async () => await this.NextPage()}><NavigateNextIcon/></Button>
                 </ButtonGroup>
-            </ListIsEmptyCard>
+            </IsEmptyCard>
         )
     }
     async NextPage() :  Promise<void>{
