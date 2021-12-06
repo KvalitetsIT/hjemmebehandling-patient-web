@@ -11,6 +11,7 @@ import ValidationService from '../services/ValidationService';
 import { CollectionHelper } from '../globalHelpers/danishImpl/CollectionHelper';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ErrorBoundary } from '../components/Layout/ErrorBoundary';
 
 function MyApp({ Component, pageProps }: AppProps) : JSX.Element{
 
@@ -38,8 +39,9 @@ function MyApp({ Component, pageProps }: AppProps) : JSX.Element{
         {typeof window === 'undefined' ? null : 
           
           <Layout>
-            
+            <ErrorBoundary>
               <Component {...pageProps} />
+              </ErrorBoundary>
             </Layout>}
         </ApiContext.Provider>
     </ThemeProvider>
