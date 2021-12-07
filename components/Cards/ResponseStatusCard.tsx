@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Card, CardContent, Avatar, Grid, Typography } from '@mui/material';
+import { Card, Avatar, Grid, Typography } from '@mui/material';
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../Models/QuestionnaireResponse";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -39,6 +39,15 @@ export default class ResponseStatusCard extends Component<Props,{}>{
         }
         return toReturn;
     }
+    getStatusColor(status : QuestionnaireResponseStatus) : "lightblue" | "green" {
+        let toReturn : "lightblue" | "green"  = "lightblue";
+        switch(status){
+            case QuestionnaireResponseStatus.Processed:
+                toReturn = "green"
+            break;
+        }
+        return toReturn;
+    }
 
     render() : JSX.Element{
         this.initializeServices();
@@ -50,24 +59,22 @@ export default class ResponseStatusCard extends Component<Props,{}>{
             <IsEmptyCard object={questionnaireResponse} textWhenEmpty="Ingen besvarelse fundet" >
                 <IsEmptyCard object={questionnaire} textWhenEmpty="Intet spørgeskema fundet" >
                     <Card>
-                        <CardContent>
                             <Grid container>
-                                <Grid item xs={2}>
-                                    <Avatar variant="square">
+                                <Grid item xs={1}>
+                                    <Avatar sx={{height:"100%",width:"100%", bgcolor : this.getStatusColor(questionnaireResponse.status)}} variant="square">
                                         {this.getStatusIcon(questionnaireResponse.status)}
                                     </Avatar>
                                 </Grid>
-                                <Grid item xs={8}>
-                                    <Typography>{questionnaire?.name}</Typography>
-                                    <Typography></Typography>
+                                <Grid item sx={{padding:2}} xs={8}>
+                                    <Typography variant="subtitle1">{questionnaire?.name}</Typography>
+                                    <Typography variant="subtitle2">SomeHardcodedAfdeling</Typography>
                                 </Grid>
-                                <Grid item xs={2}>
-                                    <Typography>Sendt den</Typography>
-                                    <Typography>{questionnaireResponse.answeredTime ? this.dateHelper.DateToString(questionnaireResponse!.answeredTime) : "-"}</Typography>
+                                <Grid item sx={{padding:2}} xs={2}>
+                                    <Typography variant="subtitle1">Sendt den</Typography>
+                                    <Typography variant="subtitle2">{questionnaireResponse.answeredTime ? this.dateHelper.DateToString(questionnaireResponse!.answeredTime) : "-"}</Typography>
                                 </Grid>
                             </Grid>
                             
-                        </CardContent>
                     </Card>
                 </IsEmptyCard>
             </IsEmptyCard>

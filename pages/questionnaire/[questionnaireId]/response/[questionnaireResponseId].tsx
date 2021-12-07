@@ -5,12 +5,12 @@ import { PatientCareplan } from "../../../../components/Models/PatientCareplan";
 import { QuestionnaireResponse } from "../../../../components/Models/QuestionnaireResponse";
 import ApiContext from "../../../_context";
 import ResponseStatusCard from "../../../../components/Cards/ResponseStatusCard"
-import QuestionAndAnswerCard from "../../../../components/Cards/QuestionAndAnswerCard"
 import IQuestionnaireResponseService from "../../../../services/interfaces/IQuestionnaireResponseService";
 import IsEmptyCard from "../../../../components/Cards/IsEmptyCard";
 import { LoadingBackdropComponent } from "../../../../components/Layout/LoadingBackdropComponent";
 import ICareplanService from "../../../../services/interfaces/ICareplanService";
 import { Typography } from "@mui/material";
+import QuestionAndAnswerTable from "../../../../components/Tables/QuestionAndAnswerTable";
 
 interface Props {
     match : { params : {questionnaireId : string, questionnaireResponseId : string} };
@@ -61,6 +61,7 @@ export default class QuestionnaireResponseDetailsPage extends Component<Props,St
         return (
             <IsEmptyCard object={this.state.careplan} textWhenEmpty="Ingen behandlingsplan fundet">
                 <IsEmptyCard object={this.state.questionnaireResponse} textWhenEmpty="Ingen besvarelse fundet">
+
                     <Grid component={Box} padding={4}  spacing={4} container>
                         <Grid  item xs={12}>
                             <ResponseStatusCard careplan={this.state.careplan!} questionnaireResponse={this.state.questionnaireResponse!}/>
@@ -68,7 +69,7 @@ export default class QuestionnaireResponseDetailsPage extends Component<Props,St
                         <Grid item xs={12}>
 
                         <Typography variant="h6">Besvarelse</Typography>
-                        <QuestionAndAnswerCard questionAnswerMap={this.state.questionnaireResponse!.questions} />
+                        <QuestionAndAnswerTable questionAnswerMap={this.state.questionnaireResponse!.questions} />
                         
                             
                         </Grid>

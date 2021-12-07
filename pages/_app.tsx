@@ -67,7 +67,7 @@ const regionMidtRed = "rgb(153,0,51)"
 
 const THEME = createTheme({
   typography: {
-   "fontFamily": "verdana"
+    "fontFamily": "verdana, sans-serif"
   },
   palette : {
     background : {
