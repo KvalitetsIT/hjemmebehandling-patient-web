@@ -40,12 +40,14 @@ export class Layout extends Component<{},State> {
       
       <Box component="main" sx={{ flexGrow: 1 }}>
         <Topbar/>
+        <Box padding={3}>
         <Switch>              
           <Route path="/questionnaire/:questionnaireId/response/:questionnaireResponseId" render={(props) => <QuestionnaireResponseDetailsPage {...props}/>}/>
           <Route path="/questionnaire/unanswered" render={(props) => <UnAnsweredPage {...props}/>}/>
           <Route path="/questionnaire/answered" render={(props) => <AnsweredPage  {...props}/>}/>
           <Route path="/"><Typography>Hello world - This is patient!</Typography></Route>
         </Switch>
+        </Box>
       </Box>
 
     </Router>

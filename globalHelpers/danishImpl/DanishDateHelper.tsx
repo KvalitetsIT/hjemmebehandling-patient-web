@@ -1,5 +1,6 @@
 
 
+import { DayEnum } from "../../components/Models/Frequency";
 import IDateHelper from "../interfaces/IDateHelper";
 
 export default class DanishDateHelper implements IDateHelper {
@@ -15,23 +16,23 @@ export default class DanishDateHelper implements IDateHelper {
         return toReturn;
     }
 
-    DayIndexToDay (dayIndex: number) : string{
+    DayIndexToDay (dayIndex: number) : DayEnum{
         if(dayIndex === 0)
-            return "Søndag"
+            return DayEnum.Sunday
         if(dayIndex === 1)
-            return "Mandag"
+            return DayEnum.Monday
         if(dayIndex === 2)
-            return "Tirsdag"
+            return DayEnum.Tuesday
         if(dayIndex === 3)
-            return "Onsdag"
+            return DayEnum.Wednesday
         if(dayIndex === 4)
-            return "Torsdag"
+            return DayEnum.Thursday
         if(dayIndex === 5)
-            return "Fredag"
+            return DayEnum.Friday
         if(dayIndex === 6)
-            return "Lørdag"
+            return DayEnum.Saturday
 
-        return "ukendt"
+        throw Error("dayIndex was not in range 0 <= x <= 6");
     }
 
 

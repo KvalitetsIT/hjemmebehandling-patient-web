@@ -62,7 +62,7 @@ export default class QuestionnaireResponseDetailsPage extends Component<Props,St
             <IsEmptyCard object={this.state.careplan} textWhenEmpty="Ingen behandlingsplan fundet">
                 <IsEmptyCard object={this.state.questionnaireResponse} textWhenEmpty="Ingen besvarelse fundet">
 
-                    <Grid component={Box} padding={4}  spacing={4} container>
+                    <Grid component={Box} spacing={4} container>
                         <Grid  item xs={12}>
                             <ResponseStatusCard careplan={this.state.careplan!} questionnaireResponse={this.state.questionnaireResponse!}/>
                         </Grid>
