@@ -18,7 +18,7 @@ import QuestionnaireResponseService from '../services/QuestionnaireResponseServi
 import CareplanService from '../services/CareplanService';
 import FakeCareplanApi from '../apis/FakeImpl/FakeCareplanApi';
 
-function MyApp({ Component, pageProps }: AppProps) : JSX.Element{
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
 
   const questionnaireResponseApi = new FakeQuestionnaireResponseApi();
@@ -30,36 +30,36 @@ function MyApp({ Component, pageProps }: AppProps) : JSX.Element{
 
   return (
     <>
-    <div suppressHydrationWarning>
-    
-    <ThemeProvider theme={THEME}>
-    
-    <ApiContext.Provider
-      value={{
-        //Services
-        questionnaireResponseService : new QuestionnaireResponseService(questionnaireResponseApi),
-        careplanService : new CareplanService(careplanApi),
+      <div suppressHydrationWarning>
 
-        //Helpers
-        validationService : new ValidationService(),
-        dateHelper : new DanishDateHelper(),
-        collectionHelper : new CollectionHelper()
-      }}
-    >
-      <CssBaseline />
-        {typeof window === 'undefined' ? null : 
-          
-          <Layout>
-            <ErrorBoundary>
-              <Component {...pageProps} />
-              </ErrorBoundary>
-            </Layout>}
-        </ApiContext.Provider>
-    </ThemeProvider>
-    </div>
+        <ThemeProvider theme={THEME}>
+
+          <ApiContext.Provider
+            value={{
+              //Services
+              questionnaireResponseService: new QuestionnaireResponseService(questionnaireResponseApi),
+              careplanService: new CareplanService(careplanApi),
+
+              //Helpers
+              validationService: new ValidationService(),
+              dateHelper: new DanishDateHelper(),
+              collectionHelper: new CollectionHelper()
+            }}
+          >
+            <CssBaseline />
+            {typeof window === 'undefined' ? null :
+
+              <Layout>
+                <ErrorBoundary>
+                  <Component {...pageProps} />
+                </ErrorBoundary>
+              </Layout>}
+          </ApiContext.Provider>
+        </ThemeProvider>
+      </div>
     </>
-    )
-  
+  )
+
 }
 
 const mainBackground = "#F2F2F2"
@@ -69,42 +69,71 @@ const THEME = createTheme({
   typography: {
     "fontFamily": "verdana, sans-serif"
   },
-  palette : {
-    background : {
-      default : mainBackground,
+  palette: {
+    background: {
+      default: mainBackground,
     }
   },
-  components : {
-    MuiDrawer : {
-      defaultProps : {
-        PaperProps : {
-          style : {
-            backgroundColor : regionMidtRed,
-            color : "white",
-            borderRadius : '0 20px 20px 0'
+  components: {
+    MuiDrawer: {
+      defaultProps: {
+        PaperProps: {
+          style: {
+            backgroundColor: regionMidtRed,
+            color: "white",
+            borderRadius: '0 20px 20px 0'
           }
         }
       }
     },
-    MuiSvgIcon : {
-      variants : [
+    MuiCardHeader: {
+      styleOverrides: {
+        subheader : {
+          color : regionMidtRed
+        }
+      }
+    },
+    MuiCard: {
+      variants: [
         {
-          props : {className : "sidebarIcon"},
-          style : {
-            color : "white",
-            fontSize : 30
+          props: {},
+          style: {
+            borderRadius: 25
           }
         }
       ]
     },
-    MuiAppBar : {
-      variants : [
+    MuiButton: {
+      variants: [
         {
-          props : {color : "primary"},
-          style : {
-            backgroundColor : "white",
-            color : regionMidtRed,
-            borderRadius : '0 0 10px 10px'
+          props: { variant: "contained" },
+          style: {
+            borderRadius: 25,
+            padding : 15,
+            background: "linear-gradient(to bottom, "+regionMidtRed+" 0%, #800000 100%)"
+          }
+        }
+      ]
+    },
+    MuiSvgIcon: {
+      variants: [
+        {
+          props: { className: "sidebarIcon" },
+          style: {
+            color: "white",
+            fontSize: 30
+          }
+        }
+      ]
+    },
+    MuiAppBar: {
+      variants: [
+        {
+          props: { color: "primary" },
+          style: {
+            backgroundColor: "white",
+            color: regionMidtRed,
+            borderRadius: '0 0 10px 10px'
           }
         }
       ]
