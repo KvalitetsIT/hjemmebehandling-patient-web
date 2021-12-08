@@ -7,7 +7,7 @@ export class QuestionnaireResponse {
     id! : string
     questionnaireId! : string
     //measurements! : Map<MeasurementType,Measurement>
-    questions! : Map<Question,Answer>;
+    questions? : Map<Question,Answer>;
     answeredTime! : Date | undefined ;
     status! : QuestionnaireResponseStatus
     category! : CategoryEnum;

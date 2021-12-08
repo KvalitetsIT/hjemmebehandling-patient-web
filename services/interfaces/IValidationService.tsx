@@ -7,5 +7,7 @@ export default interface IValidationService {
     ValidatePhonenumber : (phoneNumber : string) => Promise<InvalidInputModel[]>
     ValidatePlanDefinitions : (planDefinitions : PlanDefinition[]) => Promise<InvalidInputModel[]>
     ValidateZipCode : (zipCode : string) => Promise<InvalidInputModel[]>;
+    
+    ValidateNumber : (posibleNumber : string) => Promise<InvalidInputModel[]>;
 }
   

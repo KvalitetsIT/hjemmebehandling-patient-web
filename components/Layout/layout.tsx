@@ -6,6 +6,7 @@ import UnAnsweredPage from '../../pages/questionnaire/unanswered';
 import AnsweredPage from '../../pages/questionnaire/answered';
 import ApiContext from '../../pages/_context';
 import QuestionnaireResponseDetailsPage from '../../pages/questionnaire/[questionnaireId]/response/[questionnaireResponseId]';
+import QuestionnaireResponseCreationPage from '../../pages/questionnaire/[questionnaireId]/answer';
 
 export interface State {
   drawerIsOpen: boolean
@@ -43,6 +44,7 @@ export class Layout extends Component<{},State> {
         <Box padding={3}>
         <Switch>              
           <Route path="/questionnaire/:questionnaireId/response/:questionnaireResponseId" render={(props) => <QuestionnaireResponseDetailsPage {...props}/>}/>
+          <Route path="/questionnaire/:questionnaireId/answer" render={(props) => <QuestionnaireResponseCreationPage {...props}/>}/>
           <Route path="/questionnaire/unanswered" render={(props) => <UnAnsweredPage {...props}/>}/>
           <Route path="/questionnaire/answered" render={(props) => <AnsweredPage  {...props}/>}/>
           <Route path="/"><Typography>Hello world - This is patient!</Typography></Route>

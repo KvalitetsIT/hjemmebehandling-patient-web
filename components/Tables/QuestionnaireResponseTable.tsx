@@ -76,7 +76,7 @@ export default class QuestionnaireResponseTable extends Component<Props,State>{
             hasMorePages = true;
 
         return (
-            <IsEmptyCard textWhenEmpty="Ingen besvarelser fundet" list={this.state.questionnaireResponses}>
+            <IsEmptyCard jsxWhenEmpty="Ingen besvarelser fundet" list={this.state.questionnaireResponses}>
                 <TableContainer component={Card}>
                 <Table>
                     <TableHead>

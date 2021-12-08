@@ -4,7 +4,7 @@ import { Card, CardContent, Typography } from '@mui/material';
 interface Props{
     list? : any[];
     object? : any;
-    textWhenEmpty : string;
+    jsxWhenEmpty : JSX.Element | string;
 }
 
 export default class IsEmptyCard extends Component<Props,{}>{
@@ -20,7 +20,7 @@ export default class IsEmptyCard extends Component<Props,{}>{
             return (
                 <Card>
                     <CardContent>
-                        <Typography>{this.props.textWhenEmpty}</Typography>
+                        <Typography>{this.props.jsxWhenEmpty}</Typography>
                     </CardContent>
                 </Card>
                 )

@@ -57,11 +57,11 @@ export default class UnAnsweredPage extends Component<{}, State>{
         const questionnairesToAnswerOtherDay = this.state.careplan?.questionnaires?.filter(q => !q.frequency?.days?.includes(todaysDayIndex));
 
         return (
-            <IsEmptyCard object={this.state.careplan} textWhenEmpty="Ingen behandlingsplan fundet på bruger">
-                <IsEmptyCard list={this.state.careplan?.questionnaires} textWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
+            <IsEmptyCard object={this.state.careplan} jsxWhenEmpty="Ingen behandlingsplan fundet på bruger">
+                <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
                     <Typography component={Box} paddingBottom={1} variant="h6">Spørgeskemaer til besvarelse i dag</Typography>
 
-                    <IsEmptyCard list={questionnairesToAnswerToday} textWhenEmpty="Ingen spørgeskemaer">
+                    <IsEmptyCard list={questionnairesToAnswerToday} jsxWhenEmpty="Ingen spørgeskemaer">
                         <Stack direction="row" >
                             {questionnairesToAnswerToday?.map(questionnaire => {
                                 return <QuestionnaireAnswerCard showDeadline={true} questionnaire={questionnaire} />
@@ -71,7 +71,7 @@ export default class UnAnsweredPage extends Component<{}, State>{
                     </IsEmptyCard>
 
                     <Typography component={Box} paddingBottom={1} paddingTop={10} variant="h6">Andre spørgeskemaer til besvarelse</Typography>
-                    <IsEmptyCard list={questionnairesToAnswerOtherDay} textWhenEmpty="Ingen spørgeskemaer">
+                    <IsEmptyCard list={questionnairesToAnswerOtherDay} jsxWhenEmpty="Ingen spørgeskemaer">
                         <Stack direction="row" >
                             {questionnairesToAnswerOtherDay?.map(questionnaire => {
                                 return <QuestionnaireAnswerCard showDeadline={false} questionnaire={questionnaire} />

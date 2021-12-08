@@ -6,6 +6,21 @@ import { CriticalLevelEnum, InvalidInputModel } from "./Errors/InvalidInputError
 import IValidationService from "./interfaces/IValidationService";
 
 export default class ValidationService extends BaseService implements IValidationService {
+    async ValidateNumber(posibleNumber: string) : Promise<InvalidInputModel[]>{
+        const erorrs : InvalidInputModel[] = []
+        let propName = "Tal"
+        if(posibleNumber.includes(",")){
+            const error = new InvalidInputModel(propName,"Kommatal skal skrives med punktum")
+            erorrs.push(error)
+        }
+
+        if(!Number(posibleNumber)){
+            const error = new InvalidInputModel(propName,"Skal være et tal")
+            erorrs.push(error)
+        }
+        return erorrs;
+    }
+
     async ValidateZipCode(zipCode: string): Promise<InvalidInputModel[]>{
         const erorrs : InvalidInputModel[] = []
         let propName = "Postnummer"

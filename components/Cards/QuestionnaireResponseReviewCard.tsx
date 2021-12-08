@@ -8,7 +8,7 @@ interface Props{
     showDeadline : boolean
 }
 
-export default class QuestionnaireAnswerCard extends Component<Props,{}>{
+export default class QuestionnaireResponseReviewCard extends Component<Props,{}>{
     render() : JSX.Element{
         const questionnaire = this.props.questionnaire;
         return (

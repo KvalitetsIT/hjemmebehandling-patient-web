@@ -103,14 +103,38 @@ const THEME = createTheme({
         }
       ]
     },
+    MuiLinearProgress : {
+      styleOverrides : {
+        bar1Determinate : {
+          backgroundColor : regionMidtRed
+        }
+      },
+      variants : [
+        {
+          props : {variant:"determinate"},
+          style:{
+            background: "white",
+            
+          }
+        }
+      ]
+    },
     MuiButton: {
       variants: [
         {
-          props: { variant: "contained" },
+          props: { variant: "contained", disabled: false },
           style: {
             borderRadius: 25,
             padding : 15,
             background: "linear-gradient(to bottom, "+regionMidtRed+" 0%, #800000 100%)"
+          }
+        },
+        {
+          props: { variant: "contained", disabled: true },
+          style: {
+            borderRadius: 25,
+            padding : 15,
+            background: "gray"
           }
         }
       ]

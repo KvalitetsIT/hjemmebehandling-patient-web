@@ -1,12 +1,15 @@
 import { Answer, NumberAnswer } from "../../components/Models/Answer";
 import { Question, QuestionTypeEnum } from "../../components/Models/Question";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
+import { NoPatientFround } from "../../services/Errors/NoPatientFountError";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 
 export default class FakeQuestionnaireResponseApi implements IQuestionnaireResponseApi{
-    async GetQuestionnaireResponse(questionnaireResponseId: string) : Promise<QuestionnaireResponse>{
+    questionnaireResponses : QuestionnaireResponse[] = [];
+
+    constructor(){
         let questionnaireResponse1 = new QuestionnaireResponse();
-        questionnaireResponse1.id = questionnaireResponseId;
+        questionnaireResponse1.id = "questionnaireResponse1";
         questionnaireResponse1.questionnaireId = "q1"
         questionnaireResponse1.answeredTime = new Date();
         questionnaireResponse1.status = QuestionnaireResponseStatus.Processed
@@ -31,18 +34,30 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         answer2.answer = 8;
         
         questionnaireResponse1.questions.set(question2,answer2);
-        return questionnaireResponse1;
+
+        this.questionnaireResponses.push(questionnaireResponse1)
+    }
+    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse) : Promise<void>{
+        questionnaireResponse.id = "questionnaireResponse"+this.generateId() + "";
+        this.questionnaireResponses.push(questionnaireResponse);
+    }
+
+    async GetQuestionnaireResponse(questionnaireResponseId: string) : Promise<QuestionnaireResponse>{
+        console.log(questionnaireResponseId)
+        let response = this.questionnaireResponses.find(x=>x.id == questionnaireResponseId);
+        if(response)
+            return response;
+
+        throw new NoPatientFround();
     }
 
     
-    async GetQuestionnaireResponses(carePlanId: string, questionnaireIds: Array<string>, page : number, pagesize : number) : Promise<Array<QuestionnaireResponse>>{
-        const toReturn : QuestionnaireResponse[] = [];
-        questionnaireIds.forEach( async questionnaireId => {
-            let questionnaireResponse1 = await this.GetQuestionnaireResponse(questionnaireId)
-            toReturn.push(questionnaireResponse1);
-        })
-        
-        return toReturn;
+    async GetQuestionnaireResponses(carePlanId: string, questionnaireIds: Array<string>, page : number, pagesize : number) : Promise<Array<QuestionnaireResponse>>{        
+        return this.questionnaireResponses.filter(x=>questionnaireIds.includes(x.questionnaireId));
     }
 
+    id : number = 100
+    generateId() : number{
+        return this.id++;
+    }
 }
