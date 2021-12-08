@@ -136,6 +136,12 @@ const THEME = createTheme({
             padding : 15,
             background: "gray"
           }
+        },
+        {
+          props: { variant: "text", disabled: false },
+          style: {
+            color : regionMidtRed
+          }
         }
       ]
     },

@@ -16,6 +16,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import QuestionPresenterCard from "../../../components/Cards/QuestionPresenterCard";
 import QuestionAndAnswerTable from "../../../components/Tables/QuestionAndAnswerTable";
 import { Redirect } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 interface Props {
@@ -66,7 +67,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         }
     }
 
-    ResetResponse(careplan: PatientCareplan) : void {
+    ResetResponse(careplan: PatientCareplan): void {
         const questionnaireResponse = new QuestionnaireResponse();
         questionnaireResponse.questionnaireId = this.props.match.params.questionnaireId;
         questionnaireResponse.questions = new Map<Question, Answer>();
@@ -105,7 +106,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         return this.renderQuestion(questionnaire);
 
     }
-    renderProgressbar(questionnaire: Questionnaire) : JSX.Element {
+    renderProgressbar(questionnaire: Questionnaire): JSX.Element {
         return (
             <>
                 <Grid component={Box} spacing={4} container textAlign="center">
@@ -119,11 +120,11 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                     <Grid component={Box} textAlign="left" item xs={12} >
                         <LinearProgress variant="determinate" value={this.GetPercentageDone(questionnaire)} />
                         <Button size="small" disabled={this.state.questionIndex == 0} onClick={() => this.setState({ questionIndex: this.state.questionIndex - 1 })}>
-                                    <NavigateBeforeIcon />
-                                    <Typography fontSize={10}>
-                                        Forrige
-                                    </Typography>
-                                </Button>
+                            <NavigateBeforeIcon />
+                            <Typography fontSize={10}>
+                                Forrige
+                            </Typography>
+                        </Button>
                     </Grid>
                     <Grid item xs={12} >
                         <Typography variant="caption">{this.GetPercentageDone(questionnaire!).toFixed(0)}% færdig</Typography>
@@ -133,7 +134,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         )
     }
 
-    renderQuestion(questionnaire: Questionnaire | undefined) : JSX.Element {
+    renderQuestion(questionnaire: Questionnaire | undefined): JSX.Element {
 
         const questions = questionnaire?.questions;
         let question: Question | undefined = undefined;
@@ -149,7 +150,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                         <Grid component={Box} spacing={4} container textAlign="center">
                             <Grid item xs={12} >
                                 <QuestionPresenterCard key={question?.Id} question={question!} answer={this.state.questionnaireResponse.questions?.get(question!)} setQuestionAnswer={this.setAnswerToQuestion} />
-                               
+
                             </Grid>
                         </Grid>
 
@@ -159,33 +160,42 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         )
     }
 
-    renderReview(questionnaire: Questionnaire | undefined) : JSX.Element {
+    renderReview(questionnaire: Questionnaire | undefined): JSX.Element {
         return (
             <>
                 {this.renderProgressbar(questionnaire!)}
-                <Grid component={Box} spacing={4} container textAlign="center">
-                    <Grid item xs={12} >
-                        <Typography>{questionnaire?.name}</Typography>
-                        <Typography variant="caption">Du bliver ringet op, hvis personalet har brug for yderligere oplysninger</Typography>
+                <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
+                    <Grid component={Box} spacing={4} container textAlign="center">
+                        <Grid item xs={12} >
+                            <Typography>{questionnaire?.name}</Typography>
+                            <Typography variant="caption">Du bliver ringet op, hvis personalet har brug for yderligere oplysninger</Typography>
+                        </Grid>
+                        <Grid item xs={12} >
+                            <QuestionAndAnswerTable lastRowJsx={(questionId) => this.createLastColoumn(questionId, questionnaire!)} questionAnswerMap={this.state.questionnaireResponse.questions!} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button onClick={() => this.submitQuestionnaireResponse()} variant="contained">Indsend</Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} >
-                        <QuestionAndAnswerTable questionAnswerMap={this.state.questionnaireResponse.questions!} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button onClick={() => this.submitQuestionnaireResponse()} variant="contained">Indsend</Button>
-                    </Grid>
-                </Grid>
+                </IsEmptyCard>
             </>
         )
     }
 
-    setAnswerToQuestion(question: Question, answer: Answer) : void {
+    setAnswerToQuestion(question: Question, answer: Answer): void {
         const response = this.state.questionnaireResponse;
         response.questions?.set(question, answer);
         this.setState({ questionnaireResponse: response, questionIndex: this.state.questionIndex + 1 })
     }
 
-    async submitQuestionnaireResponse() : Promise<void>{
+    createLastColoumn(questionId: string, questionnaire: Questionnaire) : JSX.Element{
+        const questionIndex: number | undefined = questionnaire.questions?.findIndex(x => x.Id === questionId);
+        if (questionIndex)
+            return (<Button onClick={() => this.setState({ questionIndex: questionIndex })}> <EditIcon />  </Button>)
+        return (<></>)
+    }
+
+    async submitQuestionnaireResponse(): Promise<void> {
         this.setState({ loadingPage: true })
         try {
             const questionnaireResponse = this.state.questionnaireResponse;
@@ -193,9 +203,9 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             questionnaireResponse.status = QuestionnaireResponseStatus.NotProcessed
             await this.questionnaireResponseService.SubmitQuestionnaireResponse(questionnaireResponse)
             this.setState({ loadingPage: false, submitted: true })
-        } catch(error){
-            this.setState(()=>{throw error})
+        } catch (error) {
+            this.setState(() => { throw error })
         }
-        
+
     }
 }

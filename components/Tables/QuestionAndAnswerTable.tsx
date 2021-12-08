@@ -6,6 +6,7 @@ import ApiContext from "../../pages/_context";
 
 interface Props {
     questionAnswerMap: Map<Question, Answer>;
+    lastRowJsx? : (questionId : string) => JSX.Element;
 }
 
 export default class QuestionAndAnswerTable extends Component<Props, {}>{
@@ -26,6 +27,7 @@ export default class QuestionAndAnswerTable extends Component<Props, {}>{
                         <TableRow>
                             <TableCell>Spørgsmål</TableCell>
                             <TableCell>Svar</TableCell>
+                            {this.props.lastRowJsx ? <TableCell></TableCell> : <></>}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -34,6 +36,7 @@ export default class QuestionAndAnswerTable extends Component<Props, {}>{
                                 <TableRow>
                                     <TableCell>{questionAnswer.q.question}</TableCell>
                                     <TableCell>{questionAnswer.a.ToString()}</TableCell>
+                                    {this.props.lastRowJsx ? <TableCell>{this.props.lastRowJsx(questionAnswer.q.Id)}</TableCell> : <></>}
                                 </TableRow>
                             )
                         })}
