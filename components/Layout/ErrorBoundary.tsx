@@ -1,5 +1,5 @@
 
-import { Alert, Typography } from "@mui/material";
+import { Alert, Button, Typography } from "@mui/material";
 import React, { ErrorInfo } from "react";
 import { ToastError } from "./ToastError";
 
@@ -19,7 +19,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { error: undefined };
+    this.state = { error: undefined};
   }
 
   static getDerivedStateFromError(error: Error): State {
@@ -33,7 +33,9 @@ export class ErrorBoundary extends React.Component<Props, State> {
     console.debug(errorInfo)
 
   }
-
+  reloadPage() : void {
+    window.location.reload()
+  }
 
   render(): JSX.Element {
     if (this.state.error) {
@@ -42,6 +44,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
         <Alert severity="error" title={this.props.ekstraText}>
           <Typography variant={this.props.ekstraText ? "caption" : "inherit"}>Der er opstået en fejl</Typography>
           <Typography>{this.props.ekstraText}</Typography>
+          <Button onClick={()=>{this.reloadPage()}}>Genindlæs</Button>
         </Alert>
         <ToastError error={this.state.error}></ToastError>
       </>)
