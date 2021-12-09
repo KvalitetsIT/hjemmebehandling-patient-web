@@ -34,12 +34,12 @@ export class Layout extends Component<{}, State> {
     return (
       <>
         <Box sx={{ display: 'flex' }}>
-          <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)">
+          <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)" showReloadButton={true}>
             <Router>
               <Box component="main" sx={{ flexGrow: 1 }}>
                 <Topbar />
                 <Box padding={3}>
-                  <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)">
+                  <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)" showReloadButton={true}>
                     <Switch>
                       <Route path="/questionnaire/:questionnaireId/response/:questionnaireResponseId" render={(props) => <QuestionnaireResponseDetailsPage {...props} />} />
                       <Route path="/questionnaire/:questionnaireId/answer" render={(props) => <QuestionnaireResponseCreationPage {...props} />} />

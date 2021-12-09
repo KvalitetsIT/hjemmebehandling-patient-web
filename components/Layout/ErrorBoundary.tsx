@@ -6,6 +6,7 @@ import { ToastError } from "./ToastError";
 export interface Props {
   rerenderChildren: boolean
   ekstraText: string;
+  showReloadButton : boolean;
 }
 export interface State {
   error?: Error
@@ -14,7 +15,8 @@ export interface State {
 export class ErrorBoundary extends React.Component<Props, State> {
   public static defaultProps = {
     rerenderChildren: false,
-    ekstraText: ""
+    ekstraText: "",
+    showReloadButton : false
   };
 
   constructor(props: Props) {
@@ -34,7 +36,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
   }
   reloadPage() : void {
-    window.location.reload()
+    window.location.replace("/");
   }
 
   render(): JSX.Element {
@@ -44,7 +46,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
         <Alert severity="error" title={this.props.ekstraText}>
           <Typography variant={this.props.ekstraText ? "caption" : "inherit"}>Der er opstået en fejl</Typography>
           <Typography>{this.props.ekstraText}</Typography>
-          <Button onClick={()=>{this.reloadPage()}}>Genindlæs</Button>
+          {this.props.showReloadButton ? <Button onClick={()=>{this.reloadPage()}}>Genindlæs</Button> : <></>}
         </Alert>
         <ToastError error={this.state.error}></ToastError>
       </>)

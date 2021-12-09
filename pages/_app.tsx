@@ -58,7 +58,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             <CssBaseline />
             {typeof window === 'undefined' ? null :
 
-              <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)">
+              <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)" showReloadButton={true}>
                 <Layout>
                   <ErrorBoundary>
                     <Component {...pageProps} />
