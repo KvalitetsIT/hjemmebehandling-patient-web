@@ -1,6 +1,6 @@
 import { PatientCareplan } from "../../components/Models/PatientCareplan";
 import { QuestionnaireResponse } from "../../components/Models/QuestionnaireResponse";
-import { CarePlanApi, QuestionnaireResponseApi } from "../../generated";
+import { CarePlanApi, Configuration, QuestionnaireResponseApi } from "../../generated";
 import BaseApi from "../BaseApi";
 import ICareplanApi from "../interfaces/ICareplanApi";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
@@ -11,11 +11,13 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
     questionnaireResponseApi: QuestionnaireResponseApi;
     toInternal: ExternalToInternalMapper;
     toExternal: InternalToExternalMapper;
+    conf: Configuration = new Configuration({ basePath: '/api/proxy' });
+
     constructor() {
         super();
         this.toInternal = new ExternalToInternalMapper();
         this.toExternal = new InternalToExternalMapper();
-        this.questionnaireResponseApi = new QuestionnaireResponseApi();
+        this.questionnaireResponseApi = new QuestionnaireResponseApi(this.conf);
     }
     async GetQuestionnaireResponses(carePlanId: string, questionnaireIds: string[], page: number, pagesize: number): Promise<QuestionnaireResponse[]> {
         try {

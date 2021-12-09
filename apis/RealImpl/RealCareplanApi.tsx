@@ -1,5 +1,5 @@
 import { PatientCareplan } from "../../components/Models/PatientCareplan";
-import { CarePlanApi } from "../../generated";
+import { CarePlanApi, Configuration } from "../../generated";
 import BaseApi from "../BaseApi";
 import ICareplanApi from "../interfaces/ICareplanApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
@@ -9,13 +9,16 @@ export default class RealCareplanApi extends BaseApi implements ICareplanApi{
     careplanapi : CarePlanApi;
     toInternal : ExternalToInternalMapper;
     toExternal : InternalToExternalMapper;
+    conf: Configuration = new Configuration({ basePath: '/api/proxy' });
+    
     constructor(){
         super();
         this.toInternal = new ExternalToInternalMapper();
         this.toExternal = new InternalToExternalMapper();
-        this.careplanapi = new CarePlanApi();
+        this.careplanapi = new CarePlanApi(this.conf);
     }
 
+    
     async GetActiveCareplan() : Promise<PatientCareplan> {
         try{
             const careplanFromApi = await this.careplanapi.getActiveCarePlan();
