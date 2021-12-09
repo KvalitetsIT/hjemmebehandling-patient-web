@@ -17,15 +17,24 @@ import QuestionnaireResponseService from '../services/QuestionnaireResponseServi
 
 import CareplanService from '../services/CareplanService';
 import FakeCareplanApi from '../apis/FakeImpl/FakeCareplanApi';
+import RealQuestionnaireResponseApi from '../apis/RealImpl/RealQuestionnaireResponseApi';
+import RealCareplanApi from '../apis/RealImpl/RealCareplanApi';
+import ICareplanApi from '../apis/interfaces/ICareplanApi';
+import IQuestionnaireResponseApi from '../apis/interfaces/IQuestionnaireResponseApi';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
 
-  const questionnaireResponseApi = new FakeQuestionnaireResponseApi();
-  const careplanApi = new FakeCareplanApi();
+  let questionnaireResponseApi : IQuestionnaireResponseApi = new RealQuestionnaireResponseApi();
+  let careplanApi : ICareplanApi = new RealCareplanApi();
 
   if (process?.env.NODE_ENV === 'development') {
-
+    if (process.env.NEXT_PUBLIC_MOCK_QUESTIONNAIRE_RESPONSE_SERVICE === "true") {
+      questionnaireResponseApi = new FakeQuestionnaireResponseApi();
+    }
+    if (process.env.NEXT_PUBLIC_MOCK_CAREPLAN_SERVICE === "true") {
+      careplanApi = new FakeCareplanApi();
+    }
   }
 
   return (

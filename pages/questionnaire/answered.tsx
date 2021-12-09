@@ -56,7 +56,7 @@ export default class AnsweredPage extends Component<{},State>{
     renderPage() : JSX.Element{
         return (
             <IsEmptyCard object={this.state.careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
-                <Grid  component={Box} container>
+                <Grid container>
                     <Grid  item xs={12}>
                         <Typography component={Box} paddingBottom={1} variant="h6">Dine tidligere besvarelser</Typography>
                         

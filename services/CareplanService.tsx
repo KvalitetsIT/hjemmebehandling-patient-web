@@ -12,7 +12,7 @@ export default class CareplanService extends BaseService implements ICareplanSer
     }
     async GetActiveCareplan() : Promise<PatientCareplan>{
         try {
-            return this.api.GetActiveCareplan();
+            return await this.api.GetActiveCareplan();
         } catch(error){
             return this.HandleError(error);
         }

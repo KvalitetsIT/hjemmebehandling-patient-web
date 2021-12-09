@@ -7,6 +7,7 @@ import AnsweredPage from '../../pages/questionnaire/answered';
 import ApiContext from '../../pages/_context';
 import QuestionnaireResponseDetailsPage from '../../pages/questionnaire/[questionnaireId]/response/[questionnaireResponseId]';
 import QuestionnaireResponseCreationPage from '../../pages/questionnaire/[questionnaireId]/answer';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export interface State {
   drawerIsOpen: boolean
@@ -36,9 +37,8 @@ export class Layout extends Component<{},State> {
 
 <Box sx={{ display: 'flex' }}>
       
-
+      <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)">
     <Router>
-      
       <Box component="main" sx={{ flexGrow: 1 }}>
         <Topbar/>
         <Box padding={3}>
@@ -53,6 +53,7 @@ export class Layout extends Component<{},State> {
       </Box>
 
     </Router>
+    </ErrorBoundary>
 </Box>
         </>
     );
