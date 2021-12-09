@@ -27,7 +27,7 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
             const responseList = await this.questionnaireResponseApi.getQuestionnaireResponsesByCarePlanId(request)
             return  responseList.map(response => this.toInternal.mapQuestionnaireResponseDto(response))
         } catch (error) {
-            return this.HandleError(error);
+            return await this.HandleError(error);
         }
     }
 
@@ -39,7 +39,7 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
             const response = await this.questionnaireResponseApi.getQuestionnaireResponseById(request)
             return this.toInternal.mapQuestionnaireResponseDto(response);
         } catch (error) {
-            return this.HandleError(error);
+            return await this.HandleError(error);
         }
     }
 
@@ -50,7 +50,7 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
             }
             const response = await this.questionnaireResponseApi.submitQuestionnaireResponse(request)
         } catch (error) {
-            return this.HandleError(error);
+            return await this.HandleError(error);
         }
     }
 

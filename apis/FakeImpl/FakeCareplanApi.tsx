@@ -3,12 +3,16 @@ import { DayEnum, Frequency } from "../../components/Models/Frequency";
 import { PatientCareplan } from "../../components/Models/PatientCareplan";
 import { Question, QuestionTypeEnum } from "../../components/Models/Question";
 import { Questionnaire } from "../../components/Models/Questionnaire";
+import BaseApi from "../BaseApi";
 import { NotImplementedError } from "../Errors/NotImplementedError";
 import ICareplanApi from "../interfaces/ICareplanApi";
 
-export default class FakeCareplanApi implements ICareplanApi{
+export default class FakeCareplanApi extends BaseApi implements ICareplanApi{
     async GetActiveCareplan() : Promise<PatientCareplan>{
+        try{
+
         
+        //throw new Response();
         const careplan = new PatientCareplan();
         careplan.id = "careplan1"
 
@@ -44,6 +48,9 @@ export default class FakeCareplanApi implements ICareplanApi{
 
 
         return careplan;
+    } catch(error){
+        return await this.HandleError(error);
+    }
     }
 
 
