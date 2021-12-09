@@ -3,6 +3,8 @@ import {BaseApiError} from "./../apis/Errors/BaseApiError"
 import {BaseServiceError} from "./Errors/BaseServiceError"
 import { UnknownServiceError } from "./Errors/UnknownServiceError";
 import { NotCorrectRightsError } from "./Errors/NotCorrectRightsError";
+import { BadRequestError } from "./Errors/BadRequestError";
+import { NotFoundError } from "./Errors/NotFoundError";
 
 export default class BaseService {
     ValidatePagination(page : number, pageSize : number) : void {
@@ -17,7 +19,9 @@ export default class BaseService {
             throw new InvalidInputError(errors);
     }
 
-    HandleError(error : any) : any{
+    HandleError(error : any) : any {
+        console.debug("Transforming error to ApplicationError")
+        console.log(error)
         let errorIsApiError = error instanceof BaseApiError
         let errorIsServiceError = error instanceof BaseServiceError
 
@@ -26,18 +30,26 @@ export default class BaseService {
             
         if(errorIsServiceError)
             throw error; //The error is ok and can be displayed nicely
-        
+    
         throw new UnknownServiceError(error)
     }
 
-    FromApiToServiceError(apiError : BaseApiError){
-        if(apiError.response.status === 403)
-            return new NotCorrectRightsError();
-            
-        if(apiError.response.status === 401)
-            return new NotCorrectRightsError();
+    private FromApiToServiceError(apiError : BaseApiError) : BaseServiceError {
+        if(apiError && apiError.response && apiError.errorMessage){
+            switch(apiError.response.status) {
+                case 400:
+                    return new BadRequestError(apiError.errorMessage)
+                case 401 : 
+                    return new NotCorrectRightsError();
+                case 403 : 
+                    return new NotCorrectRightsError();
+                case 404 : 
+                    return new NotFoundError();
+            }
+        }
 
-        return apiError;
+        return apiError
+       
     }
 }
   

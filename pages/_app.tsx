@@ -25,8 +25,8 @@ import IQuestionnaireResponseApi from '../apis/interfaces/IQuestionnaireResponse
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
 
-  let questionnaireResponseApi : IQuestionnaireResponseApi = new RealQuestionnaireResponseApi();
-  let careplanApi : ICareplanApi = new RealCareplanApi();
+  let questionnaireResponseApi: IQuestionnaireResponseApi = new RealQuestionnaireResponseApi();
+  let careplanApi: ICareplanApi = new RealCareplanApi();
 
   if (process?.env.NODE_ENV === 'development') {
     if (process.env.NEXT_PUBLIC_MOCK_QUESTIONNAIRE_RESPONSE_SERVICE === "true") {
@@ -58,11 +58,14 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             <CssBaseline />
             {typeof window === 'undefined' ? null :
 
-              <Layout>
-                <ErrorBoundary>
-                  <Component {...pageProps} />
-                </ErrorBoundary>
-              </Layout>}
+              <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)">
+                <Layout>
+                  <ErrorBoundary>
+                    <Component {...pageProps} />
+                  </ErrorBoundary>
+                </Layout>
+              </ErrorBoundary>
+            }
           </ApiContext.Provider>
         </ThemeProvider>
       </div>
@@ -97,8 +100,8 @@ const THEME = createTheme({
     },
     MuiCardHeader: {
       styleOverrides: {
-        subheader : {
-          color : regionMidtRed
+        subheader: {
+          color: regionMidtRed
         }
       }
     },
@@ -112,18 +115,18 @@ const THEME = createTheme({
         }
       ]
     },
-    MuiLinearProgress : {
-      styleOverrides : {
-        bar1Determinate : {
-          backgroundColor : regionMidtRed
+    MuiLinearProgress: {
+      styleOverrides: {
+        bar1Determinate: {
+          backgroundColor: regionMidtRed
         }
       },
-      variants : [
+      variants: [
         {
-          props : {variant:"determinate"},
-          style:{
+          props: { variant: "determinate" },
+          style: {
             background: "white",
-            
+
           }
         }
       ]
@@ -134,22 +137,22 @@ const THEME = createTheme({
           props: { variant: "contained", disabled: false },
           style: {
             borderRadius: 25,
-            padding : 15,
-            background: "linear-gradient(to bottom, "+regionMidtRed+" 0%, #800000 100%)"
+            padding: 15,
+            background: "linear-gradient(to bottom, " + regionMidtRed + " 0%, #800000 100%)"
           }
         },
         {
           props: { variant: "contained", disabled: true },
           style: {
             borderRadius: 25,
-            padding : 15,
+            padding: 15,
             background: "gray"
           }
         },
         {
           props: { variant: "text", disabled: false },
           style: {
-            color : regionMidtRed
+            color: regionMidtRed
           }
         }
       ]

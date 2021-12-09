@@ -33,12 +33,15 @@ export default class UnAnsweredPage extends Component<{}, State>{
     }
 
     async componentDidMount() : Promise<void> {
+        this.setState({ loadingPage: true })
         try {
+            
             const activeCareplan = await this.careplanService.GetActiveCareplan();
-            this.setState({ careplan: activeCareplan, loadingPage: false })
+            this.setState({ careplan: activeCareplan})
         } catch (error) {
             this.setState(() => { throw error })
         }
+        this.setState({ loadingPage: false })
     }
 
     getTodaysDay(): DayEnum {

@@ -1,7 +1,7 @@
 import { Answer, NumberAnswer } from "../../components/Models/Answer";
 import { Question, QuestionTypeEnum } from "../../components/Models/Question";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
-import { NoPatientFround } from "../../services/Errors/NoPatientFountError";
+import { NotFoundError } from "../../services/Errors/NotFoundError";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 
 export default class FakeQuestionnaireResponseApi implements IQuestionnaireResponseApi{
@@ -48,7 +48,7 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         if(response)
             return response;
 
-        throw new NoPatientFround();
+        throw new NotFoundError();
     }
 
     

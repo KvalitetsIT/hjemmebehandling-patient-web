@@ -13,49 +13,47 @@ export interface State {
   drawerIsOpen: boolean
 }
 
-export class Layout extends Component<{},State> {
+export class Layout extends Component<{}, State> {
   static displayName = Layout.name;
   static contextType = ApiContext
 
-  constructor(props : {}){
+  constructor(props: {}) {
     super(props);
     this.state = {
-      drawerIsOpen : true
+      drawerIsOpen: true
     }
-    
+
   }
 
 
-  render () : JSX.Element{
-    
-    
-    
+  render(): JSX.Element {
+
+
+
 
     return (
-<>
-
-
-<Box sx={{ display: 'flex' }}>
-      
-      <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)">
-    <Router>
-      <Box component="main" sx={{ flexGrow: 1 }}>
-        <Topbar/>
-        <Box padding={3}>
-        <Switch>              
-          <Route path="/questionnaire/:questionnaireId/response/:questionnaireResponseId" render={(props) => <QuestionnaireResponseDetailsPage {...props}/>}/>
-          <Route path="/questionnaire/:questionnaireId/answer" render={(props) => <QuestionnaireResponseCreationPage {...props}/>}/>
-          <Route path="/questionnaire/unanswered" render={(props) => <UnAnsweredPage {...props}/>}/>
-          <Route path="/questionnaire/answered" render={(props) => <AnsweredPage  {...props}/>}/>
-          <Route path="/"><Typography>Hello world - This is patient!</Typography></Route>
-        </Switch>
+      <>
+        <Box sx={{ display: 'flex' }}>
+          <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)">
+            <Router>
+              <Box component="main" sx={{ flexGrow: 1 }}>
+                <Topbar />
+                <Box padding={3}>
+                  <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)">
+                    <Switch>
+                      <Route path="/questionnaire/:questionnaireId/response/:questionnaireResponseId" render={(props) => <QuestionnaireResponseDetailsPage {...props} />} />
+                      <Route path="/questionnaire/:questionnaireId/answer" render={(props) => <QuestionnaireResponseCreationPage {...props} />} />
+                      <Route path="/questionnaire/unanswered" render={(props) => <UnAnsweredPage {...props} />} />
+                      <Route path="/questionnaire/answered" render={(props) => <AnsweredPage  {...props} />} />
+                      <Route path="/"><Typography>Hello world - This is patient!</Typography></Route>
+                    </Switch>
+                  </ErrorBoundary>
+                </Box>
+              </Box>
+            </Router>
+          </ErrorBoundary>
         </Box>
-      </Box>
-
-    </Router>
-    </ErrorBoundary>
-</Box>
-        </>
+      </>
     );
   }
 }
