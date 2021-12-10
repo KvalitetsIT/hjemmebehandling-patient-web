@@ -189,8 +189,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     }
 
     createLastColoumn(questionId: string, questionnaire: Questionnaire) : JSX.Element{
-        const questionIndex: number | undefined = questionnaire.questions?.findIndex(x => x.Id === questionId);
-        if (questionIndex)
+        const questionIndex: number | undefined = questionnaire.questions!.findIndex(x => x.Id === questionId);
+        if (questionIndex >= 0)
             return (<Button onClick={() => this.setState({ questionIndex: questionIndex })}> <EditIcon />  </Button>)
         return (<></>)
     }
