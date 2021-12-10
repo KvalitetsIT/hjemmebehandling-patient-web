@@ -38,11 +38,12 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi{
         question2.type = QuestionTypeEnum.INTEGER
         questionnaire.questions[1] = question2;
 
-        //const question3 = new Question();
-        //question3.Id="question3"
-        //question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
-        //question3.type = QuestionTypeEnum.CHOICE
-        //questionnaire.questions[2] = question3;
+        const question3 = new Question();
+        question3.Id="question3"
+        question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
+        question3.type = QuestionTypeEnum.CHOICE
+        question3.options = ["Ja","Nej"]
+        questionnaire.questions[2] = question3;
 
         careplan.questionnaires = [questionnaire]
 

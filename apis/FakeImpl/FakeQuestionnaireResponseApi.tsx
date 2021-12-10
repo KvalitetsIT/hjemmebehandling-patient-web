@@ -1,4 +1,4 @@
-import { Answer, NumberAnswer } from "../../components/Models/Answer";
+import { Answer, NumberAnswer, StringAnswer } from "../../components/Models/Answer";
 import { Question, QuestionTypeEnum } from "../../components/Models/Question";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
 import { NotFoundError } from "../../services/Errors/NotFoundError";
@@ -32,8 +32,18 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         
         let answer2 = new NumberAnswer();
         answer2.answer = 8;
-        
         questionnaireResponse1.questions.set(question2,answer2);
+
+        let question3 = new Question();
+        question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
+        question3.type = QuestionTypeEnum.CHOICE;
+        question3.options = ["Ja","Nej"]
+        question3.Id = "betterToday"
+        
+        let answer3 = new StringAnswer();
+        answer3.answer = "Ja"
+
+        questionnaireResponse1.questions.set(question3,answer3);
 
         this.questionnaireResponses.push(questionnaireResponse1)
     }

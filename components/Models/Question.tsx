@@ -7,6 +7,7 @@ export class Question implements IComparable<Question>{
     Id! : string
     question! : string
     type! : QuestionTypeEnum
+    options?: Array<string>;
 }
 
 export enum QuestionTypeEnum{
