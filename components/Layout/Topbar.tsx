@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core';
-import { AppBar, Button, Drawer, IconButton, List, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
+import { AppBar, Drawer, IconButton, List, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
 import React, { Component } from 'react';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItem from '@mui/material/ListItem';
 import HomeIcon from '@mui/icons-material/Home';
@@ -10,6 +10,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { Link } from 'react-router-dom';
+import { PatientCard } from '../Cards/PatientCard';
 
 export interface State {
   
@@ -49,9 +50,9 @@ export class Topbar extends Component<{},State> {
           <Typography variant="h6" textAlign="center" component="div" sx={{ flexGrow: 1 }}>
             Hjemmebehandling
           </Typography>
-          <Button color="inherit">
-            <PersonOutlineIcon/>
-          </Button>
+          
+            <PatientCard/>
+          
         </Toolbar>
       </AppBar>
       <Drawer

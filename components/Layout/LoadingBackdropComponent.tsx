@@ -8,7 +8,7 @@ export class LoadingBackdropComponent extends Component<{},{}> {
   render () : JSX.Element{
     return (
         <Backdrop open={true}>
-        <CircularProgress color="primary" />
+        <CircularProgress color="error" />
       </Backdrop>
     )
   }

@@ -7,8 +7,8 @@ export class LoadingSmallComponent extends Component<{},{}> {
 
   render () : JSX.Element{
     return (
-      <Box padding={5}>
-        <CircularProgress color="primary" />
+      <Box padding={1}>
+        <CircularProgress color="error" />
       </Box>
         
     )
