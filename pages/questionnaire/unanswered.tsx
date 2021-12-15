@@ -67,7 +67,7 @@ export default class UnAnsweredPage extends Component<{}, State>{
                     <IsEmptyCard list={questionnairesToAnswerToday} jsxWhenEmpty="Ingen spørgeskemaer">
                         <Stack direction="row" >
                             {questionnairesToAnswerToday?.map(questionnaire => {
-                                return <QuestionnaireAnswerCard showDeadline={true} questionnaire={questionnaire} />
+                                return <QuestionnaireAnswerCard questionnaire={questionnaire} />
                             })}
 
                         </Stack>
@@ -77,7 +77,7 @@ export default class UnAnsweredPage extends Component<{}, State>{
                     <IsEmptyCard list={questionnairesToAnswerOtherDay} jsxWhenEmpty="Ingen spørgeskemaer">
                         <Stack direction="row" >
                             {questionnairesToAnswerOtherDay?.map(questionnaire => {
-                                return <QuestionnaireAnswerCard showDeadline={false} questionnaire={questionnaire} />
+                                return <QuestionnaireAnswerCard questionnaire={questionnaire} />
                             })}
 
                         </Stack>

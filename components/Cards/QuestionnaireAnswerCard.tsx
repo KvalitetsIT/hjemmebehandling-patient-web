@@ -2,15 +2,26 @@ import { Component } from "react";
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 import { Questionnaire } from "../Models/Questionnaire";
 import { Link } from "react-router-dom";
+import ApiContext from "../../pages/_context";
+import IDateHelper from "../../globalHelpers/interfaces/IDateHelper";
 
 interface Props {
     questionnaire: Questionnaire
-    showDeadline: boolean
 }
 
 export default class QuestionnaireAnswerCard extends Component<Props, {}>{
+    dateHelper!: IDateHelper;
+    static contextType = ApiContext
+
+    initialiseServices() : void{
+        this.dateHelper = this.context.dateHelper;
+    }
+    
     render(): JSX.Element {
+        this.initialiseServices();
         const questionnaire = this.props.questionnaire;
+        const todayEnum = this.dateHelper.DayIndexToDay(new Date().getDay());
+        const deadlineIsToday = questionnaire.frequency?.repeated?.includes(todayEnum);
         return (
             <Card sx={{minWidth:"400px"}}>
                 <CardHeader subheader={questionnaire?.name} />
@@ -19,7 +30,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, {}>{
                     <Typography variant="subtitle2">
                         Infektionssygdomme har sendt dig dette spørgeskema
                     </Typography>
-                    {this.props.showDeadline ?
+                    {deadlineIsToday ?
                         <Typography variant="caption">Besvares i dag, inden kl {questionnaire?.frequency?.deadline}</Typography> :
                         <></>
                     }
