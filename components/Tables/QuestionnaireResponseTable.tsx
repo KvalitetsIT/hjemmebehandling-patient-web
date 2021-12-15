@@ -102,7 +102,7 @@ export default class QuestionnaireResponseTable extends Component<Props,State>{
                                     <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
                                     <TableCell>{this.GetStatusName(questionnaireResponse.status)}</TableCell>
                                     <TableCell>
-                                        <LoadingButton component={Link} to={"../"+questionnaire?.id + "/response/"+questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
+                                        <LoadingButton component={Link} to={"/questionnaire/"+questionnaire?.id + "/response/"+questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
                                     </TableCell> 
                                 </TableRow>
                             )

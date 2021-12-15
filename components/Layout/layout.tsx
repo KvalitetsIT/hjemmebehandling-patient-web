@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import React, { Component } from 'react';
 import { Topbar } from './Topbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -9,6 +9,7 @@ import QuestionnaireResponseDetailsPage from '../../pages/questionnaire/[questio
 import QuestionnaireResponseCreationPage from '../../pages/questionnaire/[questionnaireId]/answer';
 import { ErrorBoundary } from './ErrorBoundary';
 import ObservationPage from '../../pages/questionnaire/[questionnaireId]/observations';
+import HomePage from '../../pages/Home';
 
 export interface State {
   drawerIsOpen: boolean
@@ -47,7 +48,7 @@ export class Layout extends Component<{}, State> {
                       <Route path="/questionnaire/unanswered" render={(props) => <UnAnsweredPage {...props} />} />
                       <Route path="/questionnaire/answered" render={(props) => <AnsweredPage  {...props} />} />
                       <Route path="/measurements" render={(props) => <ObservationPage {...props} />} />
-                      <Route path="/"><Typography>Hello world - This is patient!</Typography></Route>
+                      <Route path="/" render={(props) => <HomePage {...props} />} />
                     </Switch>
                   </ErrorBoundary>
                 </Box>
