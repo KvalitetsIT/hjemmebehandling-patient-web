@@ -1,6 +1,8 @@
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Component } from "react";
+import { Link } from "react-router-dom";
 import IsEmptyCard from "../components/Cards/IsEmptyCard";
+import { MiniChartRow } from "../components/Cards/MiniChartRow";
 import QuestionnaireAnswerCard from "../components/Cards/QuestionnaireAnswerCard";
 import { ErrorBoundary } from "../components/Layout/ErrorBoundary";
 import { LoadingBackdropComponent } from "../components/Layout/LoadingBackdropComponent";
@@ -52,33 +54,49 @@ export default class HomePage extends Component<{}, State> {
         return (
             <>
                 <ErrorBoundary>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Typography>Spørgeskemaer til besvarelse</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
+                    <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={10}>
+                                <Typography>Spørgeskemaer til besvarelse</Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Button component={Link} to="/questionnaire/unanswered" variant="outlined">Vis alle</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+
                                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
                                     <ErrorBoundary>
                                         <ScrollableRow jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard questionnaire={q} />)} />
                                     </ErrorBoundary>
                                 </IsEmptyCard>
-                            </IsEmptyCard>
+
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Typography>Dine målinger</Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Button component={Link} to="/measurements" variant="outlined">Vis alle</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
+                                    <ScrollableRow jsxList={this.state.careplan!.questionnaires.map(q => <MiniChartRow careplan={this.state.careplan!} questionnaire={q} />)} />
+                                </IsEmptyCard>
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Typography>Dine tidligere besvarelser</Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Button component={Link} to="/questionnaire/answered" variant="outlined">Vis alle</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
+                                    <ErrorBoundary>
+                                        <QuestionnaireResponseTable careplan={this.state.careplan!} />
+                                    </ErrorBoundary>
+                                </IsEmptyCard>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Typography>Dine målinger</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography>Dine tidligere besvarelser</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
-                                <ErrorBoundary>
-                                    <QuestionnaireResponseTable careplan={this.state.careplan!} />
-                                </ErrorBoundary>
-                            </IsEmptyCard>
-                        </Grid>
-                    </Grid>
+                    </IsEmptyCard>
                 </ErrorBoundary>
             </>
         )

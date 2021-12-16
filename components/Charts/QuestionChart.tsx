@@ -22,6 +22,7 @@ export interface Props {
   question: Question
   questionnaireResponses: QuestionnaireResponse[]
   thresholds: ThresholdNumber[]
+  minimal: boolean;
 }
 
 export interface State {
@@ -31,6 +32,10 @@ export interface State {
 export class QuestionChart extends Component<Props, State> {
   static displayName = QuestionChart.name;
   static contextType = ApiContext
+  static defaultProps = {
+    minimal: false
+  }
+
   dateHelper!: IDateHelper
 
   constructor(props: Props) {
@@ -128,6 +133,18 @@ export class QuestionChart extends Component<Props, State> {
     //Remove all the legends for the thresholdvalues (since we are only interested in the question being a legend)
     const q = this.props.question.question
     const options = {
+      scales : {
+        y : {
+          ticks : {
+            display : !this.props.minimal
+          }
+        },
+        x: {
+          ticks : {
+            display : !this.props.minimal
+          }
+        }
+      },
       plugins: {
         legend: {
           labels: {
@@ -138,8 +155,12 @@ export class QuestionChart extends Component<Props, State> {
         }
       }
     }
+    let plugins : any[] = []
+    if(!this.props.minimal){
+      plugins = [ChartDataLabels as any]
+    }
 
-    return (<Line height={100} plugins={[ChartDataLabels as any]} options={options} data={data as any} />)
+    return (<Line height={100} plugins={plugins} options={options} data={data as any} />)
   }
   renderTable(answerLabels: (string | undefined)[], datasets: Array<{ data: number[] }>): JSX.Element {
     return (
@@ -198,7 +219,7 @@ export class QuestionChart extends Component<Props, State> {
 
 
     dataSets.push({ // This is the question-line of the graph
-      label: this.props.question.question,
+      label: this.props.minimal ? undefined : this.props.question.question,
       data: answersData,
       fill: false,
       datalabels: {
@@ -220,18 +241,22 @@ export class QuestionChart extends Component<Props, State> {
     };
 
 
-    const button = (
-      <>
-        <ButtonGroup sx={{ paddingTop: 2 }} variant="text">
-          <Tooltip title="Vis i graf">
-            <Button disabled={this.state.displayMode == DisplayModeEnum.GRAPH} onClick={() => this.setState({ displayMode: DisplayModeEnum.GRAPH })}><InsertChartIcon /></Button>
-          </Tooltip>
-          <Tooltip title="Vis i tabel">
-            <Button disabled={this.state.displayMode == DisplayModeEnum.TABLE} onClick={() => this.setState({ displayMode: DisplayModeEnum.TABLE })}><TableRowsIcon /></Button>
-          </Tooltip>
-        </ButtonGroup>
-      </>
-    )
+    let button = <></>
+    if (!this.props.minimal) {
+      button = (
+        <>
+          <ButtonGroup sx={{ paddingTop: 2 }} variant="text">
+            <Tooltip title="Vis i graf">
+              <Button disabled={this.state.displayMode == DisplayModeEnum.GRAPH} onClick={() => this.setState({ displayMode: DisplayModeEnum.GRAPH })}><InsertChartIcon /></Button>
+            </Tooltip>
+            <Tooltip title="Vis i tabel">
+              <Button disabled={this.state.displayMode == DisplayModeEnum.TABLE} onClick={() => this.setState({ displayMode: DisplayModeEnum.TABLE })}><TableRowsIcon /></Button>
+            </Tooltip>
+          </ButtonGroup>
+        </>
+      )
+    }
+
 
     if (this.state.displayMode === DisplayModeEnum.TABLE)
       return (<>{this.renderTable(answersLabels, dataSets)}{button}</>)

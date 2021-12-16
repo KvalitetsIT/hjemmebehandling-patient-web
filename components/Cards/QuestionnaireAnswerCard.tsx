@@ -21,7 +21,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, {}>{
         this.initialiseServices();
         const questionnaire = this.props.questionnaire;
         const todayEnum = this.dateHelper.DayIndexToDay(new Date().getDay());
-        const deadlineIsToday = questionnaire.frequency?.repeated?.includes(todayEnum);
+        const deadlineIsToday = questionnaire.frequency?.days?.includes(todayEnum);
         return (
             <Card sx={{minWidth:"400px"}}>
                 <CardHeader subheader={questionnaire?.name} />
