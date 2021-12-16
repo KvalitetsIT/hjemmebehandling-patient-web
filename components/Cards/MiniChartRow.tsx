@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
 import { PatientCareplan } from '../Models/PatientCareplan';
-import { Alert, CardHeader, Stack, Typography } from '@mui/material';
+import { Alert, Button, CardHeader, Grid, Stack, Typography } from '@mui/material';
 import { Questionnaire } from '../Models/Questionnaire';
 import { QuestionnaireResponse } from '../Models/QuestionnaireResponse';
 import ApiContext from '../../pages/_context';
@@ -14,6 +14,8 @@ import { QuestionChart } from '../Charts/QuestionChart';
 import { LoadingSmallComponent } from '../Layout/LoadingSmallComponent';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
 import { ICollectionHelper } from '../../globalHelpers/interfaces/ICollectionHelper';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Link } from 'react-router-dom';
 
 export interface Props {
     careplan: PatientCareplan;
@@ -104,8 +106,19 @@ export class MiniChartRow extends Component<Props, State> {
                         console.log(threshold)
                         return (
                             <>
-                                <Card>
-                                    <CardHeader subheader={question.question} />
+                                <Card component={Link} to="/measurements">
+                                    <CardHeader subheader={
+                                        <>
+                                            <Grid container>
+                                                <Grid item xs={10}>
+                                                    {question.question} </Grid>
+                                                <Grid item xs={2}>
+                                                    <Button ><ChevronRightIcon/></Button>
+                                                </Grid>
+                                            </Grid>
+                                        </>
+                                    }
+                                    />
                                     <CardContent>
                                         {threshold && threshold.thresholdNumbers ?
                                             <QuestionChart minimal={true} thresholds={threshold.thresholdNumbers} question={question} questionnaireResponses={this.state.questionnaireResponses} /> :
