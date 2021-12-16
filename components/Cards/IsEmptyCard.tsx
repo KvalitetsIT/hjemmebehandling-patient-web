@@ -18,7 +18,7 @@ export default class IsEmptyCard extends Component<Props,{}>{
 
         if(listIsEmpty && objectIsUndefined){
             return (
-                <Card>
+                <Card sx={{marginBlock:2}}>
                     <CardContent>
                         <Typography>{this.props.jsxWhenEmpty}</Typography>
                     </CardContent>

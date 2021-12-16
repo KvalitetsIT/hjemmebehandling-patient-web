@@ -46,7 +46,6 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
 
         questionnaireResponse1.questions.set(question3,answer3);
 
-        this.questionnaireResponses.push(questionnaireResponse1)
         
         
         //QR2
@@ -87,7 +86,8 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         answerb3.answer = "Ja"
         
         questionnaireResponse1.questions.set(questionb3,answerb3);
-        this.questionnaireResponses.push(questionnaireResponse2)
+        //this.questionnaireResponses.push(questionnaireResponse1)
+        //this.questionnaireResponses.push(questionnaireResponse2)
     }
     async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse) : Promise<void>{
         questionnaireResponse.id = "questionnaireResponse"+this.generateId() + "";
@@ -105,7 +105,9 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
 
     
     async GetQuestionnaireResponses(carePlanId: string, questionnaireIds: Array<string>, page : number, pagesize : number) : Promise<Array<QuestionnaireResponse>>{        
-        return this.questionnaireResponses.filter(x=>questionnaireIds.includes(x.questionnaireId));
+        const fromElement = (page-1) * pagesize;
+        const toElement = (page) * pagesize
+        return this.questionnaireResponses.filter(x=>questionnaireIds.includes(x.questionnaireId)).slice(fromElement,toElement);
     }
 
     id : number = 100

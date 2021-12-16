@@ -14,10 +14,13 @@ export default class ValidationService extends BaseService implements IValidatio
             erorrs.push(error)
         }
 
-        if(!Number(posibleNumber)){
+        try{
+            parseFloat(posibleNumber)
+        } catch(e){
             const error = new InvalidInputModel(propName,"Skal være et tal")
             erorrs.push(error)
         }
+
         return erorrs;
     }
 

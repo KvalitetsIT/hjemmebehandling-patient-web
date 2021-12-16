@@ -32,7 +32,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, {}>{
                     </Typography>
                     {deadlineIsToday ?
                         <Typography variant="caption">Besvares i dag, inden kl {questionnaire?.frequency?.deadline}</Typography> :
-                        <></>
+                        <Typography variant="caption">Besvares {questionnaire?.frequency?.ToString()}</Typography>
                     }
                 </CardContent>
                 <CardActions>

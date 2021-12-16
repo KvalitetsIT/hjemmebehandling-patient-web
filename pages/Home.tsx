@@ -7,6 +7,7 @@ import QuestionnaireAnswerCard from "../components/Cards/QuestionnaireAnswerCard
 import { ErrorBoundary } from "../components/Layout/ErrorBoundary";
 import { LoadingBackdropComponent } from "../components/Layout/LoadingBackdropComponent";
 import { PatientCareplan } from "../components/Models/PatientCareplan";
+import { QuestionTypeEnum } from "../components/Models/Question";
 import { ScrollableRow } from "../components/Rows/HomePage/ScrollableRow";
 import QuestionnaireResponseTable from "../components/Tables/QuestionnaireResponseTable";
 import ICareplanService from "../services/interfaces/ICareplanService";
@@ -51,6 +52,10 @@ export default class HomePage extends Component<{}, State> {
     }
 
     renderPage(): JSX.Element {
+        const questionnaires = this.state.careplan?.questionnaires;
+        const observarionQuestions = questionnaires?.flatMap(x => x.questions).filter(x => x?.type == QuestionTypeEnum.OBSERVATION) ?? [];
+
+
         return (
             <>
                 <ErrorBoundary>
@@ -79,7 +84,12 @@ export default class HomePage extends Component<{}, State> {
                             </Grid>
                             <Grid item xs={12}>
                                 <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
-                                    <ScrollableRow jsxList={this.state.careplan!.questionnaires.map(q => <MiniChartRow careplan={this.state.careplan!} questionnaire={q} />)} />
+                                    <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
+                                        
+                                            <IsEmptyCard object={this.state.careplan!.questionnaires.find(qu => qu.questions?.find(x => x.type == QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={"Ingen målinger på behandlingsplanen"}>
+                                                <ScrollableRow jsxList={observarionQuestions.map((q) => <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}><MiniChartRow careplan={this.state.careplan!} question={q!} /></IsEmptyCard>)} />
+                                        </IsEmptyCard>
+                                    </IsEmptyCard>
                                 </IsEmptyCard>
                             </Grid>
                             <Grid item xs={10}>
