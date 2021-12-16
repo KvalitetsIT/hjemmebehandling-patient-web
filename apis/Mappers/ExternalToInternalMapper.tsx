@@ -275,7 +275,7 @@ export default class ExternalToInternalMapper extends BaseMapper{
     mapQuestionnaireResponseDto(questionnaireResponseDto: QuestionnaireResponseDto) : QuestionnaireResponse {
         let response = new QuestionnaireResponse();
         //let response = this.getQuestionnaireResponse();
-        response.id = questionnaireResponseDto.id!;
+        response.id = FhirUtils.unqualifyId(questionnaireResponseDto.id!);
         response.questions = new Map<Question, Answer>();
 
         for(var pair of questionnaireResponseDto.questionAnswerPairs!) {
