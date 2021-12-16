@@ -70,6 +70,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     ResetResponse(careplan: PatientCareplan): void {
         const questionnaireResponse = new QuestionnaireResponse();
         questionnaireResponse.questionnaireId = this.props.match.params.questionnaireId;
+        questionnaireResponse.carePlanId = careplan!.id
         questionnaireResponse.questions = new Map<Question, Answer>();
         questionnaireResponse.status = QuestionnaireResponseStatus.NotAnswered;
         questionnaireResponse.patient = careplan.patient;
