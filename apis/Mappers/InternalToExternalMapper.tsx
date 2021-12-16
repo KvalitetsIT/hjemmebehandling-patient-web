@@ -19,17 +19,15 @@ export default class InternalToExternalMapper extends BaseMapper {
 
     MapQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): QuestionnaireResponseDto {
         const toReturn: QuestionnaireResponseDto = {
-            answered : questionnaireResponse.answeredTime,
-            examinationStatus : this.mapQuestionnaireResponseStatus(questionnaireResponse.status),
             id : questionnaireResponse.id,
             patient : questionnaireResponse.patient,
             questionAnswerPairs : this.mapQuestionAnswerPair(questionnaireResponse.questions),
             questionnaireId : questionnaireResponse.questionnaireId,
-            //questionnaireName : questionnaireResponse.questionnaireName,
-            triagingCategory : this.mapCategory(questionnaireResponse.category),
+            carePlanId : questionnaireResponse.carePlanId
         }
         return toReturn;
     }
+
     mapQuestionAnswerPair(questions: Map<Question, Answer> | undefined): QuestionAnswerPairDto[] | undefined {
         const toReturn: QuestionAnswerPairDto[] = []
         questions?.forEach((answer, question) => {
@@ -49,6 +47,7 @@ export default class InternalToExternalMapper extends BaseMapper {
 
         return toReturn;
     }
+
     mapQuestionType(type: QuestionTypeEnum): QuestionDtoQuestionTypeEnum {
         switch (type) {
             case QuestionTypeEnum.CHOICE:
@@ -65,6 +64,7 @@ export default class InternalToExternalMapper extends BaseMapper {
         }
 
     }
+
     mapAnswerType(answer: Answer): AnswerDtoAnswerTypeEnum {
         if (answer instanceof NumberAnswer)
             return AnswerDtoAnswerTypeEnum.Integer
@@ -74,6 +74,7 @@ export default class InternalToExternalMapper extends BaseMapper {
 
         throw new Error('Could not map answer')
     }
+
     mapCategory(category: CategoryEnum): QuestionnaireResponseDtoTriagingCategoryEnum | undefined {
         switch (category) {
             case CategoryEnum.BLUE:
