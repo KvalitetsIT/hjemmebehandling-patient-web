@@ -1,1 +1,566 @@
-{"openapi":"3.0.1","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost:8080/api","description":"Generated server url"}],"tags":[{"name":"User","description":"API for retrieving information about users."},{"name":"QuestionnaireResponse","description":"API for manipulating and retrieving QuestionnaireResponses."},{"name":"Organization","description":"API for retrieving Organizations."},{"name":"CarePlan","description":"API for retrieving CarePlans."}],"paths":{"/v1/questionnaireresponse":{"post":{"tags":["QuestionnaireResponse"],"operationId":"submitQuestionnaireResponse","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/QuestionnaireResponseDto"}}}},"responses":{"200":{"description":"OK"}}}},"/v1/user":{"get":{"tags":["User"],"operationId":"getUser","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/UserContext"}}}}}}},"/v1/questionnaireresponses/{carePlanId}":{"get":{"tags":["QuestionnaireResponse"],"operationId":"getQuestionnaireResponsesByCarePlanId","parameters":[{"name":"carePlanId","in":"path","required":true,"schema":{"type":"string"}},{"name":"page_number","in":"query","required":false,"schema":{"type":"integer","format":"int32"}},{"name":"page_size","in":"query","required":false,"schema":{"type":"integer","format":"int32"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/QuestionnaireResponseDto"}}}}}}}},"/v1/questionnaireresponse/{id}":{"get":{"tags":["QuestionnaireResponse"],"operationId":"getQuestionnaireResponseById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/QuestionnaireResponseDto"}}}}}}},"/v1/organization/{id}":{"get":{"tags":["Organization"],"operationId":"getOrganization","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/OrganizationDto"}}}}}}},"/v1/careplan":{"get":{"tags":["CarePlan"],"operationId":"getActiveCarePlan","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarePlanDto"}}}}}}}},"components":{"schemas":{"AnswerDto":{"type":"object","properties":{"value":{"type":"string"},"answerType":{"type":"string","enum":["INTEGER","STRING"]}}},"ContactDetailsDto":{"type":"object","properties":{"street":{"type":"string"},"postalCode":{"type":"string"},"country":{"type":"string"},"city":{"type":"string"},"primaryPhone":{"type":"string"},"secondaryPhone":{"type":"string"}}},"PatientDto":{"type":"object","properties":{"givenName":{"type":"string"},"familyName":{"type":"string"},"cpr":{"type":"string"},"patientContactDetails":{"$ref":"#/components/schemas/ContactDetailsDto"},"primaryRelativeContactDetails":{"$ref":"#/components/schemas/ContactDetailsDto"},"additionalRelativeContactDetails":{"type":"array","items":{"$ref":"#/components/schemas/ContactDetailsDto"}}}},"QuestionAnswerPairDto":{"type":"object","properties":{"question":{"$ref":"#/components/schemas/QuestionDto"},"answer":{"$ref":"#/components/schemas/AnswerDto"}}},"QuestionDto":{"type":"object","properties":{"text":{"type":"string"},"required":{"type":"boolean"},"questionType":{"type":"string","enum":["CHOICE","INTEGER","QUANTITY","STRING","BOOLEAN"]},"options":{"type":"array","items":{"type":"string"}}}},"QuestionnaireResponseDto":{"type":"object","properties":{"id":{"type":"string"},"questionnaireId":{"type":"string"},"questionnaireName":{"type":"string"},"questionAnswerPairs":{"type":"array","items":{"$ref":"#/components/schemas/QuestionAnswerPairDto"}},"answered":{"type":"string","format":"date-time"},"examinationStatus":{"type":"string","enum":["NOT_EXAMINED","UNDER_EXAMINATION","EXAMINED"]},"triagingCategory":{"type":"string","enum":["RED","YELLOW","GREEN"]},"patient":{"$ref":"#/components/schemas/PatientDto"}}},"UserContext":{"type":"object","properties":{"orgId":{"type":"string"},"firstName":{"type":"string"},"lastName":{"type":"string"},"fullName":{"type":"string"},"autorisationsids":{"type":"array","items":{"type":"string"}},"userId":{"type":"string"},"email":{"type":"string"},"entitlements":{"type":"array","items":{"type":"string"}}}},"OrganizationDto":{"required":["id"],"type":"object","properties":{"id":{"type":"string","description":"Id of the resource","example":"CarePlan/10"}}},"CarePlanDto":{"required":["id"],"type":"object","properties":{"id":{"type":"string","description":"Id of the resource","example":"CarePlan/10"},"title":{"type":"string"},"status":{"type":"string"},"created":{"type":"string","format":"date-time"},"startDate":{"type":"string","format":"date-time"},"endDate":{"type":"string","format":"date-time"},"patientDto":{"$ref":"#/components/schemas/PatientDto"},"questionnaires":{"type":"array","items":{"$ref":"#/components/schemas/QuestionnaireWrapperDto"}},"planDefinitions":{"type":"array","items":{"$ref":"#/components/schemas/PlanDefinitionDto"}}}},"FrequencyDto":{"type":"object","properties":{"weekdays":{"type":"array","items":{"type":"string","enum":["MON","TUE","WED","THU","FRI","SAT","SUN"]}},"timeOfDay":{"type":"string"}}},"PlanDefinitionDto":{"required":["id"],"type":"object","properties":{"id":{"type":"string","description":"Id of the resource","example":"CarePlan/10"},"name":{"type":"string"},"title":{"type":"string"},"questionnaires":{"type":"array","items":{"$ref":"#/components/schemas/QuestionnaireWrapperDto"}}}},"QuestionnaireDto":{"required":["id"],"type":"object","properties":{"id":{"type":"string","description":"Id of the resource","example":"CarePlan/10"},"title":{"type":"string"},"status":{"type":"string"},"questions":{"type":"array","items":{"$ref":"#/components/schemas/QuestionDto"}}}},"QuestionnaireWrapperDto":{"type":"object","properties":{"questionnaire":{"$ref":"#/components/schemas/QuestionnaireDto"},"frequency":{"$ref":"#/components/schemas/FrequencyDto"},"thresholds":{"type":"array","items":{"$ref":"#/components/schemas/ThresholdDto"}}}},"ThresholdDto":{"type":"object","properties":{"questionId":{"type":"string"},"type":{"type":"string","enum":["NORMAL","ABNORMAL","CRITICAL"]},"valueBoolean":{"type":"boolean"},"valueQuantityLow":{"type":"number","format":"double"},"valueQuantityHigh":{"type":"number","format":"double"}}}}}}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "User",
+      "description": "API for retrieving information about users."
+    },
+    {
+      "name": "QuestionnaireResponse",
+      "description": "API for manipulating and retrieving QuestionnaireResponses."
+    },
+    {
+      "name": "Organization",
+      "description": "API for retrieving Organizations."
+    },
+    {
+      "name": "CarePlan",
+      "description": "API for retrieving CarePlans."
+    }
+  ],
+  "paths": {
+    "/v1/questionnaireresponse": {
+      "post": {
+        "tags": [
+          "QuestionnaireResponse"
+        ],
+        "operationId": "submitQuestionnaireResponse",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuestionnaireResponseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/user": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserContext"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/questionnaireresponses/{carePlanId}": {
+      "get": {
+        "tags": [
+          "QuestionnaireResponse"
+        ],
+        "operationId": "getQuestionnaireResponsesByCarePlanId",
+        "parameters": [
+          {
+            "name": "carePlanId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuestionnaireResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/questionnaireresponse/{id}": {
+      "get": {
+        "tags": [
+          "QuestionnaireResponse"
+        ],
+        "operationId": "getQuestionnaireResponseById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionnaireResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organization/{id}": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "operationId": "getOrganization",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/careplan": {
+      "get": {
+        "tags": [
+          "CarePlan"
+        ],
+        "operationId": "getActiveCarePlan",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarePlanDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnswerDto": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "answerType": {
+            "type": "string",
+            "enum": [
+              "INTEGER",
+              "STRING"
+            ]
+          }
+        }
+      },
+      "ContactDetailsDto": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "primaryPhone": {
+            "type": "string"
+          },
+          "secondaryPhone": {
+            "type": "string"
+          }
+        }
+      },
+      "PatientDto": {
+        "type": "object",
+        "properties": {
+          "givenName": {
+            "type": "string"
+          },
+          "familyName": {
+            "type": "string"
+          },
+          "cpr": {
+            "type": "string"
+          },
+          "patientContactDetails": {
+            "$ref": "#/components/schemas/ContactDetailsDto"
+          },
+          "primaryRelativeContactDetails": {
+            "$ref": "#/components/schemas/ContactDetailsDto"
+          },
+          "additionalRelativeContactDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactDetailsDto"
+            }
+          }
+        }
+      },
+      "QuestionAnswerPairDto": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "$ref": "#/components/schemas/QuestionDto"
+          },
+          "answer": {
+            "$ref": "#/components/schemas/AnswerDto"
+          }
+        }
+      },
+      "QuestionDto": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "questionType": {
+            "type": "string",
+            "enum": [
+              "CHOICE",
+              "INTEGER",
+              "QUANTITY",
+              "STRING",
+              "BOOLEAN"
+            ]
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "QuestionnaireResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "questionnaireId": {
+            "type": "string"
+          },
+          "questionnaireName": {
+            "type": "string"
+          },
+          "questionAnswerPairs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionAnswerPairDto"
+            }
+          },
+          "answered": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "examinationStatus": {
+            "type": "string",
+            "enum": [
+              "NOT_EXAMINED",
+              "UNDER_EXAMINATION",
+              "EXAMINED"
+            ]
+          },
+          "triagingCategory": {
+            "type": "string",
+            "enum": [
+              "RED",
+              "YELLOW",
+              "GREEN"
+            ]
+          },
+          "patient": {
+            "$ref": "#/components/schemas/PatientDto"
+          }
+        }
+      },
+      "UserContext": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "autorisationsids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "userId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OrganizationDto": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the resource",
+            "example": "CarePlan/10"
+          }
+        }
+      },
+      "CarePlanDto": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the resource",
+            "example": "CarePlan/10"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "patientDto": {
+            "$ref": "#/components/schemas/PatientDto"
+          },
+          "questionnaires": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionnaireWrapperDto"
+            }
+          },
+          "planDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlanDefinitionDto"
+            }
+          }
+        }
+      },
+      "FrequencyDto": {
+        "type": "object",
+        "properties": {
+          "weekdays": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "MON",
+                "TUE",
+                "WED",
+                "THU",
+                "FRI",
+                "SAT",
+                "SUN"
+              ]
+            }
+          },
+          "timeOfDay": {
+            "type": "string"
+          }
+        }
+      },
+      "PlanDefinitionDto": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the resource",
+            "example": "CarePlan/10"
+          },
+          "name": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "questionnaires": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionnaireWrapperDto"
+            }
+          }
+        }
+      },
+      "QuestionnaireDto": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the resource",
+            "example": "CarePlan/10"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionDto"
+            }
+          }
+        }
+      },
+      "QuestionnaireWrapperDto": {
+        "type": "object",
+        "properties": {
+          "questionnaire": {
+            "$ref": "#/components/schemas/QuestionnaireDto"
+          },
+          "frequency": {
+            "$ref": "#/components/schemas/FrequencyDto"
+          },
+          "thresholds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThresholdDto"
+            }
+          }
+        }
+      },
+      "ThresholdDto": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "ABNORMAL",
+              "CRITICAL"
+            ]
+          },
+          "valueBoolean": {
+            "type": "boolean"
+          },
+          "valueQuantityLow": {
+            "type": "number",
+            "format": "double"
+          },
+          "valueQuantityHigh": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      }
+    }
+  }
+}
