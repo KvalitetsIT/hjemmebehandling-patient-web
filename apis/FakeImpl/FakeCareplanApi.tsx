@@ -50,33 +50,64 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi{
         questionnaire.questions = [];
         
         const question1 = new Question();
-        question1.Id="question1"
+        question1.Id="temp"
         question1.question = "Indtast din morgen temperatur?"
         question1.type = QuestionTypeEnum.OBSERVATION
         questionnaire.questions[0] = question1;
 
         const question2 = new Question();
-        question2.Id="question2"
+        question2.Id="CRP"
         question2.question = "Indtast den målte CRP?"
-        question2.type = QuestionTypeEnum.INTEGER
+        question2.type = QuestionTypeEnum.OBSERVATION
         questionnaire.questions[1] = question2;
-
+        
         const question3 = new Question();
-        question3.Id="question3"
+        question3.Id="betterToday"
         question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
         question3.type = QuestionTypeEnum.CHOICE
         question3.options = ["Ja","Nej"]
         questionnaire.questions[2] = question3;
+        
 
-        careplan.questionnaires = [questionnaire]
+        let questionnaire2 = new Questionnaire();
+        questionnaire2.id = "q2"
+        questionnaire2.name = "Lastbilchauførers surhed"
+        questionnaire2.frequency = new Frequency();
+        questionnaire2.frequency.days = [DayEnum.Wednesday]
+        questionnaire2.frequency.deadline = "11:00"
+        
+        questionnaire2.questions = [];
+        
+        const questionb1 = new Question();
+        questionb1.Id="madDrivers"
+        questionb1.question = "Antal sure lastbilchaufører i dag?"
+        questionb1.type = QuestionTypeEnum.OBSERVATION
+        questionnaire2.questions[0] = questionb1;
 
+        const questionb2 = new Question();
+        questionb2.Id="drivesMercedes"
+        questionb2.question = "Hvor mange lastbilchaufører har kørt Mercedes?"
+        questionb2.type = QuestionTypeEnum.INTEGER
+        questionnaire2.questions[1] = questionb2;
+        
+        const questionb3 = new Question();
+        questionb3.Id="umad"
+        questionb3.question = "Føler du dig sur, fordi lastbilchaufører er sure?"
+        questionb3.type = QuestionTypeEnum.CHOICE
+        questionb3.options = ["Ja","Nej"]
+        questionnaire2.questions[2] = question3;
+        
 
+        careplan.questionnaires = [questionnaire,questionnaire2]
+        
+        
+        
         return careplan;
     } catch(error){
         return await this.HandleError(error);
     }
     }
-
+    
 
 
 

@@ -10,7 +10,7 @@ export class ScrollableRow extends Component<Props, {}> {
         const width = (window.innerWidth - 50) + "px";
         return (
             <>
-                <Grid container spacing={2} wrap="nowrap" sx={{ maxWidth: width, overflowX: "auto" }}>
+                <Grid container spacing={2} wrap="nowrap" sx={{ maxWidth: width, height: "20em", overflowX: "auto" }}>
                     {this.renderComponent()}
                 </Grid>
 

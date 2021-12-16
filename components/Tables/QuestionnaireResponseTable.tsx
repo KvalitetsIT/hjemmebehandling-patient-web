@@ -76,6 +76,7 @@ export default class QuestionnaireResponseTable extends Component<Props,State>{
             hasMorePages = true;
 
         return (
+            <>
             <IsEmptyCard jsxWhenEmpty="Ingen besvarelser fundet" list={this.state.questionnaireResponses}>
                 <TableContainer component={Card}>
                 <Table>
@@ -110,12 +111,14 @@ export default class QuestionnaireResponseTable extends Component<Props,State>{
                     </TableBody>
                 </Table>
                 </TableContainer>
+                </IsEmptyCard>
                 <ButtonGroup>
                         <Button variant="text" disabled={this.state.page <= 1} onClick={ async () => await this.PreviousPage()}><NavigateBeforeIcon/></Button>
                         <Button variant="text" disabled >{this.state.page}</Button>
                         <Button variant="text" disabled={!hasMorePages} onClick={ async () => await this.NextPage()}><NavigateNextIcon/></Button>
                 </ButtonGroup>
-            </IsEmptyCard>
+                </>
+            
         )
     }
     async NextPage() :  Promise<void>{
