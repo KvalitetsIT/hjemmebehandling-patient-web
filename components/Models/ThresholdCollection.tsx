@@ -5,7 +5,7 @@ export class ThresholdCollection {
 
     questionId! : string;
 
-    thresholdNumbers! : ThresholdNumber[]
-    thresholdOptions! : ThresholdOption[]
+    thresholdNumbers? : ThresholdNumber[] = []
+    thresholdOptions? : ThresholdOption[] = []
     
 }

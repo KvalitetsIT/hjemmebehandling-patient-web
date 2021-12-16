@@ -136,29 +136,36 @@ export default class ExternalToInternalMapper extends BaseMapper{
 
 
     mapQuestionDto(questionDto: QuestionDto) : Question {
-        let question = new Question();
-        //question.Id = questionDto.linkId!;
-        
-        switch(questionDto.questionType){
-            case QuestionDtoQuestionTypeEnum.Choice: 
-                question.type = QuestionTypeEnum.CHOICE;
-            break;
-            case QuestionDtoQuestionTypeEnum.Integer: 
-                question.type = QuestionTypeEnum.INTEGER;
-            break;
-            case QuestionDtoQuestionTypeEnum.Quantity: 
-                question.type = QuestionTypeEnum.OBSERVATION;
-            break;
-            case QuestionDtoQuestionTypeEnum.String: 
-                question.type = QuestionTypeEnum.STRING;
-            break;
+        let question = new Question()
+
+        question.Id = questionDto.linkId!
+        question.type = this.mapQuestionType(questionDto.questionType!)
+        question.question = questionDto.text!
+
+        if(questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {
+            question.options = ["Ja", "Nej"]
+        }
+        if(questionDto.questionType === QuestionDtoQuestionTypeEnum.Choice) {
+            question.options = questionDto.options
         }
 
-        question.question = questionDto.text!
-        // TODO - handle options properly (there must be at least one option for the answer table to render).
-        //TODO: question.options = [this.CreateOption("1", "placeholder", CategoryEnum.YELLOW)]
-
         return question;
+    }
+
+    mapQuestionType(type: QuestionDtoQuestionTypeEnum) : QuestionTypeEnum {
+        switch(type) {
+            case QuestionDtoQuestionTypeEnum.Boolean:
+            case QuestionDtoQuestionTypeEnum.Choice:
+                return QuestionTypeEnum.CHOICE
+            case QuestionDtoQuestionTypeEnum.Integer:
+                return QuestionTypeEnum.INTEGER
+            case QuestionDtoQuestionTypeEnum.Quantity:
+                return QuestionTypeEnum.OBSERVATION
+            case QuestionDtoQuestionTypeEnum.String:
+                return QuestionTypeEnum.STRING
+            default:
+                throw new Error('Could not map question type ' + type);
+        }
     }
 
     mapTriagingCategory(category: QuestionnaireResponseDtoTriagingCategoryEnum) : CategoryEnum {
@@ -210,16 +217,15 @@ export default class ExternalToInternalMapper extends BaseMapper{
     }
     mapUserFromExternalToInternal(user: UserContext): User {
         const internalUser = new User();
-        internalUser.autorisationsids = user.autorisationsids;
-        internalUser.email = user.email;
+
         internalUser.entitlements = user.entitlements;
         internalUser.firstName = user.firstName;
         internalUser.fullName = user.fullName;
         internalUser.lastName = user.lastName;
-        internalUser.orgId = user.orgId;
+
         //internalUser.orgName = user.orgName;
         internalUser.userId = user.userId!;
-        
+
         return internalUser;
     }
 
@@ -308,14 +314,15 @@ export default class ExternalToInternalMapper extends BaseMapper{
 
     mapQuestionnaireDto(wrapper: QuestionnaireWrapperDto) : Questionnaire {
       
-            let questionnaire = new Questionnaire();
+            let questionnaire = new Questionnaire()
     
             questionnaire.id = FhirUtils.unqualifyId(wrapper.questionnaire!.id!)
-            questionnaire.name = wrapper.questionnaire!.title!;
-            questionnaire.frequency = this.mapFrequencyDto(wrapper.frequency!);
-            questionnaire.thresholds = this.mapThresholdDtos(wrapper.thresholds!);
+            questionnaire.name = wrapper.questionnaire!.title!
+            questionnaire.frequency = this.mapFrequencyDto(wrapper.frequency!)
+            questionnaire.thresholds = this.mapThresholdDtos(wrapper.thresholds!)
+            questionnaire.questions = wrapper.questionnaire!.questions!.map(q => this.mapQuestionDto(q))
     
-            return questionnaire;
+            return questionnaire
     }
 
     mapContactDetailsDto(patientContactDetails: ContactDetailsDto) : Contact {
