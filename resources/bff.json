@@ -42,7 +42,8 @@
                 "$ref": "#/components/schemas/QuestionnaireResponseDto"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -182,7 +183,7 @@
         }
       }
     },
-    "/v1/careplan": {
+    "/v1/careplan/active": {
       "get": {
         "tags": [
           "CarePlan"
@@ -208,6 +209,9 @@
       "AnswerDto": {
         "type": "object",
         "properties": {
+          "linkId": {
+            "type": "string"
+          },
           "value": {
             "type": "string"
           },
@@ -215,7 +219,9 @@
             "type": "string",
             "enum": [
               "INTEGER",
-              "STRING"
+              "STRING",
+              "BOOLEAN",
+              "QUANTITY"
             ]
           }
         }
@@ -283,6 +289,9 @@
       "QuestionDto": {
         "type": "object",
         "properties": {
+          "linkId": {
+            "type": "string"
+          },
           "text": {
             "type": "string"
           },
@@ -308,12 +317,20 @@
         }
       },
       "QuestionnaireResponseDto": {
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Id of the resource",
+            "example": "CarePlan/10"
           },
           "questionnaireId": {
+            "type": "string"
+          },
+          "carePlanId": {
             "type": "string"
           },
           "questionnaireName": {
@@ -353,7 +370,7 @@
       "UserContext": {
         "type": "object",
         "properties": {
-          "orgId": {
+          "cpr": {
             "type": "string"
           },
           "firstName": {
@@ -365,16 +382,7 @@
           "fullName": {
             "type": "string"
           },
-          "autorisationsids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "userId": {
-            "type": "string"
-          },
-          "email": {
             "type": "string"
           },
           "entitlements": {
@@ -441,6 +449,9 @@
             "items": {
               "$ref": "#/components/schemas/PlanDefinitionDto"
             }
+          },
+          "departmentName": {
+            "type": "string"
           }
         }
       },
