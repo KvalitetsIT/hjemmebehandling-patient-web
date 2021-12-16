@@ -10,6 +10,7 @@ import QuestionnaireResponseCreationPage from '../../pages/questionnaire/[questi
 import { ErrorBoundary } from './ErrorBoundary';
 import ObservationPage from '../../pages/questionnaire/[questionnaireId]/observations';
 import HomePage from '../../pages/Home';
+import ContactPage from '../../pages/contact';
 
 export interface State {
   drawerIsOpen: boolean
@@ -48,6 +49,7 @@ export class Layout extends Component<{}, State> {
                       <Route path="/questionnaire/unanswered" render={(props) => <UnAnsweredPage {...props} />} />
                       <Route path="/questionnaire/answered" render={(props) => <AnsweredPage  {...props} />} />
                       <Route path="/measurements" render={(props) => <ObservationPage {...props} />} />
+                      <Route path="/contact" render={(props) => <ContactPage {...props} />} />
                       <Route path="/" render={(props) => <HomePage {...props} />} />
                     </Switch>
                   </ErrorBoundary>
