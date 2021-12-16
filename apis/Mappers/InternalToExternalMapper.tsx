@@ -33,16 +33,25 @@ export default class InternalToExternalMapper extends BaseMapper {
         questions?.forEach((answer, question) => {
             const answerNumberValue = answer instanceof NumberAnswer ? answer.answer : undefined;
             const answerStringValue = answer instanceof StringAnswer ? answer.answer : undefined;
+
+            let answerType = this.mapAnswerType(answer)
+            let value = ''
+            if(answerType === AnswerDtoAnswerTypeEnum.Quantity) {
+                value = answer.ToString()
+            }
+            if(answerType === AnswerDtoAnswerTypeEnum.Boolean) {
+                value = answer.ToString() === 'Ja' ? 'true' : 'false'
+            }
+
             const qapair: QuestionAnswerPairDto = {
                 answer: {
-                    answerType: this.mapAnswerType(answer),
-                    value: answerNumberValue ? answerNumberValue + "" : answerStringValue ? answerStringValue : "",
-                },
-                question: {
-                    questionType: this.mapQuestionType(question.type)
+                    linkId: question.Id,
+                    answerType: answerType,
+                    value: value
                 }
-
             }
+
+            toReturn.push(qapair)
         })
 
         return toReturn;
@@ -67,10 +76,10 @@ export default class InternalToExternalMapper extends BaseMapper {
 
     mapAnswerType(answer: Answer): AnswerDtoAnswerTypeEnum {
         if (answer instanceof NumberAnswer)
-            return AnswerDtoAnswerTypeEnum.Integer
+            return AnswerDtoAnswerTypeEnum.Quantity
 
         if (answer instanceof StringAnswer)
-            return AnswerDtoAnswerTypeEnum.String
+            return AnswerDtoAnswerTypeEnum.Boolean
 
         throw new Error('Could not map answer')
     }
