@@ -10,7 +10,7 @@ export class Frequency {
             toReturn += ", "    
             toReturn += this.days[i].slice(0,3) + ""
         }
-        toReturn += " ("+this.repeated+")"
+        toReturn += this.repeated ? " ("+this.repeated+")" : ""
         toReturn += this.deadline ? " kl " :  ""
         toReturn += this.deadline ? this.deadline : ""
         return toReturn;

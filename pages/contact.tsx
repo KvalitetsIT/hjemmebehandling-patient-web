@@ -25,7 +25,7 @@ export default class ContactPage extends Component<{}, State> {
         }
     }
     async populateDepartments(): Promise<void> {
-        //TODO : Get department info
+        //TODO : Get department info from some place
         const department = new Department();
         department.name = "Infektionssygdomme"
         department.phoneNumber = "83749382"

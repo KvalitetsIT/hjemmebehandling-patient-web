@@ -134,6 +134,21 @@ const THEME = createTheme({
     MuiButton: {
       variants: [
         {
+          props: { variant: "outlined" },
+          style: {
+            border: 0,
+            backgroundColor: 'white',
+            borderRadius: 30,
+            textTransform: "capitalize",
+            color: "black",
+            ":hover": {
+              border: 0,
+              backgroundColor: 'white',
+              color: regionMidtRed,
+            }
+          }
+        },
+        {
           props: { variant: "contained", disabled: false },
           style: {
             borderRadius: 25,
