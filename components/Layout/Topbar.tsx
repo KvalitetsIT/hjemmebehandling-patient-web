@@ -49,7 +49,7 @@ export class Topbar extends Component<{}, State> {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" textAlign="center" component="div" sx={{ flexGrow: 1 }}>
-                Hjemmebehandling
+                <span style={{fontWeight : "bold"}}>P</span>atientovervågning <span style={{fontWeight : "bold"}}>O</span>g<span style={{fontWeight : "bold"}}> U</span>d<span style={{fontWeight : "bold"}}>L</span>æggelse
               </Typography>
               <ErrorBoundary>
                 <PatientMenu />

@@ -82,11 +82,11 @@ export default class QuestionnaireResponseTable extends Component<Props,State>{
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell width="20%">Spørgeskema</TableCell>
-                            <TableCell width="20%">Afdeling</TableCell>
-                            <TableCell width="20%">Besvarelsesdato</TableCell>
-                            <TableCell width="20%">Status</TableCell>
-                            <TableCell width="15%"></TableCell>
+                            <TableCell width="10%">Spørgeskema</TableCell>
+                            <TableCell width="10%">Afdeling</TableCell>
+                            <TableCell width="10%">Besvarelsesdato</TableCell>
+                            <TableCell width="10%">Status</TableCell>
+                            <TableCell width="10%"></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
