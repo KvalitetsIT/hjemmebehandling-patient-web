@@ -105,6 +105,8 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
 
     
     async GetQuestionnaireResponses(carePlanId: string, questionnaireIds: Array<string>, page : number, pagesize : number) : Promise<Array<QuestionnaireResponse>>{        
+        
+        await new Promise(f => setTimeout(f, 1000));
         const fromElement = (page-1) * pagesize;
         const toElement = (page) * pagesize
         return this.questionnaireResponses.filter(x=>questionnaireIds.includes(x.questionnaireId)).slice(fromElement,toElement);

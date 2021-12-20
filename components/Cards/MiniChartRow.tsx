@@ -3,14 +3,13 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
 import { PatientCareplan } from '../Models/PatientCareplan';
-import { Button, CardHeader, Grid, Stack, Typography } from '@mui/material';
+import { Button, CardHeader, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { Questionnaire } from '../Models/Questionnaire';
 import { QuestionnaireResponse } from '../Models/QuestionnaireResponse';
 import ApiContext from '../../pages/_context';
 import IDateHelper from '../../globalHelpers/interfaces/IDateHelper';
 import { Question } from '../Models/Question';
 import { QuestionChart } from '../Charts/QuestionChart';
-import { LoadingSmallComponent } from '../Layout/LoadingSmallComponent';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
 import { ICollectionHelper } from '../../globalHelpers/interfaces/ICollectionHelper';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -57,8 +56,7 @@ export class MiniChartRow extends Component<Props, State> {
     async componentDidMount(): Promise<void> {
         try {
             const responses = await this.questionnaireService.GetQuestionnaireResponses(this.props.careplan.id, [this.state.questionnaire.id], 1, 5)
-            //console.log(responses)
-            //console.log(this.props.questionnaire.thresholds)
+            
             this.setState({ questionnaireResponses: responses, loading: false })
         } catch (error: any) {
             this.setState(() => { throw error })
@@ -69,7 +67,7 @@ export class MiniChartRow extends Component<Props, State> {
         this.initialiseServices()
 
         if (this.state.loading)
-            return (<LoadingSmallComponent />)
+            return (<Skeleton width="20em" height="100%" />)
 
         const question = this.props.question;
 

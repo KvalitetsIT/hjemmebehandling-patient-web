@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
 import { PatientCareplan } from '../Models/PatientCareplan';
-import { CardHeader, Grid } from '@mui/material';
+import { CardHeader, Grid, Skeleton } from '@mui/material';
 import { Questionnaire } from '../Models/Questionnaire';
 import { QuestionnaireResponse } from '../Models/QuestionnaireResponse';
 import ApiContext from '../../pages/_context';
@@ -13,7 +13,6 @@ import { NumberAnswer } from '../Models/Answer';
 import { Question, QuestionTypeEnum } from '../Models/Question';
 import { QuestionChart } from '../Charts/QuestionChart';
 import { ThresholdSlider } from './ThresholdSlider';
-import { LoadingSmallComponent } from '../Layout/LoadingSmallComponent';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
 import IsEmptyCard from './IsEmptyCard';
 import { ICollectionHelper } from '../../globalHelpers/interfaces/ICollectionHelper';
@@ -75,7 +74,7 @@ export class ObservationCard extends Component<Props, State> {
         this.initialiseServices()
 
         if (this.state.loading)
-            return (<LoadingSmallComponent />)
+            return (<Skeleton height="20em" width="100%" />)
 
         const allQuestions: Question[] = [];
 
