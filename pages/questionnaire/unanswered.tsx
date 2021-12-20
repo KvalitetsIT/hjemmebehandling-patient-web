@@ -75,7 +75,7 @@ export default class UnAnsweredPage extends Component<{}, State>{
 
                     <Typography component={Box} paddingBottom={1} paddingTop={10} variant="h6">Andre spørgeskemaer til besvarelse</Typography>
                     <IsEmptyCard list={questionnairesToAnswerOtherDay} jsxWhenEmpty="Ingen spørgeskemaer">
-                        <Stack direction="row" >
+                        <Stack direction="row" spacing={2} >
                             {questionnairesToAnswerOtherDay?.map(questionnaire => {
                                 return <QuestionnaireAnswerCard questionnaire={questionnaire} />
                             })}
