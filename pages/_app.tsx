@@ -21,12 +21,17 @@ import RealQuestionnaireResponseApi from '../apis/RealImpl/RealQuestionnaireResp
 import RealCareplanApi from '../apis/RealImpl/RealCareplanApi';
 import ICareplanApi from '../apis/interfaces/ICareplanApi';
 import IQuestionnaireResponseApi from '../apis/interfaces/IQuestionnaireResponseApi';
+import IOrganizationApi from '../apis/interfaces/IOrganizationApi';
+import OrganizationService from '../services/OrganizationService';
+import FakeOrganizationApi from '../apis/FakeImpl/FakeOrganizationApi';
+import RealOrganizationApi from '../apis/RealImpl/RealOrganizationApi';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
 
   let questionnaireResponseApi: IQuestionnaireResponseApi = new RealQuestionnaireResponseApi();
   let careplanApi: ICareplanApi = new RealCareplanApi();
+  let organizationApi: IOrganizationApi = new RealOrganizationApi();
 
   if (process?.env.NODE_ENV === 'development') {
     if (process.env.NEXT_PUBLIC_MOCK_QUESTIONNAIRE_RESPONSE_SERVICE === "true") {
@@ -34,6 +39,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     }
     if (process.env.NEXT_PUBLIC_MOCK_CAREPLAN_SERVICE === "true") {
       careplanApi = new FakeCareplanApi();
+    }
+    if (process.env.NEXT_PUBLIC_MOCK_ORGANIZATION_SERVICE === "true") {
+      organizationApi = new FakeOrganizationApi();
     }
   }
 
@@ -48,6 +56,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
               //Services
               questionnaireResponseService: new QuestionnaireResponseService(questionnaireResponseApi),
               careplanService: new CareplanService(careplanApi),
+              organizationService: new OrganizationService(organizationApi),
 
               //Helpers
               validationService: new ValidationService(),

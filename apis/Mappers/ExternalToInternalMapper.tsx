@@ -3,19 +3,20 @@ import { Address } from "../../components/Models/Address";
 import { Answer, NumberAnswer, StringAnswer } from "../../components/Models/Answer";
 import { CategoryEnum } from "../../components/Models/CategoryEnum";
 import { Contact } from "../../components/Models/Contact";
+import DetailedOrganization from "../../components/Models/DetailedOrganization";
 import { DayEnum, Frequency, FrequencyEnum } from "../../components/Models/Frequency";
 import { PatientCareplan } from "../../components/Models/PatientCareplan";
 import { PatientDetail } from "../../components/Models/PatientDetail";
-import { Person } from "../../components/Models/Person";
 import { PersonContact } from "../../components/Models/PersonContact";
 import { PlanDefinition } from "../../components/Models/PlanDefinition";
 import { Question, QuestionTypeEnum } from "../../components/Models/Question";
 import { Questionnaire } from "../../components/Models/Questionnaire";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
+import SimpleDepartment from "../../components/Models/SimpleOrganization";
 import { Task } from "../../components/Models/Task";
 import { ThresholdCollection } from "../../components/Models/ThresholdCollection";
 import { User } from "../../components/Models/User";
-import { AnswerDto, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AnswerDto, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, OrganizationDto, PatientDto, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 
@@ -24,6 +25,12 @@ import BaseMapper from "./BaseMapper";
  * This class maps from the external models (used in bff-api) to the internal models (used in frontend)
  */
 export default class ExternalToInternalMapper extends BaseMapper{
+    mapOrganization(response: OrganizationDto): DetailedOrganization {
+        const toReturn = new DetailedOrganization();
+        toReturn.id = response.id;
+
+        return toReturn;
+    }
     mapCarePlanDto(carePlanDto: CarePlanDto) : PatientCareplan {
 
             let carePlan = new PatientCareplan();
@@ -34,7 +41,9 @@ export default class ExternalToInternalMapper extends BaseMapper{
             carePlan.patient = this.mapPatientDto(carePlanDto.patientDto!);
             carePlan.creationDate = new Date(); // TODO - include creation and termination date in the response ...
             //carePlan.terminationDate = undefined; // TODO
-            carePlan.department = "Umuliologisk Afdeling"; // TODO - include Department in the api response ...
+            carePlan.organization = new SimpleDepartment();
+            carePlan.organization.name = "Umuliologisk Afdeling"; // TODO - include Department in the api response ...
+            carePlan.organization.id = "HardcodedOrgIdInFrontendExternalToInternalMapper"; // TODO - include Department in the api response ...
     
             return carePlan;
 

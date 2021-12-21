@@ -1,6 +1,7 @@
 import { PatientDetail } from "./PatientDetail";
 import { PlanDefinition } from "./PlanDefinition";
 import { Questionnaire } from "./Questionnaire";
+import SimpleOrganization from "./SimpleOrganization";
 
 export class PatientCareplan {
     id! : string;
@@ -9,7 +10,7 @@ export class PatientCareplan {
     patient! : PatientDetail
     creationDate! : Date;
     terminationDate! : Date;
-    department!: string;
+    organization! : SimpleOrganization;
 
     clone() : PatientCareplan{
         const clone = new PatientCareplan();
@@ -19,7 +20,10 @@ export class PatientCareplan {
         clone.patient = this.patient;
         clone.creationDate = this.creationDate;
         clone.terminationDate = this.terminationDate;
-        clone.department = this.department;
+        clone.organization = new SimpleOrganization();
+        clone.organization.id = this.organization.id
+        clone.organization.name = this.organization.name
+
         return clone;
     }
 }

@@ -1,8 +1,8 @@
 import { Address } from "./Address";
 import { DayEnum } from "./Frequency";
+import SimpleDepartment from "./SimpleOrganization";
 
- export default class Department {
-    name? : string
+ export default class DetailedOrganization extends SimpleDepartment{
     address? : Address
     phoneNumber? : string
     phoneHours? : PhoneHour[]

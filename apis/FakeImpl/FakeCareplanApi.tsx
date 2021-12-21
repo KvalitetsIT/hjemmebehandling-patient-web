@@ -6,6 +6,7 @@ import { PatientCareplan } from "../../components/Models/PatientCareplan";
 import { PatientDetail } from "../../components/Models/PatientDetail";
 import { Question, QuestionTypeEnum } from "../../components/Models/Question";
 import { Questionnaire } from "../../components/Models/Questionnaire";
+import SimpleOrganization from "../../components/Models/SimpleOrganization";
 import BaseApi from "../BaseApi";
 import { NotImplementedError } from "../Errors/NotImplementedError";
 import ICareplanApi from "../interfaces/ICareplanApi";
@@ -100,7 +101,8 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi{
 
         careplan.questionnaires = [questionnaire,questionnaire2]
         
-        
+        careplan.organization = new SimpleOrganization();
+        careplan.organization.id = "someOrgId"
         
         return careplan;
     } catch(error){
