@@ -1,5 +1,6 @@
 
 import { Address } from "../../components/Models/Address";
+import { CategoryEnum } from "../../components/Models/CategoryEnum";
 import { Contact } from "../../components/Models/Contact";
 import { DayEnum, Frequency } from "../../components/Models/Frequency";
 import { PatientCareplan } from "../../components/Models/PatientCareplan";
@@ -7,6 +8,8 @@ import { PatientDetail } from "../../components/Models/PatientDetail";
 import { Question, QuestionTypeEnum } from "../../components/Models/Question";
 import { Questionnaire } from "../../components/Models/Questionnaire";
 import SimpleOrganization from "../../components/Models/SimpleOrganization";
+import { ThresholdCollection } from "../../components/Models/ThresholdCollection";
+import { ThresholdNumber } from "../../components/Models/ThresholdNumber";
 import BaseApi from "../BaseApi";
 import { NotImplementedError } from "../Errors/NotImplementedError";
 import ICareplanApi from "../interfaces/ICareplanApi";
@@ -48,15 +51,37 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi{
         questionnaire.frequency.days = [DayEnum.Friday,DayEnum.Thursday,DayEnum.Wednesday]
         questionnaire.frequency.deadline = "11:00"
         
+        questionnaire.thresholds = [];
+        
+
         questionnaire.questions = [];
         
         const question1 = new Question();
+        const t1 = new ThresholdCollection();
+        t1.questionId = "temp"
+        questionnaire.thresholds.push(t1);
         question1.Id="temp"
         question1.question = "Indtast din morgen temperatur?"
         question1.type = QuestionTypeEnum.OBSERVATION
         questionnaire.questions[0] = question1;
 
         const question2 = new Question();
+        const t2 = new ThresholdCollection();
+        t2.questionId = "CRP"
+        const t2green = new ThresholdNumber();
+        t2green.category = CategoryEnum.GREEN;
+        t2green.to = 25;
+        const t2yellow = new ThresholdNumber();
+        t2yellow.category = CategoryEnum.YELLOW;
+        t2yellow.from = 25;
+        t2yellow.to = 50;
+        const t2red = new ThresholdNumber();
+        t2red.category = CategoryEnum.RED;
+        t2red.from = 50;
+        
+
+        t2.thresholdNumbers = [t2green,t2yellow,t2red]
+        questionnaire.thresholds.push(t2);
         question2.Id="CRP"
         question2.question = "Indtast den målte CRP?"
         question2.type = QuestionTypeEnum.OBSERVATION

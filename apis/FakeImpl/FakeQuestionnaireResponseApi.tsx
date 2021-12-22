@@ -86,8 +86,8 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         answerb3.answer = "Ja"
         
         questionnaireResponse1.questions.set(questionb3,answerb3);
-        //this.questionnaireResponses.push(questionnaireResponse1)
-        //this.questionnaireResponses.push(questionnaireResponse2)
+        this.questionnaireResponses.push(questionnaireResponse1)
+        this.questionnaireResponses.push(questionnaireResponse2)
     }
     async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse) : Promise<void>{
         questionnaireResponse.id = "questionnaireResponse"+this.generateId() + "";
