@@ -9,7 +9,7 @@ export class PatientCareplan {
     questionnaires : Questionnaire[] = []
     patient! : PatientDetail
     creationDate! : Date;
-    terminationDate! : Date;
+    terminationDate? : Date;
     organization! : SimpleOrganization;
 
     clone() : PatientCareplan{

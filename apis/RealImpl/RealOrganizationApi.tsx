@@ -5,6 +5,7 @@ import BaseApi from "../BaseApi";
 import IOrganizationApi from "../interfaces/IOrganizationApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
 import InternalToExternalMapper from "../Mappers/InternalToExternalMapper";
+import FhirUtils from "../../util/FhirUtils";
 
 export default class RealOrganizationApi extends BaseApi implements IOrganizationApi {
     organizationApi: OrganizationApi;
@@ -22,8 +23,9 @@ export default class RealOrganizationApi extends BaseApi implements IOrganizatio
     async getOrganizationDetails(orgId: string): Promise<DetailedOrganization> {
         try {
 
+            let plainId = FhirUtils.unqualifyId(orgId)
             const request = {
-                id: orgId
+                id: plainId
             }
             const response = await this.organizationApi.getOrganization(request);
             return this.toInternal.mapOrganization(response)
@@ -31,8 +33,4 @@ export default class RealOrganizationApi extends BaseApi implements IOrganizatio
             return await this.HandleError(error);
         }
     }
-
-
-
-
 }

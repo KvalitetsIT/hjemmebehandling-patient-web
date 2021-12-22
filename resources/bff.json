@@ -327,6 +327,9 @@
             "description": "Id of the resource",
             "example": "CarePlan/10"
           },
+          "organizationId": {
+            "type": "string"
+          },
           "questionnaireId": {
             "type": "string"
           },
@@ -403,6 +406,56 @@
             "type": "string",
             "description": "Id of the resource",
             "example": "CarePlan/10"
+          },
+          "name": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "phoneHours": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneHourDto"
+            }
+          }
+        }
+      },
+      "PhoneHourDto": {
+        "type": "object",
+        "properties": {
+          "weekdays": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "MON",
+                "TUE",
+                "WED",
+                "THU",
+                "FRI",
+                "SAT",
+                "SUN"
+              ]
+            }
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
           }
         }
       },
@@ -416,6 +469,9 @@
             "type": "string",
             "description": "Id of the resource",
             "example": "CarePlan/10"
+          },
+          "organizationId": {
+            "type": "string"
           },
           "title": {
             "type": "string"
@@ -489,6 +545,9 @@
             "description": "Id of the resource",
             "example": "CarePlan/10"
           },
+          "organizationId": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -513,6 +572,9 @@
             "type": "string",
             "description": "Id of the resource",
             "example": "CarePlan/10"
+          },
+          "organizationId": {
+            "type": "string"
           },
           "title": {
             "type": "string"
