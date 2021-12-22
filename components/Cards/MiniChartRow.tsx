@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
 import { PatientCareplan } from '../Models/PatientCareplan';
-import { Button, CardHeader, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import { Button, CardHeader, Grid, Skeleton, Typography } from '@mui/material';
 import { Questionnaire } from '../Models/Questionnaire';
 import { QuestionnaireResponse } from '../Models/QuestionnaireResponse';
 import ApiContext from '../../pages/_context';
@@ -56,7 +56,7 @@ export class MiniChartRow extends Component<Props, State> {
     async componentDidMount(): Promise<void> {
         try {
             const responses = await this.questionnaireService.GetQuestionnaireResponses(this.props.careplan.id, [this.state.questionnaire.id], 1, 5)
-            
+
             this.setState({ questionnaireResponses: responses, loading: false })
         } catch (error: any) {
             this.setState(() => { throw error })
@@ -80,35 +80,29 @@ export class MiniChartRow extends Component<Props, State> {
                     <Typography variant="caption">Ingen tilgængelige målinger</Typography>
                 </>
             }>
-                <Stack direction="row" spacing={2}>
 
 
-                    <>
-                        <Card component={Link} to="/measurements">
-                            <CardHeader subheader={
-                                <>
-                                    <Grid container>
-                                        <Grid item xs={10}>
-                                            {question.question} </Grid>
-                                        <Grid item xs={2}>
-                                            <Button ><ChevronRightIcon /></Button>
-                                        </Grid>
+                <Link to="/measurements">
+                    <Card >
+                        <CardHeader subheader={
+                            <>
+                                <Grid container>
+                                    <Grid item xs={10}>
+                                        {question.question} </Grid>
+                                    <Grid item xs={2}>
+                                        <Button ><ChevronRightIcon /></Button>
                                     </Grid>
-                                </>
-                            }
-                            />
-                            <CardContent>
-                                {threshold && threshold.thresholdNumbers ?
-                                    <QuestionChart minimal={true} thresholds={threshold.thresholdNumbers} question={question} questionnaireResponses={this.state.questionnaireResponses} /> :
-                                    <QuestionChart minimal={true} thresholds={[]} question={question} questionnaireResponses={this.state.questionnaireResponses} />}
-                            </CardContent>
-                        </Card>
-                    </>
-
-
-
-
-                </Stack>
+                                </Grid>
+                            </>
+                        }
+                        />
+                        <CardContent>
+                            {threshold && threshold.thresholdNumbers ?
+                                <QuestionChart minimal={true} thresholds={threshold.thresholdNumbers} question={question} questionnaireResponses={this.state.questionnaireResponses} /> :
+                                <QuestionChart minimal={true} thresholds={[]} question={question} questionnaireResponses={this.state.questionnaireResponses} />}
+                        </CardContent>
+                    </Card>
+                </Link>
             </IsEmptyCard>
         );
     }

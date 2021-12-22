@@ -1,18 +1,38 @@
-import { Grid } from "@mui/material";
-import { Component } from "react";
+import { Component, CSSProperties } from "react";
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
 interface Props {
     jsxList: JSX.Element[]
 }
 
 export class ScrollableRow extends Component<Props, {}> {
+    root: CSSProperties = {
+        
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+    }
+
+    gridList: CSSProperties = {
+
+        width: "100%",
+        flexWrap: 'nowrap'
+    }
+
+    gridListTile: CSSProperties = {
+        height: 'auto',
+        padding: 0,
+        paddingRight: 20
+
+    }
+
     render(): JSX.Element {
-        const width = (window.innerWidth - 50) + "px";
         return (
             <>
-                <Grid container spacing={2} wrap="nowrap" sx={{ maxWidth: width, height: "20em", overflowX: "auto" }}>
-                    {this.renderComponent()}
-                </Grid>
+
+                {this.renderComponent()}
 
 
             </>
@@ -20,18 +40,23 @@ export class ScrollableRow extends Component<Props, {}> {
         )
     }
     renderComponent(): JSX.Element {
+        let key = 0;
         return (
             <>
 
-                {this.props.jsxList.map(jsx => {
-                    return (
-                        <>
-                            <Grid item>
-                                {jsx}
-                            </Grid>
-                        </>
-                    )
-                })}
+                <div style={this.root} >
+                    <GridList style={this.gridList} cols={2.5}>
+                        {this.props.jsxList.map(x => {
+                            return (
+                                <GridListTile style={this.gridListTile} key={key++}>
+                                    {x}
+                                </GridListTile>
+                            )
+                        })}
+
+
+                    </GridList>
+                </div>
 
             </>
         )

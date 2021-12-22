@@ -23,7 +23,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, {}>{
         const todayEnum = this.dateHelper.DayIndexToDay(new Date().getDay());
         const deadlineIsToday = questionnaire.frequency?.days?.includes(todayEnum);
         return (
-            <Card sx={{minWidth:"400px"}}>
+            <Card>
                 <CardHeader subheader={questionnaire?.name} />
                 <Divider />
                 <CardContent>
