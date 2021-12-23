@@ -3,7 +3,7 @@ import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
 import { Answer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
 import { Contact } from "@kvalitetsit/hjemmebehandling/Models/Contact";
-import DetailedOrganization from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+import DetailedOrganization, { PhoneHour } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
 import { DayEnum, Frequency, FrequencyEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
@@ -15,7 +15,7 @@ import SimpleDepartment from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganiz
 import { Task } from "@kvalitetsit/hjemmebehandling/Models/Task";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { EntitlementEnum, User } from "@kvalitetsit/hjemmebehandling/Models/User";
-import { AnswerDto, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, OrganizationDto, PatientDto, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AnswerDto, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
@@ -26,11 +26,34 @@ import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
  */
 export default class ExternalToInternalMapper extends BaseMapper{
     mapOrganization(response: OrganizationDto): DetailedOrganization {
-        const toReturn = new DetailedOrganization();
-        toReturn.id = response.id;
+        let organization = new DetailedOrganization()
 
-        return toReturn;
+        organization.id = response.id
+        organization.name = response.name
+
+        let address = new Address()
+        address.street = response.street
+        address.zipCode = response.postalCode
+        address.city = response.city
+        address.country = response.country
+        organization.address = address
+
+        organization.phoneNumber = response.phone
+
+        organization.phoneHours = response?.phoneHours?.map(ph => this.mapPhoneHourDto(ph)) ?? [] //response.phoneHours.map(ph)
+
+        return organization
     }
+
+    mapPhoneHourDto(phoneHourDto: PhoneHourDto) : PhoneHour {
+        let phoneHour = new PhoneHour()
+
+        phoneHour.days = phoneHourDto?.weekdays?.map(d => this.mapPhoneHourDtoWeekdaysEnum(d)) ?? []
+        phoneHour.timePeriods = [ { fromTime: phoneHourDto.from, toTime: phoneHourDto.to } ]
+
+        return phoneHour
+    }
+
     mapCarePlanDto(carePlanDto: CarePlanDto) : PatientCareplan {
 
             let carePlan = new PatientCareplan();
@@ -39,14 +62,18 @@ export default class ExternalToInternalMapper extends BaseMapper{
             carePlan.planDefinitions = carePlanDto.planDefinitions!.map(pd => this.mapPlanDefinitionDto(pd))
             carePlan.questionnaires = carePlanDto?.questionnaires?.map(q => this.mapQuestionnaireDto(q)) ?? []
             carePlan.patient = this.mapPatientDto(carePlanDto.patientDto!);
-            carePlan.creationDate = new Date(); // TODO - include creation and termination date in the response ...
-            //carePlan.terminationDate = undefined; // TODO
-            carePlan.organization = new SimpleDepartment();
-            carePlan.organization.name = "Umuliologisk Afdeling"; // TODO - include Department in the api response ...
-            carePlan.organization.id = "HardcodedOrgIdInFrontendExternalToInternalMapper"; // TODO - include Department in the api response ...
-    
-            return carePlan;
+            if(!carePlanDto.created) {
+                throw new Error('No creation date on careplan!')
+            }
+            carePlan.creationDate = carePlanDto.created
+            carePlan.terminationDate = carePlanDto.endDate
 
+            let department = new SimpleDepartment()
+            department.id = carePlanDto.organizationId!
+            department.name = carePlanDto.departmentName
+            carePlan.organization = department
+
+            return carePlan
     }
 
     buildTaskFromCarePlan(carePlan: CarePlanDto) : Task {
@@ -221,9 +248,31 @@ export default class ExternalToInternalMapper extends BaseMapper{
                 return DayEnum.Sunday;
             
             default:
-                throw new Error('Could not map category ' + weekday);
+                throw new Error('Could not map weekday ' + weekday);
         }
     }
+
+    mapPhoneHourDtoWeekdaysEnum(weekday: PhoneHourDtoWeekdaysEnum) : DayEnum {
+        switch(weekday) {
+            case PhoneHourDtoWeekdaysEnum.Mon:
+                return DayEnum.Monday;
+            case PhoneHourDtoWeekdaysEnum.Tue:
+                return DayEnum.Tuesday;
+            case PhoneHourDtoWeekdaysEnum.Wed:
+                return DayEnum.Wednesday;
+            case PhoneHourDtoWeekdaysEnum.Thu:
+                return DayEnum.Thursday;
+            case PhoneHourDtoWeekdaysEnum.Fri:
+                return DayEnum.Friday;
+            case PhoneHourDtoWeekdaysEnum.Sat:
+                return DayEnum.Saturday;
+            case PhoneHourDtoWeekdaysEnum.Sun:
+                return DayEnum.Sunday;
+            default:
+                throw new Error('Could not map weekday ' + weekday);
+        }
+    }
+
     mapUserFromExternalToInternal(user: UserContext): User {
         const internalUser = new User();
         //internalUser.autorisationsids = user.autorisationsids;

@@ -31,6 +31,7 @@ export default class FhirUtils {
 
 export enum Qualifier {
     CarePlan,
+    Organization,
     Patient,
     Questionnaire,
     QuestionnaireResponse
