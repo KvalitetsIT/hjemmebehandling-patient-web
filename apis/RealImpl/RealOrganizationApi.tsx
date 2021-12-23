@@ -1,6 +1,6 @@
-import DetailedOrganization from "../../components/Models/DetailedOrganization";
+import DetailedOrganization from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
 import {  Configuration, OrganizationApi } from "../../generated";
-import BaseApi from "../BaseApi";
+import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
 
 import IOrganizationApi from "../interfaces/IOrganizationApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";

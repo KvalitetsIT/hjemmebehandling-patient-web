@@ -1,11 +1,11 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React, { Component } from "react";
-import IsEmptyCard from "../../components/Cards/IsEmptyCard";
+import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import QuestionnaireAnswerCard from "../../components/Cards/QuestionnaireAnswerCard";
 import { LoadingBackdropComponent } from "../../components/Layout/LoadingBackdropComponent";
-import { DayEnum } from "../../components/Models/Frequency";
-import { PatientCareplan } from "../../components/Models/PatientCareplan";
-import IDateHelper from "../../globalHelpers/interfaces/IDateHelper";
+import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import ICareplanService from "../../services/interfaces/ICareplanService";
 import ApiContext from "../_context";
 

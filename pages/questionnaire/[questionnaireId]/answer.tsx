@@ -2,16 +2,16 @@ import { Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
 import { Button, Typography } from "@mui/material";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../../components/Models/QuestionnaireResponse";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import ICareplanService from "../../../services/interfaces/ICareplanService";
 import ApiContext from "../../_context";
 import IQuestionnaireResponseService from "../../../services/interfaces/IQuestionnaireResponseService";
-import { PatientCareplan } from "../../../components/Models/PatientCareplan";
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { LoadingBackdropComponent } from "../../../components/Layout/LoadingBackdropComponent";
-import IsEmptyCard from "../../../components/Cards/IsEmptyCard";
-import { Question } from "../../../components/Models/Question";
-import { Answer } from "../../../components/Models/Answer";
-import { Questionnaire } from "../../../components/Models/Questionnaire";
+import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
+import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
+import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import LinearProgress from '@mui/material/LinearProgress';
 import QuestionPresenterCard from "../../../components/Cards/QuestionPresenterCard";
 import QuestionAndAnswerTable from "../../../components/Tables/QuestionAndAnswerTable";
@@ -70,10 +70,10 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     ResetResponse(careplan: PatientCareplan): void {
         const questionnaireResponse = new QuestionnaireResponse();
         questionnaireResponse.questionnaireId = this.props.match.params.questionnaireId;
-        questionnaireResponse.carePlanId = careplan!.id
+        questionnaireResponse.carePlanId = careplan!.id!
         questionnaireResponse.questions = new Map<Question, Answer>();
         questionnaireResponse.status = QuestionnaireResponseStatus.NotAnswered;
-        questionnaireResponse.patient = careplan.patient;
+        questionnaireResponse.patient = careplan.patient!;
         this.setState({ questionnaireResponse: questionnaireResponse });
     }
 

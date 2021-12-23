@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Card, TableContainer, TableHead, TableBody, TableRow, TableCell, Table } from '@mui/material';
-import { Question } from "../Models/Question"
-import { Answer } from "../Models/Answer"
+import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question"
+import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer"
 import ApiContext from "../../pages/_context";
 
 interface Props {

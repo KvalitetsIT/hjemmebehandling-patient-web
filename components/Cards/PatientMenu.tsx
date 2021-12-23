@@ -4,11 +4,11 @@ import Button from '@mui/material/Button';
 import { Component } from 'react';
 import { Menu, MenuItem } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import { PatientCareplan } from '../Models/PatientCareplan';
+import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import ApiContext from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';
 import { PatientCard } from './PatientCard';
-import { ErrorBoundary } from '../Layout/ErrorBoundary';
+import { ErrorBoundary } from '@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary';
 
 export interface State {
     expand: boolean

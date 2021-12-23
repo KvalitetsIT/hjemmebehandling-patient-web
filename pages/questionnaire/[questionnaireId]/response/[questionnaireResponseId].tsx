@@ -1,12 +1,12 @@
 import { Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
-import { PatientCareplan } from "../../../../components/Models/PatientCareplan";
-import { QuestionnaireResponse } from "../../../../components/Models/QuestionnaireResponse";
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import ApiContext from "../../../_context";
 import ResponseStatusCard from "../../../../components/Cards/ResponseStatusCard"
 import IQuestionnaireResponseService from "../../../../services/interfaces/IQuestionnaireResponseService";
-import IsEmptyCard from "../../../../components/Cards/IsEmptyCard";
+import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import { LoadingBackdropComponent } from "../../../../components/Layout/LoadingBackdropComponent";
 import ICareplanService from "../../../../services/interfaces/ICareplanService";
 import { Typography } from "@mui/material";

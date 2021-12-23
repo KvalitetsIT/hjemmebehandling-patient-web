@@ -1,4 +1,4 @@
-import { QuestionnaireResponse } from "../../components/Models/QuestionnaireResponse";
+import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 
 export default interface IQuestionnaireResponseService{
     GetQuestionnaireResponses : (carePlanId: string, questionnaireIds: Array<string>, page : number, pagesize : number) => Promise<Array<QuestionnaireResponse>>;

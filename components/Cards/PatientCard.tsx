@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
 import { Divider, Skeleton } from '@mui/material';
-import { PatientCareplan } from '../Models/PatientCareplan';
+import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import ApiContext from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';
 
@@ -63,8 +63,8 @@ export class PatientCard extends Component<{}, State> {
                         <Typography align="right" variant="body2">{patient?.firstname} {patient?.lastname}</Typography>
                         <Typography align="right" variant="body2">{patient?.cpr}</Typography>
                         <br />
-                        <Typography align="right" variant="body2">{patient?.address.street}</Typography>
-                        <Typography align="right" variant="body2">{patient?.address.city}</Typography>
+                        <Typography align="right" variant="body2">{patient?.address?.street}</Typography>
+                        <Typography align="right" variant="body2">{patient?.address?.city}</Typography>
                         <br />
                         <Typography align="right" variant="body2">{patient?.primaryPhone}</Typography>
                         <br />

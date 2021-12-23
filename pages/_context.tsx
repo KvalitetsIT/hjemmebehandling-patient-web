@@ -2,13 +2,13 @@
 
 import { createContext } from 'react';
 
-import IDateHelper from '../globalHelpers/interfaces/IDateHelper';
-import DanishDateHelper from '../globalHelpers/danishImpl/DanishDateHelper';
+import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
+import DanishDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/DanishDateHelper';
 
 import ValidationService from '../services/ValidationService';
 import IValidationService from '../services/interfaces/IValidationService';
-import { ICollectionHelper } from '../globalHelpers/interfaces/ICollectionHelper';
-import { CollectionHelper } from '../globalHelpers/danishImpl/CollectionHelper';
+import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
+import { CollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/CollectionHelper';
 import QuestionnaireResponseService from '../services/QuestionnaireResponseService';
 import FakeQuestionnaireResponseApi from '../apis/FakeImpl/FakeQuestionnaireResponseApi';
 import FakeCareplanApi from '../apis/FakeImpl/FakeCareplanApi';

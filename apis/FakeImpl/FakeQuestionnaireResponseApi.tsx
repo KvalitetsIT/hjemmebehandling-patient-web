@@ -1,6 +1,6 @@
-import { Answer, NumberAnswer, StringAnswer } from "../../components/Models/Answer";
-import { Question, QuestionTypeEnum } from "../../components/Models/Question";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
+import { Answer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import { NotFoundError } from "../../services/Errors/NotFoundError";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 

@@ -3,19 +3,19 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
-import { PatientCareplan } from '../Models/PatientCareplan';
+import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import { CardHeader, Grid, Skeleton } from '@mui/material';
-import { Questionnaire } from '../Models/Questionnaire';
-import { QuestionnaireResponse } from '../Models/QuestionnaireResponse';
+import { Questionnaire } from '@kvalitetsit/hjemmebehandling/Models/Questionnaire';
+import { QuestionnaireResponse } from '@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse';
 import ApiContext from '../../pages/_context';
-import IDateHelper from '../../globalHelpers/interfaces/IDateHelper';
-import { NumberAnswer } from '../Models/Answer';
-import { Question, QuestionTypeEnum } from '../Models/Question';
-import { QuestionChart } from '../Charts/QuestionChart';
+import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
+import { NumberAnswer } from '@kvalitetsit/hjemmebehandling/Models/Answer';
+import { Question, QuestionTypeEnum } from '@kvalitetsit/hjemmebehandling/Models/Question';
+import { QuestionChart } from '@kvalitetsit/hjemmebehandling/Charts/QuestionChart';
 import { ThresholdSlider } from './ThresholdSlider';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
-import IsEmptyCard from './IsEmptyCard';
-import { ICollectionHelper } from '../../globalHelpers/interfaces/ICollectionHelper';
+import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
+import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
 
 export interface Props {
     careplan: PatientCareplan;
@@ -49,7 +49,7 @@ export class ObservationCard extends Component<Props, State> {
 
     async componentDidMount(): Promise<void> {
         try {
-            const responses = await this.questionnaireService.GetQuestionnaireResponses(this.props.careplan.id, [this.props.questionnaire.id], 1, 5)
+            const responses = await this.questionnaireService.GetQuestionnaireResponses(this.props.careplan.id!, [this.props.questionnaire.id], 1, 5)
             //console.log(responses)
             //console.log(this.props.questionnaire.thresholds)
             this.setState({ questionnaireResponses: responses, loading: false })

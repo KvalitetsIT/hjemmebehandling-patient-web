@@ -1,4 +1,4 @@
-import { PatientCareplan } from "../../components/Models/PatientCareplan";
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 
 
 export default interface ICareplanApi {

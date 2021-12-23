@@ -10,7 +10,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { Link } from 'react-router-dom';
-import { ErrorBoundary } from './ErrorBoundary';
+import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 import { PatientMenu } from '../Cards/PatientMenu';
 
 export interface State {

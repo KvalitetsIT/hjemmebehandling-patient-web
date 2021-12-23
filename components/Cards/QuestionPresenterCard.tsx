@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Grid, Typography, Button } from '@mui/material';
 import ApiContext from "../../pages/_context";
-import IDateHelper from "../../globalHelpers/interfaces/IDateHelper";
-import { Question, QuestionTypeEnum } from "../Models/Question";
+import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper"
+import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import IValidationService from "../../services/interfaces/IValidationService";
 import { InvalidInputModel } from "../../services/Errors/InvalidInputError";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
-import { Answer, NumberAnswer, StringAnswer } from "../Models/Answer";
+import { Answer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 
 interface Props {
     question: Question;

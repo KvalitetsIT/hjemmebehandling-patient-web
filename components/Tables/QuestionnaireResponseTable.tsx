@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Button, Card, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { PatientCareplan } from "../Models/PatientCareplan";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../Models/QuestionnaireResponse";
-import IsEmptyCard from "../Cards/IsEmptyCard"
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
 import ApiContext from "../../pages/_context";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
-import IDateHelper from "../../globalHelpers/interfaces/IDateHelper";
+import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -41,7 +41,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
         try {
             this.setState({ fetchingData: true })
             const questionnaireResponses = await this.questionnaireResponseService.GetQuestionnaireResponses(
-                this.props.careplan?.id,
+                this.props.careplan!.id!,
                 this.props.careplan?.questionnaires?.map(x => x.id),
                 page,
                 this.state.pagesize

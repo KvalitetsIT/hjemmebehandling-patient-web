@@ -1,9 +1,9 @@
 import { Component } from "react";
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
-import { Questionnaire } from "../Models/Questionnaire";
+import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import { Link } from "react-router-dom";
 import ApiContext from "../../pages/_context";
-import IDateHelper from "../../globalHelpers/interfaces/IDateHelper";
+import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 
 interface Props {
     questionnaire: Questionnaire

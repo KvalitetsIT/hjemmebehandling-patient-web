@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, Divider, Grid, Typography } from "@mui/material";
 import { Component } from "react";
-import IsEmptyCard from "../components/Cards/IsEmptyCard";
-import { ErrorBoundary } from "../components/Layout/ErrorBoundary";
+import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
+import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 import { LoadingBackdropComponent } from "../components/Layout/LoadingBackdropComponent";
-import Department, {  } from "../components/Models/DetailedOrganization";
+import Department, {  } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
 import ICareplanService from "../services/interfaces/ICareplanService";
 import IOrganizationService from "../services/interfaces/IOrganizationService";
 import ApiContext from "./_context";
@@ -29,7 +29,7 @@ export default class ContactPage extends Component<{}, State> {
         this.setState({ loading: true })
 
         const careplan = await this.careplanService.GetActiveCareplan();
-        const department = await this.organizationService.getOrganizationDetails(careplan.organization.id)
+        const department = await this.organizationService.getOrganizationDetails(careplan.organization!.id!)
         
         this.setState({ department: department })
         this.setState({ loading: false })

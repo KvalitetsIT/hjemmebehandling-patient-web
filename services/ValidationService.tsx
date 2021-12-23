@@ -1,7 +1,7 @@
 
 
-import { PlanDefinition } from "../components/Models/PlanDefinition";
-import BaseService from "./BaseService";
+import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinition";
+import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
 import { CriticalLevelEnum, InvalidInputModel } from "./Errors/InvalidInputError";
 import IValidationService from "./interfaces/IValidationService";
 

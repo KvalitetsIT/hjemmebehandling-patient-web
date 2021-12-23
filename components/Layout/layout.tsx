@@ -7,7 +7,7 @@ import AnsweredPage from '../../pages/questionnaire/answered';
 import ApiContext from '../../pages/_context';
 import QuestionnaireResponseDetailsPage from '../../pages/questionnaire/[questionnaireId]/response/[questionnaireResponseId]';
 import QuestionnaireResponseCreationPage from '../../pages/questionnaire/[questionnaireId]/answer';
-import { ErrorBoundary } from './ErrorBoundary';
+import { ErrorBoundary } from '@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary';
 import ObservationPage from '../../pages/questionnaire/[questionnaireId]/observations';
 import HomePage from '../../pages/Home';
 import ContactPage from '../../pages/contact';

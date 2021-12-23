@@ -2,9 +2,9 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
-import IsEmptyCard from "../../components/Cards/IsEmptyCard";
+import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import { LoadingBackdropComponent } from "../../components/Layout/LoadingBackdropComponent";
-import { PatientCareplan } from "../../components/Models/PatientCareplan";
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import QuestionnaireResponseTable from "../../components/Tables/QuestionnaireResponseTable";
 import ICareplanService from "../../services/interfaces/ICareplanService";
 import ApiContext from "../_context";

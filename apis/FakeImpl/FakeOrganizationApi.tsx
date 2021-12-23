@@ -1,7 +1,7 @@
-import { Address } from "../../components/Models/Address";
-import Department, { PhoneHour, TimePeriod } from "../../components/Models/DetailedOrganization";
-import { DayEnum } from "../../components/Models/Frequency";
-import BaseApi from "../BaseApi";
+import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
+import Department, { PhoneHour, TimePeriod } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
+import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
 import IOrganizationApi from "../interfaces/IOrganizationApi";
 
 export default class FakeCareplanApi extends BaseApi implements IOrganizationApi{

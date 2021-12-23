@@ -1,6 +1,6 @@
 import ICareplanApi from "../apis/interfaces/ICareplanApi";
-import { PatientCareplan } from "../components/Models/PatientCareplan";
-import BaseService from "./BaseService";
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
 import ICareplanService from "./interfaces/ICareplanService";
 
 export default class CareplanService extends BaseService implements ICareplanService{

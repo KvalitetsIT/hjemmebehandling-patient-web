@@ -1,7 +1,7 @@
-import { PatientCareplan } from "../../components/Models/PatientCareplan";
-import { QuestionnaireResponse } from "../../components/Models/QuestionnaireResponse";
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import { CarePlanApi, Configuration, QuestionnaireResponseApi } from "../../generated";
-import BaseApi from "../BaseApi";
+import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
 import ICareplanApi from "../interfaces/ICareplanApi";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";

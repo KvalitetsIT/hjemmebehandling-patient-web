@@ -2,19 +2,19 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
-import { PatientCareplan } from '../Models/PatientCareplan';
+import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import { Button, CardHeader, Grid, Skeleton, Typography } from '@mui/material';
-import { Questionnaire } from '../Models/Questionnaire';
-import { QuestionnaireResponse } from '../Models/QuestionnaireResponse';
+import { Questionnaire } from '@kvalitetsit/hjemmebehandling/Models/Questionnaire';
+import { QuestionnaireResponse } from '@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse';
 import ApiContext from '../../pages/_context';
-import IDateHelper from '../../globalHelpers/interfaces/IDateHelper';
-import { Question } from '../Models/Question';
-import { QuestionChart } from '../Charts/QuestionChart';
+import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
+import { Question } from '@kvalitetsit/hjemmebehandling/Models/Question';
+import { QuestionChart } from '@kvalitetsit/hjemmebehandling/Charts/QuestionChart';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
-import { ICollectionHelper } from '../../globalHelpers/interfaces/ICollectionHelper';
+import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Link } from 'react-router-dom';
-import IsEmptyCard from './IsEmptyCard';
+import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
 
 export interface Props {
     careplan: PatientCareplan;
@@ -55,7 +55,7 @@ export class MiniChartRow extends Component<Props, State> {
 
     async componentDidMount(): Promise<void> {
         try {
-            const responses = await this.questionnaireService.GetQuestionnaireResponses(this.props.careplan.id, [this.state.questionnaire.id], 1, 5)
+            const responses = await this.questionnaireService.GetQuestionnaireResponses(this.props.careplan.id!, [this.state.questionnaire.id], 1, 5)
 
             this.setState({ questionnaireResponses: responses, loading: false })
         } catch (error: any) {

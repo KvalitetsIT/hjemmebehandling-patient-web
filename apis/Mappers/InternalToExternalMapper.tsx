@@ -1,13 +1,13 @@
-import { Answer, NumberAnswer, StringAnswer } from "../../components/Models/Answer";
-import { CategoryEnum } from "../../components/Models/CategoryEnum";
-import { Contact } from "../../components/Models/Contact";
-import { DayEnum, Frequency } from "../../components/Models/Frequency";
-import { PatientCareplan } from "../../components/Models/PatientCareplan";
-import { PatientDetail } from "../../components/Models/PatientDetail";
-import { PlanDefinition } from "../../components/Models/PlanDefinition";
-import { Question, QuestionTypeEnum } from "../../components/Models/Question";
-import { Questionnaire } from "../../components/Models/Questionnaire";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
+import { Answer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
+import { Contact } from "@kvalitetsit/hjemmebehandling/Models/Contact";
+import { DayEnum, Frequency } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
+import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
+import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinition";
+import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
+import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import { AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
 import BaseMapper from "./BaseMapper";
 
@@ -100,18 +100,18 @@ export default class InternalToExternalMapper extends BaseMapper {
         }
     }
 
-    mapCarePlan(carePlan: PatientCareplan): CarePlanDto {
+    mapCarePlan(carePlan: PatientCareplan) : CarePlanDto {
         let carePlanDto = {
             id: "dummy",
             title: "Ny behandlingsplan", // TODO - set a title ...
-            patientDto: this.mapPatient(carePlan.patient),
+            patientDto: this.mapPatient(carePlan.patient!),
             questionnaires: carePlan.questionnaires.map(q => this.mapQuestionnaire(q)),
             planDefinitions: carePlan.planDefinitions.map(pd => this.mapPlanDefinition(pd))
         }
 
         return carePlanDto
 
-    }
+}
     mapFrequency(frequency: Frequency): FrequencyDto {
 
         return {
@@ -192,15 +192,30 @@ export default class InternalToExternalMapper extends BaseMapper {
 
     }
 
-    mapPatient(patient: PatientDetail): PatientDto {
-        return {
-            cpr: patient.cpr,
-            givenName: patient.firstname,
-            familyName: patient.lastname,
-            patientContactDetails: new Contact()
-            //TODO : patientContactDetails: this.mapContactDetails(patient),
-            //TODO : primaryRelativeContactDetails: this.mapContactDetails(patient)
+    mapPatient(patient: PatientDetail) : PatientDto {
+        let contactDetails : ContactDetailsDto = {}
+        contactDetails.street = patient.address?.street
+        contactDetails.postalCode = patient.address?.zipCode
+        contactDetails.city = patient.address?.city
+        contactDetails.primaryPhone = patient.primaryPhone
+        contactDetails.secondaryPhone = patient.secondaryPhone
+
+        let primaryRelativeContactDetails : ContactDetailsDto = {}
+        if(patient.contact) {
+            primaryRelativeContactDetails = {
+                primaryPhone: patient?.contact.primaryPhone,
+                secondaryPhone: patient?.contact.secondaryPhone
+            }
         }
 
+        return {
+            givenName: patient.firstname,
+            familyName: patient.lastname,
+            cpr: patient.cpr,
+            patientContactDetails: contactDetails,
+            //primaryRelativeName: patient ? patient?.contact.fullname : "",
+            //primaryRelativeAffiliation: patient?.contact.affiliation,
+            primaryRelativeContactDetails: primaryRelativeContactDetails
+        }
     }
 }

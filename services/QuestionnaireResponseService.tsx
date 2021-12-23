@@ -1,6 +1,6 @@
 import IQuestionnaireResponseApi from "../apis/interfaces/IQuestionnaireResponseApi";
-import { QuestionnaireResponse } from "../components/Models/QuestionnaireResponse";
-import BaseService from "./BaseService";
+import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
 import IQuestionnaireResponseService from "./interfaces/IQuestionnaireResponseService";
 
 export default class QuestionnaireResponseService extends BaseService implements IQuestionnaireResponseService {

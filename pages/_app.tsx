@@ -3,15 +3,15 @@ import type { AppProps } from 'next/app'
 import { Layout } from '../components/Layout/layout'
 import ApiContext from './_context';
 
-import DanishDateHelper from '../globalHelpers/danishImpl/DanishDateHelper';
+import DanishDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/DanishDateHelper';
 
 import React from 'react';
 
 import ValidationService from '../services/ValidationService';
-import { CollectionHelper } from '../globalHelpers/danishImpl/CollectionHelper';
+import { CollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/CollectionHelper';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ErrorBoundary } from '../components/Layout/ErrorBoundary';
+import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 import FakeQuestionnaireResponseApi from '../apis/FakeImpl/FakeQuestionnaireResponseApi';
 import QuestionnaireResponseService from '../services/QuestionnaireResponseService';
 
