@@ -1,4 +1,4 @@
-import { Answer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import { NotFoundError } from "../../services/Errors/NotFoundError";
@@ -37,12 +37,11 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
 
         let question3 = new Question();
         question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
-        question3.type = QuestionTypeEnum.CHOICE;
-        question3.options = ["Ja","Nej"]
+        question3.type = QuestionTypeEnum.BOOLEAN;
         question3.Id = "betterToday"
         
-        let answer3 = new StringAnswer();
-        answer3.answer = "Ja"
+        let answer3 = new BooleanAnswer();
+        answer3.answer = true
 
         questionnaireResponse1.questions.set(question3,answer3);
 
@@ -78,14 +77,13 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         
         let questionb3 = new Question();
         questionb3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
-        questionb3.type = QuestionTypeEnum.CHOICE;
-        questionb3.options = ["Ja","Nej"]
+        questionb3.type = QuestionTypeEnum.BOOLEAN;
         questionb3.Id = "betterToday"
         
-        let answerb3 = new StringAnswer();
-        answerb3.answer = "Ja"
+        let answerb3 = new BooleanAnswer();
+        answerb3.answer = true
         
-        questionnaireResponse1.questions.set(questionb3,answerb3);
+        questionnaireResponse2.questions.set(questionb3,answerb3);
         this.questionnaireResponses.push(questionnaireResponse1)
         this.questionnaireResponses.push(questionnaireResponse2)
     }

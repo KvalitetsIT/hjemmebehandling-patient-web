@@ -6,7 +6,7 @@ import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models
 import IValidationService from "../../services/interfaces/IValidationService";
 import { InvalidInputModel } from "../../services/Errors/InvalidInputError";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
-import { Answer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 
 interface Props {
     question: Question;
@@ -90,6 +90,11 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                 choiceAnswer.answer = answerString as unknown as string;
                 answer = choiceAnswer;
                 break;
+            case QuestionTypeEnum.BOOLEAN:
+                const booleanAnswer = new BooleanAnswer();
+                booleanAnswer.answer = answerString.toLowerCase() == "ja"
+                answer = booleanAnswer;
+                break;
         }
         return answer;
     }
@@ -114,6 +119,8 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                 return this.getNumberInput();
             case QuestionTypeEnum.CHOICE:
                 return this.getChoiceInput();
+            case QuestionTypeEnum.BOOLEAN:
+                return this.getBooleanInput();
         }
         return (<>Spørgsmålstype ikke genkendt</>)
     }
@@ -122,6 +129,21 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         return (
             <>
                 {this.props.question.options?.map(option => {
+                    let variant: "contained" | "text" = "text"
+                    if (this.state.tempAnswer === option)
+                        variant = "contained"
+                    return (
+                        <Button variant={variant} onClick={() => this.setState({ tempAnswer: option })}>{option}</Button>
+                    )
+                })}
+            </>
+        )
+    }
+
+    getBooleanInput(): JSX.Element {
+        return (
+            <>
+                {["Ja","Nej"].map(option => {
                     let variant: "contained" | "text" = "text"
                     if (this.state.tempAnswer === option)
                         variant = "contained"
