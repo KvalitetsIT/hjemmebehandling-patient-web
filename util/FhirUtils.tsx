@@ -20,6 +20,7 @@ export default class FhirUtils {
         if(!this.isPlainId(id)) {
             throw new Error('Cannot qualify id: ' + id)
         }
+        
         return qualifier.toString() + '/' + id;
     }
 
@@ -30,9 +31,9 @@ export default class FhirUtils {
 }
 
 export enum Qualifier {
-    CarePlan,
-    Organization,
-    Patient,
-    Questionnaire,
-    QuestionnaireResponse
+    CarePlan = "CarePlan",
+    Organization = "Organization",
+    Patient = "Patient",
+    Questionnaire = "Questionnaire",
+    QuestionnaireResponse = "QuestionnaireResponse"
 }
