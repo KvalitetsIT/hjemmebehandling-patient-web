@@ -9,6 +9,7 @@ import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import { AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
+import FhirUtils, { Qualifier } from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 
 
@@ -19,7 +20,7 @@ export default class InternalToExternalMapper extends BaseMapper {
 
     MapQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): QuestionnaireResponseDto {
         const toReturn: QuestionnaireResponseDto = {
-            id : questionnaireResponse.id,
+            id : FhirUtils.qualifyId(questionnaireResponse.id,Qualifier.QuestionnaireResponse),
             patient : questionnaireResponse.patient,
             questionAnswerPairs : this.mapQuestionAnswerPair(questionnaireResponse.questions),
             questionnaireId : questionnaireResponse.questionnaireId,
