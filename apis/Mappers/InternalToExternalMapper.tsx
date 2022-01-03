@@ -21,10 +21,10 @@ export default class InternalToExternalMapper extends BaseMapper {
     MapQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): QuestionnaireResponseDto {
         const toReturn: QuestionnaireResponseDto = {
             id : FhirUtils.qualifyId(questionnaireResponse.id,Qualifier.QuestionnaireResponse),
-            patient : questionnaireResponse.patient,
+            patient : this.mapPatient(questionnaireResponse.patient as PatientDetail),
             questionAnswerPairs : this.mapQuestionAnswerPair(questionnaireResponse.questions),
-            questionnaireId : questionnaireResponse.questionnaireId,
-            carePlanId : questionnaireResponse.carePlanId
+            questionnaireId : FhirUtils.qualifyId(questionnaireResponse.questionnaireId,Qualifier.Questionnaire) ,
+            carePlanId : FhirUtils.qualifyId(questionnaireResponse.carePlanId,Qualifier.CarePlan), 
         }
         return toReturn;
     }
