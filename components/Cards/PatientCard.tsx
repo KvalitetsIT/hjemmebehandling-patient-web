@@ -61,7 +61,7 @@ export class PatientCard extends Component<{}, State> {
                     <Divider />
                     <CardContent>
                         <Typography align="right" variant="body2">{patient?.firstname} {patient?.lastname}</Typography>
-                        <Typography align="right" variant="body2">{patient?.cpr}</Typography>
+                        <Typography align="right" variant="body2">{patient?.cprToString()}</Typography>
                         <br />
                         <Typography align="right" variant="body2">{patient?.address?.street}</Typography>
                         <Typography align="right" variant="body2">{patient?.address?.city}</Typography>
