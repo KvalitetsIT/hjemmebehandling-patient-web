@@ -86,6 +86,13 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 const mainBackground = "#F2F2F2"
 const regionMidtRed = "rgb(153,0,51)"
 
+const green = '#61BD84'
+
+const yellow = '#FFD78C'
+
+const red = '#EE6969'
+
+
 const THEME = createTheme({
   typography: {
     "fontFamily": "verdana, sans-serif"
@@ -96,6 +103,28 @@ const THEME = createTheme({
     }
   },
   components: {
+    MuiChip : {
+      variants : [
+        {
+          props : {className: "darkColor", color : "error"},
+          style : {
+            backgroundColor : red
+          }
+        },
+        {
+          props : {className: "darkColor", color : "warning"},
+          style : {
+            backgroundColor : yellow
+          }
+        },
+        {
+          props : {className: "darkColor", color : "success"},
+          style : {
+            backgroundColor : green
+          }
+        }
+      ]
+    },
     MuiDrawer: {
       defaultProps: {
         PaperProps: {

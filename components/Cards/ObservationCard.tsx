@@ -12,7 +12,7 @@ import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateH
 import { NumberAnswer } from '@kvalitetsit/hjemmebehandling/Models/Answer';
 import { Question, QuestionTypeEnum } from '@kvalitetsit/hjemmebehandling/Models/Question';
 import { QuestionChart } from '@kvalitetsit/hjemmebehandling/Charts/QuestionChart';
-import { ThresholdSlider } from './ThresholdSlider';
+import { ThresholdSlider } from '@kvalitetsit/hjemmebehandling/Charts/ThresholdSlider';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
 import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
 import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
