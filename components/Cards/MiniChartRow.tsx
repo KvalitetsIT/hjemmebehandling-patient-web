@@ -84,17 +84,17 @@ export class MiniChartRow extends Component<Props, State> {
 
                 <Link to="/measurements">
                     <Card >
-                        <CardHeader subheader={
-                            <>
-                                <Grid container>
-                                    <Grid item xs={10}>
-                                        {question.question} </Grid>
-                                    <Grid item xs={2}>
-                                        <Button ><ChevronRightIcon /></Button>
-                                    </Grid>
-                                </Grid>
-                            </>
+                        <CardHeader action={
+                            <Button ><ChevronRightIcon /></Button>
                         }
+                            subheader={
+                                <>
+                                    <Grid container>
+                                        <Grid item xs={12}>
+                                            {question.question} </Grid>
+                                    </Grid>
+                                </>
+                            }
                         />
                         <CardContent>
                             {threshold && threshold.thresholdNumbers ?
