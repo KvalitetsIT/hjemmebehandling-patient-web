@@ -8,11 +8,15 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
     questionnaireResponses : QuestionnaireResponse[] = [];
 
     constructor(){
+        var today = new Date();
+        var yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
         //QR1
         let questionnaireResponse1 = new QuestionnaireResponse();
         questionnaireResponse1.id = "questionnaireResponse1";
         questionnaireResponse1.questionnaireId = "q1"
-        questionnaireResponse1.answeredTime = new Date();
+        questionnaireResponse1.answeredTime = yesterday;
+        questionnaireResponse1.processedTime = today;
         questionnaireResponse1.status = QuestionnaireResponseStatus.Processed
 
         questionnaireResponse1.questions = new Map<Question,Answer>();
@@ -52,8 +56,8 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         let questionnaireResponse2 = new QuestionnaireResponse();
         questionnaireResponse2.id = "questionnaireResponse2";
         questionnaireResponse2.questionnaireId = "q1"
-        questionnaireResponse2.answeredTime = new Date();
-        questionnaireResponse2.status = QuestionnaireResponseStatus.Processed
+        questionnaireResponse2.answeredTime = yesterday
+        questionnaireResponse2.status = QuestionnaireResponseStatus.NotAnswered
         
         questionnaireResponse2.questions = new Map<Question,Answer>();
         

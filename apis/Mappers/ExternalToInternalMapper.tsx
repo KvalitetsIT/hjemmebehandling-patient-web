@@ -375,6 +375,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
         response.answeredTime = questionnaireResponseDto.answered;
         response.status = this.mapExaminationStatus(questionnaireResponseDto.examinationStatus!);
+        response.examinedTime = questionnaireResponseDto.examined;
         if (questionnaireResponseDto.triagingCategory === QuestionnaireResponseDtoTriagingCategoryEnum.Red) {
             response.category = CategoryEnum.RED;
         } else if (questionnaireResponseDto.triagingCategory === QuestionnaireResponseDtoTriagingCategoryEnum.Yellow) {
