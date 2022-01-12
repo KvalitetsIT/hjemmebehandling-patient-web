@@ -16,7 +16,7 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         questionnaireResponse1.id = "questionnaireResponse1";
         questionnaireResponse1.questionnaireId = "q1"
         questionnaireResponse1.answeredTime = yesterday;
-        questionnaireResponse1.processedTime = today;
+        questionnaireResponse1.examinedTime = today;
         questionnaireResponse1.status = QuestionnaireResponseStatus.Processed
 
         questionnaireResponse1.questions = new Map<Question,Answer>();

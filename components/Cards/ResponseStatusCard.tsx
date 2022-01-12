@@ -48,17 +48,7 @@ export default class ResponseStatusCard extends Component<Props,{}>{
         }
         return toReturn;
     }
-    getStatusDisplayDate(questionnaireResponse : QuestionnaireResponse) : Date | undefined {
-        let toReturn : Date;
-        if (questionnaireResponse.status ==  QuestionnaireResponseStatus.Processed) { 
-            return questionnaireResponse.examinedTime;
-        }
-        else {
-            return questionnaireResponse.answeredTime;
-        }
-
-    }
-
+    
     render() : JSX.Element{
         this.initializeServices();
 
@@ -82,7 +72,7 @@ export default class ResponseStatusCard extends Component<Props,{}>{
                             {(questionnaireResponse.status ==  QuestionnaireResponseStatus.Processed) ?
                                 <Grid item sx={{padding:2}} xs={2}>
                                     <Typography variant="subtitle1">Besvaret den</Typography>
-                                    <Typography variant="subtitle2">{this.dateHelper.DateToString(questionnaireResponse.processedTime!)}</Typography>
+                                    <Typography variant="subtitle2">{this.dateHelper.DateToString(questionnaireResponse.examinedTime!)}</Typography>
                                 </Grid>
                                 :
                                 <Grid item sx={{padding:2}} xs={2}>
@@ -95,6 +85,5 @@ export default class ResponseStatusCard extends Component<Props,{}>{
                 </IsEmptyCard>
             </IsEmptyCard>
         )
-        
     }
 }
