@@ -4,9 +4,9 @@ import ApiContext from "../../pages/_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper"
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import IValidationService from "../../services/interfaces/IValidationService";
-import { InvalidInputModel } from "../../services/Errors/InvalidInputError";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
 import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
 
 interface Props {
     question: Question;
