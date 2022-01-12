@@ -71,7 +71,7 @@ export default class ResponseStatusCard extends Component<Props,{}>{
                             </Grid>
                             {(questionnaireResponse.status ==  QuestionnaireResponseStatus.Processed) ?
                                 <Grid item sx={{padding:2}} xs={2}>
-                                    <Typography variant="subtitle1">Besvaret den</Typography>
+                                    <Typography variant="subtitle1">Kvitteret den</Typography>
                                     <Typography variant="subtitle2">{this.dateHelper.DateToString(questionnaireResponse.examinedTime!)}</Typography>
                                 </Grid>
                                 :
