@@ -48,37 +48,42 @@ export default class ResponseStatusCard extends Component<Props,{}>{
         }
         return toReturn;
     }
-
+    
     render() : JSX.Element{
         this.initializeServices();
 
         const questionnaireId = this.props.questionnaireResponse?.questionnaireId;
         const questionnaire = this.props.careplan?.questionnaires?.find(x=>x.id === questionnaireId);
         const questionnaireResponse = this.props.questionnaireResponse;
-            return (
+        return (
             <IsEmptyCard object={questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet" >
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema fundet" >
                     <Card>
-                            <Grid container>
-                                <Grid item xs={1}>
-                                    <Avatar sx={{height:"100%",width:"100%", bgcolor : this.getStatusColor(questionnaireResponse.status)}} variant="square">
-                                        {this.getStatusIcon(questionnaireResponse.status)}
-                                    </Avatar>
+                        <Grid container>
+                            <Grid item xs={1}>
+                                <Avatar sx={{height:"100%",width:"100%", bgcolor : this.getStatusColor(questionnaireResponse.status)}} variant="square">
+                                    {this.getStatusIcon(questionnaireResponse.status)}
+                                </Avatar>
+                            </Grid>
+                            <Grid item sx={{padding:2}} xs={8}>
+                                <Typography variant="subtitle1">{questionnaire?.name}</Typography>
+                                <Typography variant="subtitle2">SomeHardcodedAfdeling</Typography>
+                            </Grid>
+                            {(questionnaireResponse.status ==  QuestionnaireResponseStatus.Processed) ?
+                                <Grid item sx={{padding:2}} xs={2}>
+                                    <Typography variant="subtitle1">Kvitteret den</Typography>
+                                    <Typography variant="subtitle2">{this.dateHelper.DateToString(questionnaireResponse.examinedTime!)}</Typography>
                                 </Grid>
-                                <Grid item sx={{padding:2}} xs={8}>
-                                    <Typography variant="subtitle1">{questionnaire?.name}</Typography>
-                                    <Typography variant="subtitle2">SomeHardcodedAfdeling</Typography>
-                                </Grid>
+                                :
                                 <Grid item sx={{padding:2}} xs={2}>
                                     <Typography variant="subtitle1">Sendt den</Typography>
                                     <Typography variant="subtitle2">{questionnaireResponse.answeredTime ? this.dateHelper.DateToString(questionnaireResponse!.answeredTime) : "-"}</Typography>
                                 </Grid>
-                            </Grid>
-                            
+                            }
+                        </Grid>                            
                     </Card>
                 </IsEmptyCard>
             </IsEmptyCard>
-            )
-        
+        )
     }
 }
