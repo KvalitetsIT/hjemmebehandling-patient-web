@@ -21,7 +21,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi{
         try{
             await new Promise(f => setTimeout(f, this.timeToWait));
         
-        //throw new Response();
+        throw new Response(null,{status : 404});
         const careplan = new PatientCareplan();
         careplan.id = "careplan1"
 

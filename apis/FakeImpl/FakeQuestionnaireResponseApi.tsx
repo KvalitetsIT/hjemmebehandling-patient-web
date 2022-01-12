@@ -1,7 +1,7 @@
+import { NotFoundError } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/NotFoundError";
 import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import { NotFoundError } from "../../services/Errors/NotFoundError";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 
 export default class FakeQuestionnaireResponseApi implements IQuestionnaireResponseApi{

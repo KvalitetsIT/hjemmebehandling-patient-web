@@ -2,8 +2,8 @@
 
 import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinition";
 import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
-import { CriticalLevelEnum, InvalidInputModel } from "./Errors/InvalidInputError";
 import IValidationService from "./interfaces/IValidationService";
+import { CriticalLevelEnum, InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
 
 export default class ValidationService extends BaseService implements IValidationService {
     async ValidateNumber(posibleNumber: string) : Promise<InvalidInputModel[]>{
