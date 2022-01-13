@@ -55,6 +55,8 @@ export default class ResponseStatusCard extends Component<Props,{}>{
         const questionnaireId = this.props.questionnaireResponse?.questionnaireId;
         const questionnaire = this.props.careplan?.questionnaires?.find(x=>x.id === questionnaireId);
         const questionnaireResponse = this.props.questionnaireResponse;
+        const organizationName = this.props.careplan.organization?.name ?? "Ukendt afdeling";
+
         return (
             <IsEmptyCard object={questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet" >
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema fundet" >
@@ -67,7 +69,7 @@ export default class ResponseStatusCard extends Component<Props,{}>{
                             </Grid>
                             <Grid item sx={{padding:2}} xs={8}>
                                 <Typography variant="subtitle1">{questionnaire?.name}</Typography>
-                                <Typography variant="subtitle2">SomeHardcodedAfdeling</Typography>
+                                <Typography variant="subtitle2">{organizationName}</Typography>
                             </Grid>
                             {(questionnaireResponse.status ==  QuestionnaireResponseStatus.Processed) ?
                                 <Grid item sx={{padding:2}} xs={2}>
