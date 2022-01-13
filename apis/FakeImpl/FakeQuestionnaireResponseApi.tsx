@@ -7,16 +7,20 @@ import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 export default class FakeQuestionnaireResponseApi implements IQuestionnaireResponseApi{
     questionnaireResponses : QuestionnaireResponse[] = [];
 
+    date : number
+    getDate() : Date {
+        const oneDayInMs = 86400000
+        this.date = this.date + oneDayInMs
+        return new Date(this.date);
+    }
     constructor(){
-        var today = new Date();
-        var yesterday = new Date();
-        yesterday.setDate(today.getDate() - 1);
+        this.date = new Date().getTime()
         //QR1
         let questionnaireResponse1 = new QuestionnaireResponse();
         questionnaireResponse1.id = "questionnaireResponse1";
         questionnaireResponse1.questionnaireId = "q1"
-        questionnaireResponse1.answeredTime = yesterday;
-        questionnaireResponse1.examinedTime = today;
+        questionnaireResponse1.answeredTime = this.getDate();
+        questionnaireResponse1.examinedTime = this.getDate();
         questionnaireResponse1.status = QuestionnaireResponseStatus.Processed
 
         questionnaireResponse1.questions = new Map<Question,Answer>();
@@ -56,7 +60,7 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         let questionnaireResponse2 = new QuestionnaireResponse();
         questionnaireResponse2.id = "questionnaireResponse2";
         questionnaireResponse2.questionnaireId = "q1"
-        questionnaireResponse2.answeredTime = yesterday
+        questionnaireResponse2.answeredTime = this.getDate()
         questionnaireResponse2.status = QuestionnaireResponseStatus.NotAnswered
         
         questionnaireResponse2.questions = new Map<Question,Answer>();
