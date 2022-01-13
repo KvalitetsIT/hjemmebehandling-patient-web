@@ -2,6 +2,7 @@ import IQuestionnaireResponseApi from "../apis/interfaces/IQuestionnaireResponse
 import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
 import IQuestionnaireResponseService from "./interfaces/IQuestionnaireResponseService";
+import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 
 export default class QuestionnaireResponseService extends BaseService implements IQuestionnaireResponseService {
     api: IQuestionnaireResponseApi;
@@ -10,6 +11,22 @@ export default class QuestionnaireResponseService extends BaseService implements
         super()
         this.api = api;
     }
+    async QuestionnaireHasBeenAnsweredToday(careplanId: string, questionnaire: Questionnaire): Promise<boolean> {
+        const result = await this.GetQuestionnaireResponses(careplanId,[questionnaire.id],1,1);
+        const latestResponseDate = result.find(x=>true)?.answeredTime
+        console.log(latestResponseDate)
+        if(!latestResponseDate)
+            return false; //No responses at all
+
+        const today = new Date();
+        const hasTodaysDate = today.getDate() <= latestResponseDate.getDate();
+        const hasTodaysMonth = today.getMonth() == latestResponseDate.getMonth();
+        const hasTodaysYear = today.getFullYear() == latestResponseDate.getFullYear();
+        console.log(hasTodaysDate+ "&&" +hasTodaysMonth +"&&"+ hasTodaysYear)
+        return hasTodaysDate && hasTodaysMonth && hasTodaysYear
+        
+    }
+
     async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<void> {
         try {
             return await this.api.SubmitQuestionnaireResponse(questionnaireResponse);

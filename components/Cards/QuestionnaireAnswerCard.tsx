@@ -7,11 +7,15 @@ import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateH
 
 interface Props {
     questionnaire: Questionnaire
+    hasBeenAnswered: boolean
 }
 
 export default class QuestionnaireAnswerCard extends Component<Props, {}>{
     dateHelper!: IDateHelper;
     static contextType = ApiContext
+    public static defaultProps = {
+        hasBeenAnswered : false
+      };
 
     initialiseServices() : void{
         this.dateHelper = this.context.dateHelper;
@@ -30,7 +34,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, {}>{
                     <Typography variant="subtitle2">
                         Infektionssygdomme har sendt dig dette spørgeskema
                     </Typography>
-                    {deadlineIsToday ?
+                    {deadlineIsToday && !this.props.hasBeenAnswered?
                         <Typography variant="caption">Besvares i dag, inden kl {questionnaire?.frequency?.deadline}</Typography> :
                         <Typography variant="caption">Besvares {questionnaire?.frequency?.ToString()}</Typography>
                     }
