@@ -102,7 +102,7 @@ export default class UnAnsweredPage extends Component<{}, State>{
                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
                     <Typography component={Box} paddingBottom={1} variant="h6">Spørgeskemaer til besvarelse i dag</Typography>
 
-                    <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Ingen spørgeskemaer">
+                    <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Du har ikke flere spørgeskemaer der skal besvares">
                         <Stack direction="row" >
                             {this.state.answeredTodayList?.map(questionnaire => {
                                 return <QuestionnaireAnswerCard questionnaire={questionnaire} />
