@@ -1,18 +1,17 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
-import { Button, CardHeader, Grid, Skeleton, Typography } from '@mui/material';
+import { Button, Skeleton, Typography } from '@mui/material';
 import { Questionnaire } from '@kvalitetsit/hjemmebehandling/Models/Questionnaire';
 import { QuestionnaireResponse } from '@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse';
 import ApiContext from '../../pages/_context';
 import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
 import { Question } from '@kvalitetsit/hjemmebehandling/Models/Question';
-import { QuestionChart } from '@kvalitetsit/hjemmebehandling/Charts/QuestionChart';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
 import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ResponseViewCard from '@kvalitetsit/hjemmebehandling/Charts/ResponseViewCard';
+import ChartData from '@kvalitetsit/hjemmebehandling/Charts/ChartData';
 import { Link } from 'react-router-dom';
 import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
 
@@ -73,6 +72,9 @@ export class MiniChartRow extends Component<Props, State> {
 
         const threshold = this.state.questionnaire.thresholds?.find(x => x.questionId == question.Id)
 
+        const dateToString = (date: Date) => this.dateHelper.DateToString(date);
+        const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
+
         return (
             <IsEmptyCard list={this.state.questionnaireResponses} jsxWhenEmpty={
                 <>
@@ -83,25 +85,8 @@ export class MiniChartRow extends Component<Props, State> {
 
 
                 <Link to="/measurements">
-                    <Card >
-                        <CardHeader action={
-                            <Button ><ChevronRightIcon /></Button>
-                        }
-                            subheader={
-                                <>
-                                    <Grid container>
-                                        <Grid item xs={12}>
-                                            {question.question} </Grid>
-                                    </Grid>
-                                </>
-                            }
-                        />
-                        <CardContent>
-                            {threshold && threshold.thresholdNumbers ?
-                                <QuestionChart minimal={true} thresholds={threshold.thresholdNumbers} question={question} questionnaireResponses={this.state.questionnaireResponses} /> :
-                                <QuestionChart minimal={true} thresholds={[]} question={question} questionnaireResponses={this.state.questionnaireResponses} />}
-                        </CardContent>
-                    </Card>
+                    <ResponseViewCard showThresholds={false} cardAction={<Button ><ChevronRightIcon /></Button>} chartData={chartData} />
+
                 </Link>
             </IsEmptyCard>
         );
