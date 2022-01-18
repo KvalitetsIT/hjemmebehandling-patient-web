@@ -30,7 +30,7 @@ interface IApiContext {
 
 const ApiContext = createContext<IApiContext>(
     {
-        questionnaireResponseService : new QuestionnaireResponseService(new FakeQuestionnaireResponseApi()),
+        questionnaireResponseService : new QuestionnaireResponseService(new FakeQuestionnaireResponseApi(),new DanishDateHelper()),
         careplanService : new CareplanService(new FakeCareplanApi()),
         organizationService : new OrganizationService(new FakeOrganizationApi()),
 

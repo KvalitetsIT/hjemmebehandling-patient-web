@@ -54,7 +54,7 @@ export default class HomePage extends Component<{}, State> {
     renderPage(): JSX.Element {
         const questionnaires = this.state.careplan?.questionnaires;
         const observarionQuestions = questionnaires?.flatMap(x => x.questions).filter(x => x?.type == QuestionTypeEnum.OBSERVATION) ?? [];
-
+        const careplan = this.state.careplan;
 
         return (
             <>
@@ -71,7 +71,7 @@ export default class HomePage extends Component<{}, State> {
 
                                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
                                     <ErrorBoundary>
-                                        <ScrollableRow jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard questionnaire={q} />)} />
+                                        <ScrollableRow jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)} />
                                     </ErrorBoundary>
                                 </IsEmptyCard>
 
@@ -85,9 +85,9 @@ export default class HomePage extends Component<{}, State> {
                             <Grid item xs={12}>
                                 <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
                                     <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
-                                        
-                                            <IsEmptyCard object={this.state.careplan!.questionnaires.find(qu => qu.questions?.find(x => x.type == QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={"Ingen målinger på behandlingsplanen"}>
-                                                <ScrollableRow jsxList={observarionQuestions.map((q) => <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}><MiniChartRow careplan={this.state.careplan!} question={q!} /></IsEmptyCard>)} />
+
+                                        <IsEmptyCard object={this.state.careplan!.questionnaires.find(qu => qu.questions?.find(x => x.type == QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={"Ingen målinger på behandlingsplanen"}>
+                                            <ScrollableRow jsxList={observarionQuestions.map((q) => <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}><MiniChartRow careplan={this.state.careplan!} question={q!} /></IsEmptyCard>)} />
                                         </IsEmptyCard>
                                     </IsEmptyCard>
                                 </IsEmptyCard>

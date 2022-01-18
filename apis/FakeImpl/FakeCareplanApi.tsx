@@ -48,7 +48,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             questionnaire.id = "q1"
             questionnaire.name = "Cool questionnaire"
             questionnaire.frequency = new Frequency();
-            questionnaire.frequency.days = [DayEnum.Friday, DayEnum.Thursday, DayEnum.Wednesday]
+            questionnaire.frequency.days = [DayEnum.Friday, DayEnum.Monday,DayEnum.Tuesday, DayEnum.Wednesday]
             questionnaire.frequency.deadline = "11:00"
 
             questionnaire.thresholds = [];
