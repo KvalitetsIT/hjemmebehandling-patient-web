@@ -5,6 +5,8 @@ import IQuestionnaireResponseService from "./interfaces/IQuestionnaireResponseSe
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
+import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
 
 export default class QuestionnaireResponseService extends BaseService implements IQuestionnaireResponseService {
     api: IQuestionnaireResponseApi;
@@ -15,6 +17,16 @@ export default class QuestionnaireResponseService extends BaseService implements
         this.api = api;
         this.datehelper = datehelper;
     }
+
+    GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string): { question: Question, answer: Answer } | undefined {
+        let toReturn: { question: Question, answer: Answer } | undefined = undefined;
+        questionToAnswerMap?.forEach((answer, question) => {
+            if (question.Id == questionId)
+                toReturn = { answer: answer, question: question };
+        });
+        return toReturn;
+    }
+
     async QuestionnaireShouldBeAnsweredToday(careplanId: string, questionnaire: Questionnaire): Promise<boolean> {
         try {
 

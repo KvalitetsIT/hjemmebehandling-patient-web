@@ -14,6 +14,7 @@ import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
 import { NotImplementedError } from "@kvalitetsit/hjemmebehandling/Errorhandling/ApiErrors/NotImplementedError";
 import ICareplanApi from "../interfaces/ICareplanApi";
 import DetailedOrganization from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
 
 export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
     timeToWait: number = 1000;
@@ -61,9 +62,15 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             t1.questionId = "temp"
             questionnaire.thresholds.push(t1);
             question1.Id = "temp"
+            const enableWhen = new EnableWhen<boolean>();
+            enableWhen.questionId = "betterToday";
+            enableWhen.answer = false;
+            question1.enableWhen = enableWhen;
+            
+
             question1.question = "Indtast din morgen temperatur?"
             question1.type = QuestionTypeEnum.OBSERVATION
-            questionnaire.questions[0] = question1;
+            
 
             const question2 = new Question();
             const t2 = new ThresholdCollection();
@@ -85,13 +92,15 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             question2.Id = "CRP"
             question2.question = "Indtast den målte CRP?"
             question2.type = QuestionTypeEnum.OBSERVATION
-            questionnaire.questions[1] = question2;
-
+            
             const question3 = new Question();
             question3.Id = "betterToday"
             question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
             question3.type = QuestionTypeEnum.BOOLEAN
-            questionnaire.questions[2] = question3;
+            
+            questionnaire.questions[0] = question3;            
+            questionnaire.questions[1] = question2;
+            questionnaire.questions[2] = question1;
 
 
             let questionnaire2 = new Questionnaire();
