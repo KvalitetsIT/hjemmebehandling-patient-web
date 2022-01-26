@@ -18,7 +18,7 @@ export default class QuestionnaireResponseService extends BaseService implements
         this.datehelper = datehelper;
     }
 
-    GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string): { question: Question, answer: Answer } | undefined {
+    GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string): [question: Question, answer: Answer] | undefined {
         let toReturn: { question: Question, answer: Answer } | undefined = undefined;
         questionToAnswerMap?.forEach((answer, question) => {
             if (question.Id == questionId)
@@ -40,7 +40,7 @@ export default class QuestionnaireResponseService extends BaseService implements
 
             //Get latest questionnaire for given questionnaire and determine if it is today
             const result = await this.GetQuestionnaireResponses(careplanId, [questionnaire.id], 1, 1);
-            const latestResponseDate = result.find(x => true)?.answeredTime
+            const latestResponseDate = result.find(() => true)?.answeredTime
             if (latestResponseDate) {
                 const today = new Date();
                 const hasTodaysDate = today.getDate() <= latestResponseDate.getDate();

@@ -20,11 +20,11 @@ export default class InternalToExternalMapper extends BaseMapper {
 
     MapQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): QuestionnaireResponseDto {
         const toReturn: QuestionnaireResponseDto = {
-            id : FhirUtils.qualifyId(questionnaireResponse.id,Qualifier.QuestionnaireResponse),
-            patient : this.mapPatient(questionnaireResponse.patient as PatientDetail),
-            questionAnswerPairs : this.mapQuestionAnswerPair(questionnaireResponse.questions),
-            questionnaireId : FhirUtils.qualifyId(questionnaireResponse.questionnaireId,Qualifier.Questionnaire) ,
-            carePlanId : FhirUtils.qualifyId(questionnaireResponse.carePlanId,Qualifier.CarePlan), 
+            id: FhirUtils.qualifyId(questionnaireResponse.id, Qualifier.QuestionnaireResponse),
+            patient: this.mapPatient(questionnaireResponse.patient as PatientDetail),
+            questionAnswerPairs: this.mapQuestionAnswerPair(questionnaireResponse.questions),
+            questionnaireId: FhirUtils.qualifyId(questionnaireResponse.questionnaireId, Qualifier.Questionnaire),
+            carePlanId: FhirUtils.qualifyId(questionnaireResponse.carePlanId, Qualifier.CarePlan),
         }
         return toReturn;
     }
@@ -32,15 +32,13 @@ export default class InternalToExternalMapper extends BaseMapper {
     mapQuestionAnswerPair(questions: Map<Question, Answer> | undefined): QuestionAnswerPairDto[] | undefined {
         const toReturn: QuestionAnswerPairDto[] = []
         questions?.forEach((answer, question) => {
-            const answerNumberValue = answer instanceof NumberAnswer ? answer.answer : undefined;
-            const answerStringValue = answer instanceof StringAnswer ? answer.answer : undefined;
 
-            let answerType = this.mapAnswerType(answer)
+            const answerType = this.mapAnswerType(answer)
             let value = ''
-            if(answerType === AnswerDtoAnswerTypeEnum.Quantity) {
+            if (answerType === AnswerDtoAnswerTypeEnum.Quantity) {
                 value = answer.ToString()
             }
-            if(answerType === AnswerDtoAnswerTypeEnum.Boolean) {
+            if (answerType === AnswerDtoAnswerTypeEnum.Boolean) {
                 value = answer.ToString() === 'Ja' ? 'true' : 'false'
             }
 
@@ -101,8 +99,8 @@ export default class InternalToExternalMapper extends BaseMapper {
         }
     }
 
-    mapCarePlan(carePlan: PatientCareplan) : CarePlanDto {
-        let carePlanDto = {
+    mapCarePlan(carePlan: PatientCareplan): CarePlanDto {
+        const carePlanDto = {
             id: "dummy",
             title: "Ny behandlingsplan", // TODO - set a title ...
             patientDto: this.mapPatient(carePlan.patient!),
@@ -112,7 +110,7 @@ export default class InternalToExternalMapper extends BaseMapper {
 
         return carePlanDto
 
-}
+    }
     mapFrequency(frequency: Frequency): FrequencyDto {
 
         return {
@@ -157,7 +155,7 @@ export default class InternalToExternalMapper extends BaseMapper {
     }
 
     mapWeekday(weekday: DayEnum): FrequencyDtoWeekdaysEnum {
-
+        console.log(weekday);
         return FrequencyDtoWeekdaysEnum.Mon;
 
     }
@@ -193,16 +191,16 @@ export default class InternalToExternalMapper extends BaseMapper {
 
     }
 
-    mapPatient(patient: PatientDetail) : PatientDto {
-        let contactDetails : ContactDetailsDto = {}
+    mapPatient(patient: PatientDetail): PatientDto {
+        const contactDetails: ContactDetailsDto = {}
         contactDetails.street = patient.address?.street
         contactDetails.postalCode = patient.address?.zipCode
         contactDetails.city = patient.address?.city
         contactDetails.primaryPhone = patient.primaryPhone
         contactDetails.secondaryPhone = patient.secondaryPhone
 
-        let primaryRelativeContactDetails : ContactDetailsDto = {}
-        if(patient.contact) {
+        let primaryRelativeContactDetails: ContactDetailsDto = {}
+        if (patient.contact) {
             primaryRelativeContactDetails = {
                 primaryPhone: patient?.contact.primaryPhone,
                 secondaryPhone: patient?.contact.secondaryPhone

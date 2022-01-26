@@ -11,9 +11,7 @@ import SimpleOrganization from "@kvalitetsit/hjemmebehandling/Models/SimpleOrgan
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { ThresholdNumber } from "@kvalitetsit/hjemmebehandling/Models/ThresholdNumber";
 import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
-import { NotImplementedError } from "@kvalitetsit/hjemmebehandling/Errorhandling/ApiErrors/NotImplementedError";
 import ICareplanApi from "../interfaces/ICareplanApi";
-import DetailedOrganization from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
 import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
 
 export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
@@ -26,26 +24,26 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             const careplan = new PatientCareplan();
             careplan.id = "careplan1"
 
-            let patient = new PatientDetail();
+            const patient = new PatientDetail();
             patient.firstname = "Anders"
             patient.lastname = "Madsen"
             patient.cpr = "1212120382"
             patient.primaryPhone = "+4520304050"
             patient.secondaryPhone = "+4520304050"
-            let address = new Address();
+            const address = new Address();
             address.city = "Aarhus N"
             address.country = "Danmark"
             address.street = "Olof Palmes Allé 34"
             address.zipCode = "8200"
             patient.address = address;
-            let contact = new Contact();
+            const contact = new Contact();
             contact.affiliation = "Kone"
             contact.fullname = "Gitte Madsen"
             contact.primaryPhone = "+4530405060"
             patient.contact = contact;
             careplan.patient = patient;
 
-            let questionnaire = new Questionnaire();
+            const questionnaire = new Questionnaire();
             questionnaire.id = "q1"
             questionnaire.name = "Cool questionnaire"
             questionnaire.frequency = new Frequency();
@@ -103,7 +101,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             questionnaire.questions[2] = question1;
 
 
-            let questionnaire2 = new Questionnaire();
+            const questionnaire2 = new Questionnaire();
             questionnaire2.id = "q2"
             questionnaire2.name = "Lastbilchauførers surhed"
             questionnaire2.frequency = new Frequency();

@@ -6,6 +6,7 @@ import IOrganizationApi from "../interfaces/IOrganizationApi";
 
 export default class FakeCareplanApi extends BaseApi implements IOrganizationApi{
     async getOrganizationDetails(orgId: string) : Promise<Department>{
+        console.log(orgId);
         const department = new Department();
         department.name = "Infektionssygdomme"
         department.phoneNumber = "83749382"

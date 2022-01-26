@@ -8,7 +8,7 @@ import { CriticalLevelEnum, InvalidInputModel } from "@kvalitetsit/hjemmebehandl
 export default class ValidationService extends BaseService implements IValidationService {
     async ValidateNumber(posibleNumber: string) : Promise<InvalidInputModel[]>{
         const erorrs : InvalidInputModel[] = []
-        let propName = "Tal"
+        const propName = "Tal"
         if(posibleNumber.includes(",")){
             const error = new InvalidInputModel(propName,"Kommatal skal skrives med punktum")
             erorrs.push(error)
@@ -26,7 +26,7 @@ export default class ValidationService extends BaseService implements IValidatio
 
     async ValidateZipCode(zipCode: string): Promise<InvalidInputModel[]>{
         const erorrs : InvalidInputModel[] = []
-        let propName = "Postnummer"
+        const propName = "Postnummer"
         if(zipCode.length !== 4){
             const error = new InvalidInputModel(propName,"Skal være 4 tegn")
             erorrs.push(error)
@@ -36,7 +36,7 @@ export default class ValidationService extends BaseService implements IValidatio
 
     async ValidateCPR(cpr: string) : Promise<InvalidInputModel[]>{
         const erorrs : InvalidInputModel[] = []
-        let propName = "CPR"
+        const propName = "CPR"
     
         if(!cpr){
             const error = new InvalidInputModel(propName,"CPR ikke udfyldt")
@@ -57,7 +57,7 @@ export default class ValidationService extends BaseService implements IValidatio
 
     async ValidatePhonenumber(phoneNumber: string) : Promise<InvalidInputModel[]>{
         const errors : InvalidInputModel[] = []   
-        let propName = "Telefonnummer"
+        const propName = "Telefonnummer"
         if(!phoneNumber || phoneNumber === "")
             return [];
 
@@ -76,7 +76,7 @@ export default class ValidationService extends BaseService implements IValidatio
 
     async ValidatePlanDefinitions(planDefinitions: PlanDefinition[]) : Promise<InvalidInputModel[]>{
         const errors : InvalidInputModel[] = []   
-        let propName = "Patientgruppe"
+        const propName = "Patientgruppe"
 
         if(!planDefinitions || planDefinitions.length == 0){
             const error = new InvalidInputModel(propName,"Patient skal knyttes til minimum én patientgruppe ")
@@ -98,13 +98,13 @@ export default class ValidationService extends BaseService implements IValidatio
 
         let sum = 0;
         for(let i = 0; i<9; i++){
-            let cprDigit = cprNumbers[i];
-            let controlDigit = controlNumber[i];
+            const cprDigit = cprNumbers[i];
+            const controlDigit = controlNumber[i];
             sum += cprDigit * controlDigit;
         }
 
-        let b1 = constant - (sum % constant)
-        let isCorrectCpr = b1 == cprNumbers[9]
+        const b1 = constant - (sum % constant)
+        const isCorrectCpr = b1 == cprNumbers[9]
         return isCorrectCpr
     }
 

@@ -23,7 +23,7 @@ export default class RealOrganizationApi extends BaseApi implements IOrganizatio
     async getOrganizationDetails(orgId: string): Promise<DetailedOrganization> {
         try {
 
-            let plainId = FhirUtils.unqualifyId(orgId)
+            const plainId = FhirUtils.unqualifyId(orgId)
             const request = {
                 id: plainId
             }

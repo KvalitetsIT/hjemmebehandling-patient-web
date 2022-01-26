@@ -2,10 +2,10 @@ import { BaseServiceError, DisplaySettings } from "@kvalitetsit/hjemmebehandling
 
 
 export class NoActiveCareplanFound extends BaseServiceError {
-    displayMessage() {
+    displayMessage() : string {
         return "Ingen aktiv behandlingsplan blev fundet for brugeren";
     }
-    displayTitle(){
+    displayTitle() : string {
         return "Ingen aktiv behandlingsplan"
     }
     displaySettings(): DisplaySettings {

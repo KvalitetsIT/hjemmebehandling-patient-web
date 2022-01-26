@@ -139,7 +139,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         if (question?.enableWhen?.questionId) {
             const questionAnswerTuple = this.questionnaireResponseService.GetQuestionAnswerFromMap(this.state.questionnaireResponse.questions, question.enableWhen.questionId);
             console.log(questionAnswerTuple)
-            const booleanAnswer = questionAnswerTuple?.answer as BooleanAnswer;
+            const booleanAnswer : BooleanAnswer = questionAnswerTuple?.[1] as BooleanAnswer;
             console.log(booleanAnswer)
             if (booleanAnswer) {
                 const shouldShowQuestion = question?.enableWhen?.ShouldBeEnabled(booleanAnswer.answer)
