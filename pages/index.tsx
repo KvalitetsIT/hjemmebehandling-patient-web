@@ -15,7 +15,7 @@ import React from 'react';
   
   function App() : JSX.Element {
     console.log('Calling foo. Result: ' + foo(4));
-  
+    
     return (
       <div className="App">
         <header className="App-header">
