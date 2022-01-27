@@ -177,7 +177,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.Id = questionDto.linkId!
         question.type = this.mapQuestionType(questionDto.questionType!)
         question.question = questionDto.text!
-
+        //TODO: question.enableWhen = questionDto.
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {
             question.options = ["Ja", "Nej"]
         }
