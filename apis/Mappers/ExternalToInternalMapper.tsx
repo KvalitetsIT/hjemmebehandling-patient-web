@@ -1,6 +1,6 @@
 
 import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
-import { Answer, NumberAnswer, StringAnswer,BooleanAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, NumberAnswer, StringAnswer, BooleanAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
 import { Contact } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import DetailedOrganization, { PhoneHour } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
@@ -291,7 +291,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
     mapSingleEntitlement(entitlement: string): string {
         const splittedByUnderscore = entitlement.split("_");
         const lenght = splittedByUnderscore.length
-        const mappedEntitlement = splittedByUnderscore[lenght-1]
+        const mappedEntitlement = splittedByUnderscore[lenght - 1]
         return mappedEntitlement;
     }
 
@@ -321,7 +321,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
     }
 
     mapAnswerDto(answerDto: AnswerDto): Answer {
-        
+
         switch (answerDto.answerType) {
             case AnswerDtoAnswerTypeEnum.Integer:
                 return this.mapNumberedAnswer(answerDto);
@@ -415,39 +415,59 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return questionnaire
     }
 
-    mapContactDetailsDto(patientContactDetails: ContactDetailsDto): Contact {
+    mapContactDetailsDto(patientDto: PatientDto): Contact {
 
         const contact = new Contact();
-
-        const address = new Address();
-        console.log('ContactDetails: ' + JSON.stringify(patientContactDetails));
-        address.street = patientContactDetails?.street ?? 'Fiskergade 66';
-        address.zipCode = patientContactDetails?.postalCode ?? '8000';
-        address.city = "Aarhus";
-        address.country = patientContactDetails?.country ?? 'Danmark';
-
-        contact.primaryPhone = patientContactDetails?.primaryPhone ?? "12345678";
-        contact.secondaryPhone = patientContactDetails?.secondaryPhone ?? "87654321";
+        contact.primaryPhone = patientDto.patientContactDetails?.primaryPhone;
+        contact.secondaryPhone = patientDto.patientContactDetails?.primaryPhone;
 
         return contact;
     }
 
+    
     mapPatientDto(patientDto: PatientDto): PatientDetail {
-
-        const patient = new PatientDetail();
-
-        patient.firstname = patientDto.givenName;
-        patient.lastname = patientDto.familyName;
-        patient.cpr = patientDto.cpr;
-        patient.address = this.mapPatientContactDetails(patientDto.patientContactDetails)
-        patient.contact = this.mapContactDetailsDto(patientDto.primaryRelativeContactDetails!)
-        patient.primaryPhone = patientDto.primaryRelativeContactDetails?.primaryPhone;
-        patient.secondaryPhone = patientDto.primaryRelativeContactDetails?.secondaryPhone;
+        let address: Address = {}
+        if (patientDto.patientContactDetails) {
+            address = this.mapAddress(patientDto.patientContactDetails)
+        }
 
 
-        return patient;
+        const contactDetails = this.mapContactDetails(patientDto)
+
+        const toReturn = new PatientDetail();
+        toReturn.firstname = patientDto.givenName;
+        toReturn.lastname = patientDto.familyName;
+        toReturn.cpr = patientDto.cpr;
+        toReturn.primaryPhone = patientDto.patientContactDetails?.primaryPhone
+        toReturn.secondaryPhone = patientDto.patientContactDetails?.secondaryPhone
+        toReturn.address = address
+        toReturn.contact = contactDetails
+        //toReturn.username = patientDto.customUserName
+        return toReturn;
+    }
+
+    mapContactDetails(patientDto: PatientDto): Contact {
+        const toReturn = new Contact();
+
+        toReturn.fullname = patientDto?.primaryRelativeName ?? ''
+        toReturn.affiliation = patientDto?.primaryRelativeAffiliation ?? ''
+        toReturn.primaryPhone = patientDto?.primaryRelativeContactDetails?.primaryPhone ?? ''
+        toReturn.secondaryPhone = patientDto?.primaryRelativeContactDetails?.secondaryPhone ?? ''
+        return toReturn;
 
     }
+
+    mapAddress(contactDetails: ContactDetailsDto): Address {
+        const address = new Address();
+
+        address.city = contactDetails?.city;
+        address.country = contactDetails?.country;
+        address.zipCode = contactDetails?.postalCode;
+        address.street = contactDetails?.street;
+
+        return address;
+    }
+
     mapPatientContactDetails(patientContactDetails: ContactDetailsDto | undefined): Address {
         const address = new Address();
         address.city = patientContactDetails?.city;
