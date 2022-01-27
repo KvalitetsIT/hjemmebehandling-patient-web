@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import QuestionnaireAnswerCard from "../../components/Cards/QuestionnaireAnswerCard";
 import { LoadingBackdropComponent } from "../../components/Layout/LoadingBackdropComponent";
-import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import ICareplanService from "../../services/interfaces/ICareplanService";
@@ -69,10 +68,7 @@ export default class UnAnsweredPage extends Component<{}, State>{
         this.setState({ loadingPage: false })
     }
 
-    getTodaysDay(): DayEnum {
-        const today = new Date().getDay()
-        return this.dateHelper.DayIndexToDay(today);
-    }
+   
 
     render(): JSX.Element {
         this.initializeServices();
@@ -85,12 +81,10 @@ export default class UnAnsweredPage extends Component<{}, State>{
             return false;
         }
 
-        const todaysDayIndex = this.getTodaysDay();
-        const frequencyIsToday: boolean = questionnaire.frequency?.days?.includes(todaysDayIndex) ?? false
-        const hasBeenAnsweredToday: boolean = await this.questionnaireResponseService.QuestionnaireHasBeenAnsweredToday(careplan?.id, questionnaire);
 
-        console.log(questionnaire.name + ": "+ frequencyIsToday +"&&"+ hasBeenAnsweredToday)
-        return frequencyIsToday && !hasBeenAnsweredToday
+        const hasBeenAnsweredToday: boolean = await this.questionnaireResponseService.QuestionnaireShouldBeAnsweredToday(careplan?.id, questionnaire);
+
+        return hasBeenAnsweredToday
     }
 
     renderPage(): JSX.Element {
@@ -105,7 +99,7 @@ export default class UnAnsweredPage extends Component<{}, State>{
                     <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Du har ikke flere spørgeskemaer der skal besvares">
                         <Stack direction="row" >
                             {this.state.answeredTodayList?.map(questionnaire => {
-                                return <QuestionnaireAnswerCard questionnaire={questionnaire} />
+                                return <QuestionnaireAnswerCard careplan={this.state.careplan}questionnaire={questionnaire} />
                             })}
 
                         </Stack>
@@ -115,7 +109,7 @@ export default class UnAnsweredPage extends Component<{}, State>{
                     <IsEmptyCard list={this.state.answeredOtherdayList} jsxWhenEmpty="Ingen spørgeskemaer">
                         <Stack direction="row" spacing={2} >
                             {this.state.answeredOtherdayList?.map(questionnaire => {
-                                return <QuestionnaireAnswerCard hasBeenAnswered={true} questionnaire={questionnaire} />
+                                return <QuestionnaireAnswerCard careplan={this.state.careplan} questionnaire={questionnaire} />
                             })}
 
                         </Stack>

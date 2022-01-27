@@ -45,6 +45,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     }
   }
 
+  const dateHelper = new DanishDateHelper();
   return (
     <>
       <div suppressHydrationWarning>
@@ -54,13 +55,13 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           <ApiContext.Provider
             value={{
               //Services
-              questionnaireResponseService: new QuestionnaireResponseService(questionnaireResponseApi),
+              questionnaireResponseService: new QuestionnaireResponseService(questionnaireResponseApi,dateHelper),
               careplanService: new CareplanService(careplanApi),
               organizationService: new OrganizationService(organizationApi),
 
               //Helpers
               validationService: new ValidationService(),
-              dateHelper: new DanishDateHelper(),
+              dateHelper: dateHelper,
               collectionHelper: new CollectionHelper()
             }}
           >

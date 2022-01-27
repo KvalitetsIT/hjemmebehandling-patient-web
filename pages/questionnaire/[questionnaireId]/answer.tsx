@@ -10,7 +10,7 @@ import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCar
 import { LoadingBackdropComponent } from "../../../components/Layout/LoadingBackdropComponent";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, BooleanAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import LinearProgress from '@mui/material/LinearProgress';
 import QuestionPresenterCard from "../../../components/Cards/QuestionPresenterCard";
@@ -135,6 +135,20 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         )
     }
 
+    shouldShowQuestion(question: Question | undefined) : boolean{
+        if (question?.enableWhen?.questionId) {
+            const questionAnswerTuple = this.questionnaireResponseService.GetQuestionAnswerFromMap(this.state.questionnaireResponse.questions, question.enableWhen.questionId);
+            console.log(questionAnswerTuple)
+            const booleanAnswer : BooleanAnswer = questionAnswerTuple?.[1] as BooleanAnswer;
+            console.log(booleanAnswer)
+            if (booleanAnswer) {
+                const shouldShowQuestion = question?.enableWhen?.ShouldBeEnabled(booleanAnswer.answer)
+                return shouldShowQuestion
+            }
+        }
+
+        return true;
+    }
     renderQuestion(questionnaire: Questionnaire | undefined): JSX.Element {
 
         const questions = questionnaire?.questions;
@@ -142,6 +156,13 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         if (questions) {
             question = questions.length > this.state.questionIndex ? questions[this.state.questionIndex] : undefined;
         }
+
+        if (!this.shouldShowQuestion(question)){
+            const newIndex = this.state.questionIndex+1;
+            this.setState({questionIndex : newIndex})
+            return <></>
+        }
+            
 
         return (
             <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
@@ -189,7 +210,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         this.setState({ questionnaireResponse: response, questionIndex: this.state.questionIndex + 1 })
     }
 
-    createLastColoumn(questionId: string, questionnaire: Questionnaire) : JSX.Element{
+    createLastColoumn(questionId: string, questionnaire: Questionnaire): JSX.Element {
         const questionIndex: number | undefined = questionnaire.questions!.findIndex(x => x.Id === questionId);
         if (questionIndex >= 0)
             return (<Button onClick={() => this.setState({ questionIndex: questionIndex })}> <EditIcon />  </Button>)

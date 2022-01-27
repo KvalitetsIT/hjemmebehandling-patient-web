@@ -64,15 +64,16 @@ export class PatientCard extends Component<{}, State> {
                         <Typography align="right" variant="body2">{patient?.cprToString()}</Typography>
                         <br />
                         <Typography align="right" variant="body2">{patient?.address?.street}</Typography>
-                        <Typography align="right" variant="body2">{patient?.address?.city}</Typography>
+                        <Typography align="right" variant="body2">{patient?.address?.zipCode} {patient?.address?.city}</Typography>
                         <br />
-                        <Typography align="right" variant="body2">{patient?.primaryPhone}</Typography>
+                        <Typography align="right" variant="body2">{patient?.primaryPhonenumberToString()}</Typography>
+                        <Typography align="right" variant="body2">{patient?.secondaryPhonenumberToString()}</Typography>
                         <br />
                         <Typography align="right" variant="body2">Primære kontakt</Typography>
                         <Typography align="right" variant="body2">{patient?.contact?.fullname}</Typography>
                         <Typography align="right" variant="body2">{patient?.contact?.affiliation}</Typography>
-                        <Typography align="right" variant="body2">{patient?.contact?.primaryPhone}</Typography>
-
+                        <Typography align="right" variant="body2">{patient?.contact?.primaryPhonenumberToString}</Typography>
+                        <Typography align="right" variant="body2">{patient?.contact?.secondaryPhonenumberToString}</Typography>
                     </CardContent>
                     <Divider />
                 </Card>

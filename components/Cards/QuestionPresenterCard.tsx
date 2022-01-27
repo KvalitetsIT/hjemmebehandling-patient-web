@@ -31,7 +31,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             initialAnswer = props.answer.answer + "";
         }
         if (props.answer instanceof StringAnswer) {
-            initialAnswer = props.answer.answer
+            initialAnswer = props.answer.answer + ""
         }
 
         this.state = {

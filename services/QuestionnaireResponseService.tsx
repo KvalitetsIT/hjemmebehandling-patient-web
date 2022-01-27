@@ -3,28 +3,66 @@ import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/Ques
 import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
 import IQuestionnaireResponseService from "./interfaces/IQuestionnaireResponseService";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
+import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
+import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
+import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
 
 export default class QuestionnaireResponseService extends BaseService implements IQuestionnaireResponseService {
     api: IQuestionnaireResponseApi;
+    datehelper: IDateHelper;
 
-    constructor(api: IQuestionnaireResponseApi) {
+    constructor(api: IQuestionnaireResponseApi, datehelper: IDateHelper) {
         super()
         this.api = api;
+        this.datehelper = datehelper;
     }
-    async QuestionnaireHasBeenAnsweredToday(careplanId: string, questionnaire: Questionnaire): Promise<boolean> {
-        const result = await this.GetQuestionnaireResponses(careplanId,[questionnaire.id],1,1);
-        const latestResponseDate = result.find(x=>true)?.answeredTime
-        console.log(latestResponseDate)
-        if(!latestResponseDate)
-            return false; //No responses at all
 
-        const today = new Date();
-        const hasTodaysDate = today.getDate() <= latestResponseDate.getDate();
-        const hasTodaysMonth = today.getMonth() == latestResponseDate.getMonth();
-        const hasTodaysYear = today.getFullYear() == latestResponseDate.getFullYear();
-        console.log(hasTodaysDate+ "&&" +hasTodaysMonth +"&&"+ hasTodaysYear)
-        return hasTodaysDate && hasTodaysMonth && hasTodaysYear
-        
+    GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string): [question: Question, answer: Answer] | undefined {
+        let toReturn: { question: Question, answer: Answer } | undefined = undefined;
+        questionToAnswerMap?.forEach((answer, question) => {
+            if (question.Id == questionId)
+                toReturn = { answer: answer, question: question };
+        });
+        return toReturn;
+    }
+
+    async QuestionnaireShouldBeAnsweredToday(careplanId: string, questionnaire: Questionnaire): Promise<boolean> {
+        try {
+
+
+            // Check if the frequency matches today
+            const todaysDayIndex = this.getTodaysDay();
+            const frequencyIsToday: boolean = questionnaire.frequency?.days?.includes(todaysDayIndex) ?? false
+            if (!frequencyIsToday)
+                return false; // If frequency does not match today we return false
+
+
+            //Get latest questionnaire for given questionnaire and determine if it is today
+            const result = await this.GetQuestionnaireResponses(careplanId, [questionnaire.id], 1, 1);
+            const latestResponseDate = result.find(() => true)?.answeredTime
+            if (latestResponseDate) {
+                const today = new Date();
+                const hasTodaysDate = today.getDate() <= latestResponseDate.getDate();
+                const hasTodaysMonth = today.getMonth() == latestResponseDate.getMonth();
+                const hasTodaysYear = today.getFullYear() == latestResponseDate.getFullYear();
+                const hasBeenAnsweredToday = hasTodaysDate && hasTodaysMonth && hasTodaysYear;
+
+                return !hasBeenAnsweredToday //If frequency matches today and we have a response that is today we return false
+            }
+
+            return true //If frequency matches today but we have no responses we return true
+
+        } catch (error) {
+            return this.HandleError(error);
+        }
+
+
+    }
+
+    private getTodaysDay(): DayEnum {
+        const today = new Date().getDay()
+        return this.datehelper.DayIndexToDay(today);
     }
 
     async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<void> {
