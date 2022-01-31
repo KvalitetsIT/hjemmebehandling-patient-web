@@ -47,15 +47,20 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     render(): JSX.Element {
         this.initializeServices();
         return (
-            <Grid spacing={2} container>
+            <Grid container spacing={2} justifyContent="center" >
                 <Grid item xs={12} >
                     <Typography>{this.props.question.question}</Typography>
+                </Grid>
+                <Grid item xs={2} >
+                <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
                 </Grid>
                 <Grid item xs={12} >
 
                     {this.renderQuestionInput(this.props.question)}
                 </Grid>
+
                 <Grid item xs={12}>
+                
                     <Button
                         disabled={this.buttonShouldBeDisabled()}
                         onClick={() => this.answerQuestion()}

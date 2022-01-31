@@ -60,6 +60,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             t1.questionId = "temp"
             questionnaire.thresholds.push(t1);
             question1.Id = "temp"
+            question1.helperText = "Hvis du får antibiotika på pumpe skal du svare nej hvis der har været problemer med indløb"
             const enableWhen = new EnableWhen<boolean>();
             enableWhen.questionId = "betterToday";
             enableWhen.answer = false;
@@ -71,6 +72,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             
 
             const question2 = new Question();
+            question2.helperText = "when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
             const t2 = new ThresholdCollection();
             t2.questionId = "CRP"
             const t2green = new ThresholdNumber();
@@ -93,6 +95,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             
             const question3 = new Question();
             question3.Id = "betterToday"
+            question3.helperText = "Mads er ved at pille ved sin skærm - Mon tabletten oplader"
             question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
             question3.type = QuestionTypeEnum.BOOLEAN
             
