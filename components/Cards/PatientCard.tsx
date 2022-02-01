@@ -52,6 +52,7 @@ export class PatientCard extends Component<{}, State> {
 
     renderCard(): JSX.Element {
         const patient = this.state.careplan?.patient;
+        console.log(patient)
         return (
 
                 <Card sx={{ borderRadius: 0 }} elevation={0}>
