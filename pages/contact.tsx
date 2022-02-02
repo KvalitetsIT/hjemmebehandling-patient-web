@@ -73,7 +73,7 @@ export default class ContactPage extends Component<{}, State> {
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
                                 <Card>   
-                                    <CardHeader subheader={department?.name}></CardHeader>
+                                    <CardHeader subheader={"Infektionssygdomme"}></CardHeader>
                                     <Divider />
                                     <CardContent>
                                         <Typography>På hverdage kan Infektionsklinikken kontaktes på tlf.: 40 45 98 12 følgende tidspunkter:</Typography>
@@ -112,11 +112,11 @@ export default class ContactPage extends Component<{}, State> {
                                         <Typography>Ved behov for hjælp uden for disse tidspunkter kan sengeafsnittet kontaktes på telefon 24 77 78 80 (hele døgnet)</Typography>
                                         <br/>
                                         <Typography variant="button">Adresse</Typography>
-                                        <Typography>{department?.name}</Typography>
+                                        <Typography>Infektionssygdomme</Typography>
                                         <Typography>Aarhus Universitetshospital</Typography>
-                                        <Typography>{department?.address?.street} eller D3</Typography>
+                                        <Typography>Palle Juul-Jensen Boulevard 99, Indgang E eller D3</Typography>
                                         <Typography>Krydspunkt: Infektionsklinikken E202 eller sengeafsnittet E201</Typography>
-                                        <Typography>{department?.address?.zipCode} {department?.address?.city}</Typography>
+                                        <Typography>8200 Aarhus N</Typography>
                                                                                 
                                     </CardContent>
                                 </Card>
