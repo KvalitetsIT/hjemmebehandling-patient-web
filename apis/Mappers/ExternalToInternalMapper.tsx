@@ -62,9 +62,6 @@ export default class ExternalToInternalMapper extends BaseMapper {
         carePlan.planDefinitions = carePlanDto.planDefinitions!.map(pd => this.mapPlanDefinitionDto(pd))
         carePlan.questionnaires = carePlanDto?.questionnaires?.map(q => this.mapQuestionnaireDto(q)) ?? []
         carePlan.patient = this.mapPatientDto(carePlanDto.patientDto!);
-        if (!carePlanDto.created) {
-            throw new Error('No creation date on careplan!')
-        }
         carePlan.creationDate = carePlanDto.created
         carePlan.terminationDate = carePlanDto.endDate
 
@@ -431,7 +428,6 @@ export default class ExternalToInternalMapper extends BaseMapper {
         if (patientDto.patientContactDetails) {
             address = this.mapAddress(patientDto.patientContactDetails)
         }
-
 
         const contactDetails = this.mapContactDetails(patientDto)
 

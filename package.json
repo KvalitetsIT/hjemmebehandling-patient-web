@@ -22,7 +22,7 @@
     "@types/react": "^17.0.31",
     "@types/react-dom": "^17.0.10",
     "@types/react-router-dom": "^5.3.1",
-    "chart.js": "^3.5.1",
+    "chart.js": "^3.7.0",
     "chartjs-plugin-datalabels": "^2.0.0",
     "eslint-plugin-jsdoc": "^37.7.0",
     "express": "^4.17.1",
