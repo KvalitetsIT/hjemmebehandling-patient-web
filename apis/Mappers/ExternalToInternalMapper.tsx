@@ -15,10 +15,11 @@ import SimpleDepartment from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganiz
 import { Task } from "@kvalitetsit/hjemmebehandling/Models/Task";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { User } from "@kvalitetsit/hjemmebehandling/Models/User";
-import { AnswerDto, AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AnswerDto, AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
+import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
 
 
 /**
@@ -176,6 +177,9 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.question = questionDto.text
         question.helperText = questionDto.helperText;
         //TODO: question.enableWhen = questionDto.
+        if (questionDto.enableWhens !== undefined) {
+            question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])
+        }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {
             question.options = ["Ja", "Nej"]
         }
@@ -185,10 +189,19 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
         return question;
     }
+    mapEnableWhen(enableWhen: EnableWhenDto): EnableWhen<boolean> {
+        //throw new Error("Method not implemented.");
+        const enable = new EnableWhen<boolean>()
+        enable.questionId = enableWhen.answer?.linkId
+        enable.answer = enableWhen.answer?.value == "true"
+
+        return enable
+    }
 
     mapQuestionType(type: QuestionDtoQuestionTypeEnum): QuestionTypeEnum {
         switch (type) {
             case QuestionDtoQuestionTypeEnum.Boolean:
+                return QuestionTypeEnum.BOOLEAN
             case QuestionDtoQuestionTypeEnum.Choice:
                 return QuestionTypeEnum.CHOICE
             case QuestionDtoQuestionTypeEnum.Integer:
