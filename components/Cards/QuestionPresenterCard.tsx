@@ -4,9 +4,9 @@ import ApiContext from "../../pages/_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper"
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import IValidationService from "../../services/interfaces/IValidationService";
-import { InvalidInputModel } from "../../services/Errors/InvalidInputError";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
 import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
 
 interface Props {
     question: Question;
@@ -31,7 +31,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             initialAnswer = props.answer.answer + "";
         }
         if (props.answer instanceof StringAnswer) {
-            initialAnswer = props.answer.answer
+            initialAnswer = props.answer.answer + ""
         }
 
         this.state = {
@@ -47,15 +47,20 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     render(): JSX.Element {
         this.initializeServices();
         return (
-            <Grid spacing={2} container>
+            <Grid container spacing={2} justifyContent="center" >
                 <Grid item xs={12} >
                     <Typography>{this.props.question.question}</Typography>
+                </Grid>
+                <Grid item xs={2} >
+                <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
                 </Grid>
                 <Grid item xs={12} >
 
                     {this.renderQuestionInput(this.props.question)}
                 </Grid>
+
                 <Grid item xs={12}>
+                
                     <Button
                         disabled={this.buttonShouldBeDisabled()}
                         onClick={() => this.answerQuestion()}

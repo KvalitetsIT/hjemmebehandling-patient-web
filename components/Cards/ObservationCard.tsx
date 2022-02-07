@@ -11,8 +11,9 @@ import ApiContext from '../../pages/_context';
 import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
 import { NumberAnswer } from '@kvalitetsit/hjemmebehandling/Models/Answer';
 import { Question, QuestionTypeEnum } from '@kvalitetsit/hjemmebehandling/Models/Question';
-import { QuestionChart } from '@kvalitetsit/hjemmebehandling/Charts/QuestionChart';
-import { ThresholdSlider } from './ThresholdSlider';
+import ResponseViewCard from '@kvalitetsit/hjemmebehandling/Charts/ResponseViewCard';
+import ChartData from '@kvalitetsit/hjemmebehandling/Charts/ChartData';
+import { ThresholdSlider } from '@kvalitetsit/hjemmebehandling/Charts/ThresholdSlider';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
 import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
 import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
@@ -97,19 +98,15 @@ export class ObservationCard extends Component<Props, State> {
                     {allQuestions.map(question => {
                         const isFirst = counter++ == 0;
                         const threshold = this.props.questionnaire?.thresholds?.find(x => x.questionId == question.Id)
-                        console.log(question.Id)
-                        console.log(threshold)
+
+                        const dateToString = (date: Date) => this.dateHelper.DateToString(date);
+                        const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
+
+
                         return (
                             <Grid paddingLeft={isFirst ? 0 : 2} item xs={12}>
-                                <Card>
-                                    <CardHeader subheader={question.question} />
-                                    <CardContent>
-                                        {threshold && threshold.thresholdNumbers ?
-                                            <QuestionChart thresholds={threshold.thresholdNumbers} question={question} questionnaireResponses={this.state.questionnaireResponses} /> :
-                                            <QuestionChart thresholds={[]} question={question} questionnaireResponses={this.state.questionnaireResponses} />}
-                                    </CardContent>
-                                </Card>
-
+                                <ResponseViewCard chartData={chartData} />
+                                
                                 <IsEmptyCard object={threshold} jsxWhenEmpty="Ingen alarmgrænser">
                                     <Card marginTop={1} component={Box}>
                                         <CardHeader subheader={question.question + " - Alarmgrænser"} />

@@ -36,7 +36,7 @@ export default class QuestionAndAnswerTable extends Component<Props, {}>{
                                 <TableRow>
                                     <TableCell>{questionAnswer.q.question}</TableCell>
                                     <TableCell>{questionAnswer.a.ToString()}</TableCell>
-                                    {this.props.lastRowJsx ? <TableCell>{this.props.lastRowJsx(questionAnswer.q.Id)}</TableCell> : <></>}
+                                    {this.props.lastRowJsx ? <TableCell>{this.props.lastRowJsx(questionAnswer.q.Id!)}</TableCell> : <></>}
                                 </TableRow>
                             )
                         })}

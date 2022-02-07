@@ -1,8 +1,6 @@
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import { CarePlanApi, Configuration, QuestionnaireResponseApi } from "../../generated";
+import { Configuration, QuestionnaireResponseApi } from "../../generated";
 import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
-import ICareplanApi from "../interfaces/ICareplanApi";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
 import InternalToExternalMapper from "../Mappers/InternalToExternalMapper";
@@ -50,7 +48,7 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
             const request = {
                 questionnaireResponseDto: this.toExternal.MapQuestionnaireResponse(questionnaireResponse)
             }
-            const response = await this.questionnaireResponseApi.submitQuestionnaireResponse(request)
+            await this.questionnaireResponseApi.submitQuestionnaireResponse(request)
         } catch (error) {
             return await this.HandleError(error);
         }
