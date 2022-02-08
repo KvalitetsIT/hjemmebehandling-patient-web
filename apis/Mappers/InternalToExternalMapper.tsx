@@ -1,4 +1,4 @@
-import { Answer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
 import { Contact } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import { DayEnum, Frequency } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
@@ -66,6 +66,8 @@ export default class InternalToExternalMapper extends BaseMapper {
                 return QuestionDtoQuestionTypeEnum.Quantity;
             case QuestionTypeEnum.STRING:
                 return QuestionDtoQuestionTypeEnum.String;
+            case QuestionTypeEnum.BOOLEAN:
+                return QuestionDtoQuestionTypeEnum.Boolean;
 
             default:
                 throw new Error('Could not map QuestionDtoQuestionTypeEnum ' + type)
@@ -78,6 +80,9 @@ export default class InternalToExternalMapper extends BaseMapper {
             return AnswerDtoAnswerTypeEnum.Quantity
 
         if (answer instanceof StringAnswer)
+            return AnswerDtoAnswerTypeEnum.String
+
+        if (answer instanceof BooleanAnswer)
             return AnswerDtoAnswerTypeEnum.Boolean
 
         throw new Error('Could not map answer')
