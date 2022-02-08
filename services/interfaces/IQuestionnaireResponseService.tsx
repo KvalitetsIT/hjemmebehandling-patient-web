@@ -41,7 +41,8 @@ export default interface IQuestionnaireResponseService {
      * @param questionId the question to search for
      * @returns a question/answer-tuple 
      */
-    GetQuestionAnswerFromMap: (questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string) => [question: Question, answer: Answer]  | undefined;
+    GetQuestionAnswerFromMap: (questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string) => QuestionAnswerPair | undefined;
+    
 
     /**
      * From a careplanId and a questionnaire it calculates whether the questionnaire should be answered today
@@ -52,4 +53,13 @@ export default interface IQuestionnaireResponseService {
      * @returns true if the questionnaire should be answered today
      */
     QuestionnaireShouldBeAnsweredToday: (careplanId: string, questionnaire: Questionnaire) => Promise<boolean>;
+}
+
+export class QuestionAnswerPair{
+    question : Question
+    answer : Answer
+    constructor(question : Question, answer : Answer){
+        this.question = question;
+        this.answer = answer;
+    }
 }

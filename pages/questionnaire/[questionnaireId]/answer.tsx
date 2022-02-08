@@ -136,11 +136,11 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     }
 
     shouldShowQuestion(question: Question | undefined) : boolean{
+        console.log(question)
         if (question?.enableWhen?.questionId) {
             const questionAnswerTuple = this.questionnaireResponseService.GetQuestionAnswerFromMap(this.state.questionnaireResponse.questions, question.enableWhen.questionId);
-            console.log(questionAnswerTuple)
-            const booleanAnswer : BooleanAnswer = questionAnswerTuple?.[1] as BooleanAnswer;
-            console.log(booleanAnswer)
+            const booleanAnswer : BooleanAnswer = questionAnswerTuple?.answer as BooleanAnswer;
+            
             if (booleanAnswer) {
                 const shouldShowQuestion = question?.enableWhen?.ShouldBeEnabled(booleanAnswer.answer)
                 return shouldShowQuestion
@@ -150,13 +150,13 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         return true;
     }
     renderQuestion(questionnaire: Questionnaire | undefined): JSX.Element {
-
+        console.log("about to render!")
         const questions = questionnaire?.questions;
         let question: Question | undefined = undefined;
         if (questions) {
             question = questions.length > this.state.questionIndex ? questions[this.state.questionIndex] : undefined;
         }
-
+        console.log("about to find out whether to show question!")
         if (!this.shouldShowQuestion(question)){
             const newIndex = this.state.questionIndex+1;
             this.setState({questionIndex : newIndex})

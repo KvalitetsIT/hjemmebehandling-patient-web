@@ -1,7 +1,7 @@
 import IQuestionnaireResponseApi from "../apis/interfaces/IQuestionnaireResponseApi";
 import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
-import IQuestionnaireResponseService from "./interfaces/IQuestionnaireResponseService";
+import IQuestionnaireResponseService, { QuestionAnswerPair } from "./interfaces/IQuestionnaireResponseService";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
@@ -18,11 +18,11 @@ export default class QuestionnaireResponseService extends BaseService implements
         this.datehelper = datehelper;
     }
 
-    GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string): [question: Question, answer: Answer] | undefined {
+    GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string): QuestionAnswerPair | undefined {
         let toReturn: { question: Question, answer: Answer } | undefined = undefined;
         questionToAnswerMap?.forEach((answer, question) => {
             if (question.Id == questionId)
-                toReturn = { answer: answer, question: question };
+                toReturn = new QuestionAnswerPair(question,answer);
         });
         return toReturn;
     }
