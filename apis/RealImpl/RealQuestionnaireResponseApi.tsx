@@ -4,6 +4,7 @@ import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
 import InternalToExternalMapper from "../Mappers/InternalToExternalMapper";
+import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 
 export default class RealQuestionnaireResponseApi extends BaseApi implements IQuestionnaireResponseApi {
     questionnaireResponseApi: QuestionnaireResponseApi;
@@ -43,12 +44,13 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
         }
     }
 
-    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<void> {
+    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage> {
         try {
             const request = {
                 questionnaireResponseDto: this.toExternal.MapQuestionnaireResponse(questionnaireResponse)
             }
-            await this.questionnaireResponseApi.submitQuestionnaireResponse(request)
+            const response = await this.questionnaireResponseApi.submitQuestionnaireResponse(request)
+            return this.toInternal.mapCallToActionMessage(response);
         } catch (error) {
             return await this.HandleError(error);
         }

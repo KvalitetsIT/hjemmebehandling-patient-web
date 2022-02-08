@@ -1,4 +1,5 @@
 import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 
 /**
  * Containing methods that are using the auto-generated classes to contact the real api
@@ -27,5 +28,5 @@ export default interface IQuestionnaireResponseApi {
      * @param questionnaireResponse the response to submit
      * @returns void
      */
-    SubmitQuestionnaireResponse : (questionnaireResponse : QuestionnaireResponse ) => Promise<void>
+    SubmitQuestionnaireResponse : (questionnaireResponse : QuestionnaireResponse ) => Promise<CallToActionMessage>
 }

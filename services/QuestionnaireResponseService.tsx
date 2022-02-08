@@ -7,6 +7,7 @@ import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
+import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 
 export default class QuestionnaireResponseService extends BaseService implements IQuestionnaireResponseService {
     api: IQuestionnaireResponseApi;
@@ -65,7 +66,7 @@ export default class QuestionnaireResponseService extends BaseService implements
         return this.datehelper.DayIndexToDay(today);
     }
 
-    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<void> {
+    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage> {
         try {
             return await this.api.SubmitQuestionnaireResponse(questionnaireResponse);
         } catch (error) {

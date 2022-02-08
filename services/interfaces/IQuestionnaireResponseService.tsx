@@ -1,4 +1,5 @@
 import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
@@ -33,7 +34,7 @@ export default interface IQuestionnaireResponseService {
      * @param questionnaireResponse the response to submit
      * @returns void
      */
-    SubmitQuestionnaireResponse: (questionnaireResponse: QuestionnaireResponse) => Promise<void>;
+    SubmitQuestionnaireResponse: (questionnaireResponse: QuestionnaireResponse) => Promise<CallToActionMessage>;
 
     /**
      * From a map containing questionToAnswer to a tuple with question and answer

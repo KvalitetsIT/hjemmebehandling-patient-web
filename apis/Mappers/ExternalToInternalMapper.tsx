@@ -20,12 +20,19 @@ import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
 import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
+import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 
 
 /**
  * This class maps from the external models (used in bff-api) to the internal models (used in frontend)
  */
 export default class ExternalToInternalMapper extends BaseMapper {
+    
+    mapCallToActionMessage(response: void): CallToActionMessage {
+        console.log(response)
+        return new CallToActionMessage();
+    }
+
     mapOrganization(response: OrganizationDto): DetailedOrganization {
         const organization = new DetailedOrganization()
 
@@ -176,8 +183,8 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.type = this.mapQuestionType(questionDto.questionType!)
         question.question = questionDto.text
         question.helperText = questionDto.helperText;
-        //TODO: question.enableWhen = questionDto.
-        if (questionDto.enableWhens !== undefined) {
+        
+        if (questionDto.enableWhens != undefined) {
             question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])
         }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {

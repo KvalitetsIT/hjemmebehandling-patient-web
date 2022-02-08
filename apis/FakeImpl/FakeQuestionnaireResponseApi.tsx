@@ -1,5 +1,6 @@
 import { NotFoundError } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/NotFoundError";
 import { Answer, BooleanAnswer, NumberAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
@@ -95,9 +96,13 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         this.questionnaireResponses.push(questionnaireResponse1)
         this.questionnaireResponses.push(questionnaireResponse2)
     }
-    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse) : Promise<void>{
+    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse) : Promise<CallToActionMessage>{
         questionnaireResponse.id = "questionnaireResponse"+this.generateId() + "";
         this.questionnaireResponses.push(questionnaireResponse);
+
+        const toReturn = new CallToActionMessage();
+        toReturn.message = "Call the hospital man - U ill as fuu"
+        return toReturn;
     }
     
     async GetQuestionnaireResponse(questionnaireResponseId: string) : Promise<QuestionnaireResponse>{
