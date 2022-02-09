@@ -104,7 +104,7 @@ export default class ContactPage extends Component<{}, State> {
                                         
                                         <TableRow>
                                             <TableCell>Fredag</TableCell>
-                                            <TableCell>kl. 8.15-9.00 og kl. 13.00-14.30</TableCell>
+                                            <TableCell>kl. 8.15-9.00 og kl. 13.00-14.00</TableCell>
                                         </TableRow>
                                         
                                         </Table>                                        
