@@ -71,7 +71,7 @@ export default class HomePage extends Component<{}, State> {
 
                                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
                                     <ErrorBoundary>
-                                        <ScrollableRow jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)} />
+                                        <ScrollableRow cols={2.5} jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)} />
                                     </ErrorBoundary>
                                 </IsEmptyCard>
 
@@ -87,7 +87,7 @@ export default class HomePage extends Component<{}, State> {
                                     <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
 
                                         <IsEmptyCard object={this.state.careplan!.questionnaires.find(qu => qu.questions?.find(x => x.type == QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={"Ingen målinger på behandlingsplanen"}>
-                                            <ScrollableRow jsxList={observarionQuestions.map((q) => <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}><MiniChartRow careplan={this.state.careplan!} question={q!} /></IsEmptyCard>)} />
+                                            <ScrollableRow cols={6} jsxList={observarionQuestions.map((q) => <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}><MiniChartRow careplan={this.state.careplan!} question={q!} /></IsEmptyCard>)} />
                                         </IsEmptyCard>
                                     </IsEmptyCard>
                                 </IsEmptyCard>

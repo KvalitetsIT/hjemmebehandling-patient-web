@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           <ApiContext.Provider
             value={{
               //Services
-              questionnaireResponseService: new QuestionnaireResponseService(questionnaireResponseApi,dateHelper),
+              questionnaireResponseService: new QuestionnaireResponseService(questionnaireResponseApi, dateHelper),
               careplanService: new CareplanService(careplanApi),
               organizationService: new OrganizationService(organizationApi),
 
@@ -104,24 +104,35 @@ const THEME = createTheme({
     }
   },
   components: {
-    MuiChip : {
-      variants : [
+    MuiTypography: {
+      variants: [
         {
-          props : {className: "darkColor", color : "error"},
-          style : {
-            backgroundColor : red
+          props: { variant: "h2" },
+          style: {
+            color: regionMidtRed,
+            fontWeight : "bold"
+          }
+        }
+      ]
+    },
+    MuiChip: {
+      variants: [
+        {
+          props: { className: "darkColor", color: "error" },
+          style: {
+            backgroundColor: red
           }
         },
         {
-          props : {className: "darkColor", color : "warning"},
-          style : {
-            backgroundColor : yellow
+          props: { className: "darkColor", color: "warning" },
+          style: {
+            backgroundColor: yellow
           }
         },
         {
-          props : {className: "darkColor", color : "success"},
-          style : {
-            backgroundColor : green
+          props: { className: "darkColor", color: "success" },
+          style: {
+            backgroundColor: green
           }
         }
       ]

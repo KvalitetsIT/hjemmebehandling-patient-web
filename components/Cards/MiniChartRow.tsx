@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
-import { Button, Skeleton, Typography } from '@mui/material';
+import { Skeleton, Typography } from '@mui/material';
 import { Questionnaire } from '@kvalitetsit/hjemmebehandling/Models/Questionnaire';
 import { QuestionnaireResponse } from '@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse';
 import ApiContext from '../../pages/_context';
@@ -9,11 +9,10 @@ import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateH
 import { Question } from '@kvalitetsit/hjemmebehandling/Models/Question';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
 import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ResponseViewCard from '@kvalitetsit/hjemmebehandling/Charts/ResponseViewCard';
 import ChartData from '@kvalitetsit/hjemmebehandling/Charts/ChartData';
 import { Link } from 'react-router-dom';
 import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
+import LatestResponseCard from './LatestResponseCard';
 
 export interface Props {
     careplan: PatientCareplan;
@@ -85,8 +84,7 @@ export class MiniChartRow extends Component<Props, State> {
 
 
                 <Link to="/measurements">
-                    <ResponseViewCard showThresholds={false} cardAction={<Button ><ChevronRightIcon /></Button>} chartData={chartData} />
-
+                    <LatestResponseCard chartData={chartData} />
                 </Link>
             </IsEmptyCard>
         );

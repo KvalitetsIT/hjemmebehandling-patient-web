@@ -4,6 +4,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 
 interface Props {
     jsxList: JSX.Element[]
+    cols : number;
 }
 
 export class ScrollableRow extends Component<Props, {}> {
@@ -45,7 +46,7 @@ export class ScrollableRow extends Component<Props, {}> {
             <>
 
                 <div style={this.root} >
-                    <GridList style={this.gridList} cols={2.5}>
+                    <GridList style={this.gridList} cols={this.props.cols}>
                         {this.props.jsxList.map(x => {
                             return (
                                 <GridListTile style={this.gridListTile} key={key++}>
