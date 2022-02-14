@@ -36,9 +36,7 @@ export default class LatestResponseCard extends Component<Props, State> {
         const chartData = this.props.chartData;
         return (
             <Card >
-                <CardHeader
-                    subheader={<Typography variant="h6" fontWeight="bold">{chartData.label}</Typography>}
-                />
+                 <CardHeader subheader={chartData.label} />
                 <Divider />
                 <CardContent sx={{ textAlign: "center"}}>
                     <Typography>Seneste værdi</Typography>
