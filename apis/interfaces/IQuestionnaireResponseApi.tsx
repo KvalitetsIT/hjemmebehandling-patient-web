@@ -28,5 +28,5 @@ export default interface IQuestionnaireResponseApi {
      * @param questionnaireResponse the response to submit
      * @returns void
      */
-    SubmitQuestionnaireResponse : (questionnaireResponse : QuestionnaireResponse ) => Promise<CallToActionMessage>
+    SubmitQuestionnaireResponse : (questionnaireResponse : QuestionnaireResponse ) => Promise<CallToActionMessage[]>
 }

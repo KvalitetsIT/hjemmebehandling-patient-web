@@ -15,7 +15,7 @@ import SimpleDepartment from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganiz
 import { Task } from "@kvalitetsit/hjemmebehandling/Models/Task";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { User } from "@kvalitetsit/hjemmebehandling/Models/User";
-import { AnswerDto, AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
@@ -27,10 +27,18 @@ import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallTo
  * This class maps from the external models (used in bff-api) to the internal models (used in frontend)
  */
 export default class ExternalToInternalMapper extends BaseMapper {
-    
-    mapCallToActionMessage(response: void): CallToActionMessage {
-        console.log(response)
-        return new CallToActionMessage();
+
+    mapCallToActionMessage(response: CallToActionDTO): CallToActionMessage[] {
+
+        if (!response.callToActions)
+            return []
+
+        return response.callToActions?.map(message => {
+            const toReturn = new CallToActionMessage();
+            toReturn.message = message
+            return toReturn;
+        });
+
     }
 
     mapOrganization(response: OrganizationDto): DetailedOrganization {
@@ -183,7 +191,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.type = this.mapQuestionType(questionDto.questionType!)
         question.question = questionDto.text
         question.helperText = questionDto.helperText;
-        
+
         if (questionDto.enableWhens != undefined) {
             question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])
         }
@@ -442,7 +450,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return contact;
     }
 
-    
+
     mapPatientDto(patientDto: PatientDto): PatientDetail {
         let address: Address = {}
         if (patientDto.patientContactDetails) {

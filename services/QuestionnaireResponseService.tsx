@@ -66,7 +66,7 @@ export default class QuestionnaireResponseService extends BaseService implements
         return this.datehelper.DayIndexToDay(today);
     }
 
-    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage> {
+    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage[]> {
         try {
             return await this.api.SubmitQuestionnaireResponse(questionnaireResponse);
         } catch (error) {
