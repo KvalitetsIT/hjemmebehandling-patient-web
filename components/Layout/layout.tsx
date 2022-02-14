@@ -36,7 +36,7 @@ export class Layout extends Component<{}, State> {
 
     return (
       <>
-        <Box sx={{ display: 'flex' }}>
+        <Box>
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
           <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)" showReloadButton={true}>
             <Router>
