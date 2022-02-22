@@ -65,7 +65,7 @@ export default class HomePage extends Component<{}, State> {
                                 <Typography>Spørgeskemaer til besvarelse</Typography>
                             </Grid>
                             <Grid item xs={2}>
-                                <Button component={Link} to="/questionnaire/unanswered" variant="outlined">Vis alle</Button>
+                                <Button component={Link} to="/questionnaire/answered" variant="outlined">Vis alle</Button>
                             </Grid>
                             <Grid item xs={12}>
 

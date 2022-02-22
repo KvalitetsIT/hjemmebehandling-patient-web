@@ -2,7 +2,6 @@ import { Box } from '@material-ui/core';
 import React, { Component } from 'react';
 import { Topbar } from './Topbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import UnAnsweredPage from '../../pages/questionnaire/unanswered';
 import AnsweredPage from '../../pages/questionnaire/answered';
 import ApiContext from '../../pages/_context';
 import QuestionnaireResponseDetailsPage from '../../pages/questionnaire/[questionnaireId]/response/[questionnaireResponseId]';
@@ -47,7 +46,6 @@ export class Layout extends Component<{}, State> {
                     <Switch>
                       <Route path="/questionnaire/:questionnaireId/response/:questionnaireResponseId" render={(props) => <QuestionnaireResponseDetailsPage {...props} />} />
                       <Route path="/questionnaire/:questionnaireId/answer" render={(props) => <QuestionnaireResponseCreationPage {...props} />} />
-                      <Route path="/questionnaire/unanswered" render={(props) => <UnAnsweredPage {...props} />} />
                       <Route path="/questionnaire/answered" render={(props) => <AnsweredPage  {...props} />} />
                       <Route path="/measurements" render={(props) => <ObservationPage {...props} />} />
                       <Route path="/contact" render={(props) => <ContactPage {...props} />} />

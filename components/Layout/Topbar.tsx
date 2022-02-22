@@ -68,25 +68,7 @@ export class Topbar extends Component<{}, State> {
                   <HomeIcon className="sidebarIcon" />
                 </ListItemIcon>
                 <ListItemText>
-                  Hjem
-                </ListItemText>
-              </ListItem>
-
-              <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/questionnaire/unanswered" key="unansweredquestionnaires">
-                <ListItemIcon>
-                  <AssignmentIcon className="sidebarIcon" />
-                </ListItemIcon>
-                <ListItemText>
-                  Ubesvaret spørgeskemaer
-                </ListItemText>
-              </ListItem>
-
-              <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/measurements" key="measurements">
-                <ListItemIcon>
-                  <AssessmentIcon className="sidebarIcon" />
-                </ListItemIcon>
-                <ListItemText>
-                  Målinger
+                  Overblik
                 </ListItemText>
               </ListItem>
 
@@ -95,7 +77,16 @@ export class Topbar extends Component<{}, State> {
                   <AssignmentTurnedInIcon className="sidebarIcon" />
                 </ListItemIcon>
                 <ListItemText>
-                  Besvaret spørgeskemaer
+                  Mine spørgeskemaer
+                </ListItemText>
+              </ListItem>
+
+              <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/measurements" key="measurements">
+                <ListItemIcon>
+                  <AssessmentIcon className="sidebarIcon" />
+                </ListItemIcon>
+                <ListItemText>
+                  Mine målinger
                 </ListItemText>
               </ListItem>
 
