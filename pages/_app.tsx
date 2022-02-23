@@ -160,7 +160,8 @@ const THEME = createTheme({
         {
           props: {},
           style: {
-            borderRadius: 25
+            borderRadius: 25,
+            boxShadow: "none"
           }
         }
       ]
