@@ -1,12 +1,10 @@
 import { Box } from '@material-ui/core';
 import { AppBar, Drawer, IconButton, List, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
 import React, { Component } from 'react';
-
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItem from '@mui/material/ListItem';
 import HomeIcon from '@mui/icons-material/Home';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { Link } from 'react-router-dom';
@@ -14,7 +12,6 @@ import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/Error
 import { PatientMenu } from '../Cards/PatientMenu';
 
 export interface State {
-
   drawerIsOpen: boolean,
 }
 
@@ -101,8 +98,6 @@ export class Topbar extends Component<{}, State> {
             </List>
           </Drawer>
         </Box>
-
-
       </>
     );
   }
