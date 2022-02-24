@@ -17,4 +17,4 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Build and test
-      run: ./build/build.sh ${{ env.DOCKER_SERVICE }}:latest
+      run: docker build .
