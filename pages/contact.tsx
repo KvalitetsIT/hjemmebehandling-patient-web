@@ -7,6 +7,7 @@ import Department, {  } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrgan
 import ICareplanService from "../services/interfaces/ICareplanService";
 import IOrganizationService from "../services/interfaces/IOrganizationService";
 import ApiContext from "./_context";
+import { CardActions } from "@material-ui/core";
 
 interface State {
     department?: Department,
@@ -70,58 +71,40 @@ export default class ContactPage extends Component<{}, State> {
             <>
                 <ErrorBoundary>
                     <IsEmptyCard object={department} jsxWhenEmpty={"Ingen informationer om afdelingen fundet"}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={6}>
-                                <Card>   
-                                    <CardHeader subheader={"Infektionssygdomme"}></CardHeader>
-                                    <Divider />
-                                    <CardContent>
-                                        <Typography>På hverdage kan Infektionsklinikken kontaktes på tlf.: 40 45 98 12 følgende tidspunkter:</Typography>
-                                        <br/>
-                                        <Typography>Sekretær kl. 9.00-12.00</Typography>
-                                        <br/>
-                                        <Typography variant="button">Sygeplejerske:</Typography>
+                        <Grid>
+                            <Card>   
+                                <CardHeader subheader={"Infektionssygdomme"}></CardHeader>
+                                <Divider />
+                                <CardContent>
+                                    <Typography>Aarhus Universitetshospital</Typography>
+                                    <Typography>Palle Juul-Jensen Boulevard 99, Indgang E eller D3</Typography>
+                                    <Typography>Krydspunkt: Infektionsklinikken E202 eller sengeafsnittet E201</Typography>
+                                    <Typography>8200 Aarhus N</Typography>
 
-                                        <Table>
-                                        <TableRow>
-                                            <TableCell>Mandag</TableCell>
-                                            <TableCell>kl. 8.15-9.00 og kl. 13.00-14.30</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>Tirsdag</TableCell>
-                                            <TableCell>kl. 8.15-9.00 og kl. 13.00-14.30</TableCell>
-                                        </TableRow>
-                                        
-                                        <TableRow>
-                                            <TableCell>Onsdag</TableCell>
-                                            <TableCell>kl. 8.15-9.00</TableCell>
-                                        </TableRow>
-                                        
-                                        <TableRow>
-                                            <TableCell>Torsdag</TableCell>
-                                            <TableCell>kl. 8.15-9.00 og kl. 13.00-14.30</TableCell>
-                                        </TableRow>
-                                        
-                                        <TableRow>
-                                            <TableCell>Fredag</TableCell>
-                                            <TableCell>kl. 8.15-9.00 og kl. 13.00-14.00</TableCell>
-                                        </TableRow>
-                                        
-                                        </Table>                                        
-                                        <br/>
-                                        <Typography>Ved behov for hjælp uden for disse tidspunkter kan sengeafsnittet kontaktes på telefon 24 77 78 80 (hele døgnet)</Typography>
-                                        <br/>
-                                        <Typography variant="button">Adresse</Typography>
-                                        <Typography>Infektionssygdomme</Typography>
-                                        <Typography>Aarhus Universitetshospital</Typography>
-                                        <Typography>Palle Juul-Jensen Boulevard 99, Indgang E eller D3</Typography>
-                                        <Typography>Krydspunkt: Infektionsklinikken E202 eller sengeafsnittet E201</Typography>
-                                        <Typography>8200 Aarhus N</Typography>
-                                                                                
-                                    </CardContent>
-                                </Card>
-                            </Grid>
+                                    <br/>
+                                    <Typography sx={{ fontWeight: 'bold' }}>Infektionsklnikken</Typography>
+                                    <Typography>Infektionsklinikken kan kontaktes på hverdage, i nedenstående tidsrum</Typography>
+                                    <br/>
+                                    <Typography sx={{ fontWeight: 'bold' }}>Sekretær</Typography>
+                                    <Typography>Alle dage <span>9.00-12.00</span></Typography>
+                                    <br/>
+                                    <Typography sx={{ fontWeight: 'bold' }}>Sygeplejerske</Typography>
+                                    <Typography>Mandag <span>8.15-9.00 og 13.00-14.30</span></Typography>
+                                    <Typography>Tirsdag <span>8.15-9.00 og 13.00-14.30</span></Typography>
+                                    <Typography>Onsdag <span>8.15-9.00</span></Typography>
+                                    <Typography>Torsdag <span>8.15-9.00 og 13.00-14.30</span></Typography>
+                                    <Typography>Fredag <span>8.15-9.00 og 13.00-14.00</span> </Typography> 
+                                    <br/>
+                                    <Typography sx={{ fontWeight: 'bold' }}>Sengeafsnittet</Typography>
+                                    <Typography>Ved behov for hjælp uden for ovenstående tidspunkter, ring på telefon 2477 7880 (hele døgnet)</Typography>                                 
+                                </CardContent>
+                                <Divider />
+                                <CardActions className="call-hospital-wrapper">
+                                    <Typography className="call-hospital" sx={{ textAlign: 'right' }}>4045 9812</Typography>    
+                                </CardActions>
+                            </Card>
                         </Grid>
+
                     </IsEmptyCard>
                 </ErrorBoundary>
             </>

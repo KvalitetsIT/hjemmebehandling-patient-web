@@ -112,6 +112,13 @@ const THEME = createTheme({
             color: regionMidtRed,
             fontWeight : "bold"
           }
+        },
+        {
+          props: {className: "call-hospital"},
+          style: {
+            color: regionMidtRed,
+            padding: "8px"
+          }
         }
       ]
     },

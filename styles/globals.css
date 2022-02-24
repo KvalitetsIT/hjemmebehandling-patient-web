@@ -6,3 +6,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.call-hospital-wrapper {
+  justify-content: end;
+}
