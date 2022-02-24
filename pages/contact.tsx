@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Divider, Grid, Table, TableCell, TableRow, Typography } from "@mui/material";
+import { Card, CardContent, CardHeader, Divider, Grid, Typography } from "@mui/material";
 import { Component } from "react";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
@@ -13,10 +13,6 @@ interface State {
     department?: Department,
     loading: boolean
 }
-
-
-
-
 
 export default class ContactPage extends Component<{}, State> {
     careplanService!: ICareplanService;
