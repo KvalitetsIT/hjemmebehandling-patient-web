@@ -15,7 +15,7 @@ import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnair
 import LinearProgress from '@mui/material/LinearProgress';
 import QuestionPresenterCard from "../../../components/Cards/QuestionPresenterCard";
 import QuestionAndAnswerTable from "../../../components/Tables/QuestionAndAnswerTable";
-import { Redirect } from "react-router-dom";
+import { Prompt, Redirect } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
@@ -100,11 +100,27 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         const questionnaire = this.state.careplan?.questionnaires.find(x => x.id == this.props.match.params.questionnaireId);
         const showReview = questionnaire?.questions?.length == this.state.questionIndex
 
+        const prompt = (
+            <Prompt
+                when={true}
+                message={() => "Du er på vej ud af spørgeskemaet, og din besvarelse vil gå tabt"}
+            />
+        )
+
         if (showReview)
-            return this.renderReview(questionnaire)
+            return (
+                <>
+                    {prompt}
+                    {this.renderReview(questionnaire)}
+                </>
+            )
 
-
-        return this.renderQuestion(questionnaire);
+        return (
+            <>
+                {prompt}
+                {this.renderQuestion(questionnaire)}
+            </>
+        )
 
     }
     renderProgressbar(questionnaire: Questionnaire): JSX.Element {
@@ -135,12 +151,12 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         )
     }
 
-    shouldShowQuestion(question: Question | undefined) : boolean{
+    shouldShowQuestion(question: Question | undefined): boolean {
         console.log(question)
         if (question?.enableWhen?.questionId) {
             const questionAnswerTuple = this.questionnaireResponseService.GetQuestionAnswerFromMap(this.state.questionnaireResponse.questions, question.enableWhen.questionId);
-            const booleanAnswer : BooleanAnswer = questionAnswerTuple?.answer as BooleanAnswer;
-            
+            const booleanAnswer: BooleanAnswer = questionAnswerTuple?.answer as BooleanAnswer;
+
             if (booleanAnswer) {
                 const shouldShowQuestion = question?.enableWhen?.ShouldBeEnabled(booleanAnswer.answer)
                 return shouldShowQuestion
@@ -157,12 +173,12 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             question = questions.length > this.state.questionIndex ? questions[this.state.questionIndex] : undefined;
         }
         console.log("about to find out whether to show question!")
-        if (!this.shouldShowQuestion(question)){
-            const newIndex = this.state.questionIndex+1;
-            this.setState({questionIndex : newIndex})
+        if (!this.shouldShowQuestion(question)) {
+            const newIndex = this.state.questionIndex + 1;
+            this.setState({ questionIndex: newIndex })
             return <></>
         }
-            
+
 
         return (
             <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">

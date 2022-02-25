@@ -7,7 +7,6 @@ import IValidationService from "../../services/interfaces/IValidationService";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
 import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
-import { Prompt } from "react-router-dom";
 
 interface Props {
     question: Question;
@@ -49,10 +48,6 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         this.initializeServices();
         return (
             <>
-                <Prompt
-                    when={true}
-                    message={() => "Du er på vej ud af spørgeskemaet, og din besvarelse vil gå tabt"}
-                />
                 <Grid container spacing={2} justifyContent="center" >
                     <Grid item xs={12} >
                         <Typography>{this.props.question.question}</Typography>
