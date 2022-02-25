@@ -7,6 +7,7 @@ import IValidationService from "../../services/interfaces/IValidationService";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
 import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
+import { Prompt } from "react-router-dom";
 
 interface Props {
     question: Question;
@@ -47,28 +48,34 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     render(): JSX.Element {
         this.initializeServices();
         return (
-            <Grid container spacing={2} justifyContent="center" >
-                <Grid item xs={12} >
-                    <Typography>{this.props.question.question}</Typography>
-                </Grid>
-                <Grid item xs={2} >
-                <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
-                </Grid>
-                <Grid item xs={12} >
+            <>
+                <Prompt
+                    when={true}
+                    message={() => "Du er på vej ud af spørgeskemaet, og din besvarelse vil gå tabt"}
+                />
+                <Grid container spacing={2} justifyContent="center" >
+                    <Grid item xs={12} >
+                        <Typography>{this.props.question.question}</Typography>
+                    </Grid>
+                    <Grid item xs={2} >
+                        <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
+                    </Grid>
+                    <Grid item xs={12} >
 
-                    {this.renderQuestionInput(this.props.question)}
-                </Grid>
+                        {this.renderQuestionInput(this.props.question)}
+                    </Grid>
 
-                <Grid item xs={12}>
-                
-                    <Button
-                        disabled={this.buttonShouldBeDisabled()}
-                        onClick={() => this.answerQuestion()}
-                        variant="contained">
-                        Næste
-                    </Button>
+                    <Grid item xs={12}>
+
+                        <Button
+                            disabled={this.buttonShouldBeDisabled()}
+                            onClick={() => this.answerQuestion()}
+                            variant="contained">
+                            Næste
+                        </Button>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </>
         )
     }
 
@@ -148,7 +155,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     getBooleanInput(): JSX.Element {
         return (
             <>
-                {["Ja","Nej"].map(option => {
+                {["Ja", "Nej"].map(option => {
                     let variant: "contained" | "text" = "text"
                     if (this.state.tempAnswer === option)
                         variant = "contained"
