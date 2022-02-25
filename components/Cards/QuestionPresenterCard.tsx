@@ -52,7 +52,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                     <Grid item xs={12} >
                         <Typography>{this.props.question.question}</Typography>
                     </Grid>
-                    <Grid item xs={2} >
+                    <Grid item xs={6} >
                         <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
                     </Grid>
                     <Grid item xs={12} >
