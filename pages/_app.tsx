@@ -197,7 +197,7 @@ const THEME = createTheme({
             border: 0,
             backgroundColor: 'white',
             borderRadius: 30,
-            textTransform: "capitalize",
+            textTransform: "initial",
             color: "black",
             ":hover": {
               border: 0,
@@ -209,6 +209,7 @@ const THEME = createTheme({
         {
           props: { variant: "contained", disabled: false },
           style: {
+            textTransform: "initial",
             borderRadius: 25,
             padding: 15,
             background: "linear-gradient(to bottom, " + regionMidtRed + " 0%, #800000 100%)"
@@ -217,6 +218,7 @@ const THEME = createTheme({
         {
           props: { variant: "contained", disabled: true },
           style: {
+            textTransform: "initial",
             borderRadius: 25,
             padding: 15,
             background: "gray"
@@ -225,6 +227,7 @@ const THEME = createTheme({
         {
           props: { variant: "text", disabled: false },
           style: {
+            textTransform: "initial",
             color: regionMidtRed
           }
         }
