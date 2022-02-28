@@ -89,8 +89,8 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
                         Infektionssygdomme har sendt dig dette spørgeskema
                     </Typography>
                     {shouldBeAnsweredToday ?
-                        <Typography variant="caption">Besvares i dag, inden kl {questionnaire?.frequency?.deadline}</Typography> :
-                        <Typography variant="caption">Besvares {questionnaire?.frequency?.ToString()} senest</Typography>
+                        <Typography variant="caption">Besvares i dag, senest kl {questionnaire?.frequency?.deadline}</Typography> :
+                        <Typography variant="caption">Besvares {questionnaire?.frequency?.ToString()}</Typography>
                     }
                 </CardContent>
                 <CardActions>
