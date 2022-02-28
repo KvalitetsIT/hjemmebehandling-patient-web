@@ -35,7 +35,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
         return response.callToActions?.map(message => {
             const toReturn = new CallToActionMessage();
-            toReturn.message = message
+            toReturn.message = message;
             return toReturn;
         });
 

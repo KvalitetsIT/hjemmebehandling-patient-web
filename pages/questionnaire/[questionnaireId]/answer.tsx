@@ -18,6 +18,9 @@ import QuestionAndAnswerTable from "../../../components/Tables/QuestionAndAnswer
 import { Prompt, Redirect } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
+import { CallToActionError } from "../../../components/Errors/CallToActionError";
+import { DialogError } from "@kvalitetsit/hjemmebehandling/Errorhandling/DialogError";
 
 interface Props {
     match: { params: { questionnaireId: string } };
@@ -29,6 +32,7 @@ interface State {
     loadingPage: boolean;
     careplan: PatientCareplan | undefined;
     questionIndex: number;
+    callToActions: CallToActionMessage[];
     questionnaireResponse: QuestionnaireResponse; //The new response
 }
 
@@ -45,7 +49,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             loadingPage: true,
             questionIndex: props.startQuestionIndex ?? 0,
             questionnaireResponse: newQuestionnaireResponse,
-            careplan: undefined
+            careplan: undefined,
+            callToActions: []
         }
         this.setAnswerToQuestion = this.setAnswerToQuestion.bind(this)
     }
@@ -216,6 +221,10 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                         </Grid>
                     </Grid>
                 </IsEmptyCard>
+                {this.state.callToActions.length > 0 ?
+                    <DialogError error={new CallToActionError(this.state.callToActions, () => this.setState({ submitted: true }))} /> :
+                    <></>
+                }
             </>
         )
     }
@@ -239,8 +248,12 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             const questionnaireResponse = this.state.questionnaireResponse;
             questionnaireResponse.answeredTime = new Date();
             questionnaireResponse.status = QuestionnaireResponseStatus.NotProcessed
-            await this.questionnaireResponseService.SubmitQuestionnaireResponse(questionnaireResponse)
-            this.setState({ loadingPage: false, submitted: true })
+            const response = await this.questionnaireResponseService.SubmitQuestionnaireResponse(questionnaireResponse) ?? []
+            let submitted = true;
+            if (response.length > 0)
+                submitted = false;
+
+            this.setState({ loadingPage: false, submitted: submitted, callToActions: response })
         } catch (error) {
             this.setState(() => { throw error })
         }
