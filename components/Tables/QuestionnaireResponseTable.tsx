@@ -143,13 +143,13 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
         let statusString = "Ukendt";
         switch (status) {
             case QuestionnaireResponseStatus.InProgress:
-                statusString = "Sendt";
+                statusString = "Sendt (Afventer)";
                 break;
             case QuestionnaireResponseStatus.NotAnswered:
                 statusString = "Ikke besvaret";
                 break;
             case QuestionnaireResponseStatus.NotProcessed:
-                statusString = "Sendt";
+                statusString = "Sendt (Afventer)";
                 break;
             case QuestionnaireResponseStatus.Processed:
                 statusString = "Kvitteret";
