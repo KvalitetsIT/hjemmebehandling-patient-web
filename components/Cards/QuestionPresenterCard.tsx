@@ -34,6 +34,10 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             initialAnswer = props.answer.answer + ""
         }
 
+        if (props.answer instanceof BooleanAnswer) {
+            initialAnswer = props.answer.answer + ""
+        }
+
         this.state = {
             tempAnswer: initialAnswer,
             errorArray: []
@@ -99,7 +103,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                 break;
             case QuestionTypeEnum.BOOLEAN:
                 const booleanAnswer = new BooleanAnswer();
-                booleanAnswer.answer = answerString.toLowerCase() == "ja"
+                booleanAnswer.answer = answerString.toLowerCase() == "true"
                 answer = booleanAnswer;
                 break;
         }
@@ -137,7 +141,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             <>
                 {this.props.question.options?.map(option => {
                     let variant: "contained" | "text" = "text"
-                    if (this.state.tempAnswer === option)
+                    if (this.state.tempAnswer.toLowerCase() == option.toLowerCase())
                         variant = "contained"
                     return (
                         <Button variant={variant} onClick={() => this.setState({ tempAnswer: option })}>{option}</Button>
@@ -150,12 +154,17 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     getBooleanInput(): JSX.Element {
         return (
             <>
-                {["Ja", "Nej"].map(option => {
+                {[true, false].map(option => {
                     let variant: "contained" | "text" = "text"
-                    if (this.state.tempAnswer === option)
+
+                    const optionAsString = option.toString()
+                    const tempAnswer = this.state.tempAnswer
+
+                    if (optionAsString == tempAnswer)
                         variant = "contained"
+
                     return (
-                        <Button variant={variant} onClick={() => this.setState({ tempAnswer: option })}>{option}</Button>
+                        <Button variant={variant} onClick={() => this.setState({ tempAnswer: optionAsString })}>{option ? "Ja" : "Nej"}</Button>
                     )
                 })}
             </>
