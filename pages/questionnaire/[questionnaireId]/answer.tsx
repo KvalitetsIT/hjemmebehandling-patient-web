@@ -157,7 +157,6 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     }
 
     shouldShowQuestion(question: Question | undefined): boolean {
-        console.log(question)
         if (question?.enableWhen?.questionId) {
             const questionAnswerTuple = this.questionnaireResponseService.GetQuestionAnswerFromMap(this.state.questionnaireResponse.questions, question.enableWhen.questionId);
             const booleanAnswer: BooleanAnswer = questionAnswerTuple?.answer as BooleanAnswer;
@@ -171,13 +170,13 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         return true;
     }
     renderQuestion(questionnaire: Questionnaire | undefined): JSX.Element {
-        console.log("about to render!")
+
         const questions = questionnaire?.questions;
         let question: Question | undefined = undefined;
         if (questions) {
             question = questions.length > this.state.questionIndex ? questions[this.state.questionIndex] : undefined;
         }
-        console.log("about to find out whether to show question!")
+
         if (!this.shouldShowQuestion(question)) {
             const newIndex = this.state.questionIndex + 1;
             this.setState({ questionIndex: newIndex })
@@ -193,7 +192,6 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                         <Grid component={Box} spacing={4} container textAlign="center">
                             <Grid item xs={12} >
                                 <QuestionPresenterCard key={question?.Id} question={question!} answer={this.state.questionnaireResponse.questions?.get(question!)} setQuestionAnswer={this.setAnswerToQuestion} />
-
                             </Grid>
                         </Grid>
 
@@ -231,8 +229,23 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
     setAnswerToQuestion(question: Question, answer: Answer): void {
         const response = this.state.questionnaireResponse;
-        response.questions?.set(question, answer);
+
+        const oldAnswer = response.questions?.get(question); //When you answered all questions, and go back to a question again - You will have an oldAnswer
+        if (oldAnswer?.ToString() != answer.ToString()) { //Only change answer, if answer has changed
+            response.questions?.set(question, answer);
+            this.resetChildQuestions(question, response);
+        }
+
         this.setState({ questionnaireResponse: response, questionIndex: this.state.questionIndex + 1 })
+    }
+
+    resetChildQuestions(parentQuestion: Question, response: QuestionnaireResponse): void {
+        //In case you answered a parentquestion
+        //All children should be reset
+        response.questions?.forEach((_a, q) => {
+            if (q.enableWhen?.questionId == parentQuestion.Id)
+                response.questions?.delete(q);
+        })
     }
 
     createLastColoumn(questionId: string, questionnaire: Questionnaire): JSX.Element {
