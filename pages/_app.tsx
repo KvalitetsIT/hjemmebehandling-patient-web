@@ -114,6 +114,12 @@ const THEME = createTheme({
           }
         },
         {
+          props: { variant: "h6" },
+          style: {
+            color: regionMidtRed,
+          }
+        },
+        {
           props: {className: "call-hospital"},
           style: {
             color: regionMidtRed,
