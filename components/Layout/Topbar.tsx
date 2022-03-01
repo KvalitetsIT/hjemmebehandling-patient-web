@@ -3,13 +3,10 @@ import { AppBar, Drawer, IconButton, List, ListItemIcon, ListItemText, Toolbar, 
 import React, { Component } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItem from '@mui/material/ListItem';
-import HomeIcon from '@mui/icons-material/Home';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import PhoneIcon from '@mui/icons-material/Phone';
 import { Link } from 'react-router-dom';
 import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 import { PatientMenu } from '../Cards/PatientMenu';
+import { ContactIcon, GrapphIcon, HomeIcon, SurveyIcon } from '../icons/Icons';
 
 export interface State {
   drawerIsOpen: boolean,
@@ -62,7 +59,7 @@ export class Topbar extends Component<{}, State> {
             <List sx={{ width: 350 }}>
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/" key="home">
                 <ListItemIcon>
-                  <HomeIcon className="sidebarIcon" />
+                  <HomeIcon  />
                 </ListItemIcon>
                 <ListItemText>
                   Overblik
@@ -71,7 +68,7 @@ export class Topbar extends Component<{}, State> {
 
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/questionnaire/answered/" key="answeredquestionnaires">
                 <ListItemIcon>
-                  <AssignmentTurnedInIcon className="sidebarIcon" />
+                  <SurveyIcon></SurveyIcon>
                 </ListItemIcon>
                 <ListItemText>
                   Mine spørgeskemaer
@@ -80,7 +77,7 @@ export class Topbar extends Component<{}, State> {
 
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/measurements" key="measurements">
                 <ListItemIcon>
-                  <AssessmentIcon className="sidebarIcon" />
+                  <GrapphIcon></GrapphIcon>
                 </ListItemIcon>
                 <ListItemText>
                   Mine målinger
@@ -89,7 +86,7 @@ export class Topbar extends Component<{}, State> {
 
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/contact" key="contact">
                 <ListItemIcon>
-                  <PhoneIcon className="sidebarIcon" />
+                  <ContactIcon></ContactIcon>
                 </ListItemIcon>
                 <ListItemText>
                   Kontakt hospitalet

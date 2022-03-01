@@ -3,12 +3,12 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Component } from 'react';
 import { Menu, MenuItem } from '@mui/material';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import ApiContext from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';
 import { PatientCard } from './PatientCard';
 import { ErrorBoundary } from '@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary';
+import { ProfileIcon } from '../icons/Icons';
 
 export interface State {
     expand: boolean
@@ -64,7 +64,7 @@ export class PatientMenu extends Component<{}, State> {
                         color="inherit"
                     >
                         <div>
-                            <PersonOutlineIcon />
+                            <ProfileIcon></ProfileIcon>
                         </div>
                     </Button>
                     <Menu
