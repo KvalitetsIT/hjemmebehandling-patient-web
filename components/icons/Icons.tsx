@@ -55,3 +55,14 @@ export function ProfileIcon(props?: BaseIconProps): JSX.Element {
         <BaseIcon {...props} src={'/assets/icons/_profile.svg'}></BaseIcon>
     );
 }
+
+export function PhoneIcon(props?: BaseIconProps): JSX.Element {
+    
+    props = {
+        color: "rgb(153,0,51)"
+    }
+
+    return (
+        <BaseIcon {...props} src={'/assets/icons/_phone.svg'}></BaseIcon> //TODO: add the right svg file
+    );
+}

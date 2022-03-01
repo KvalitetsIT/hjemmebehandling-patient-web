@@ -8,6 +8,7 @@ import ICareplanService from "../services/interfaces/ICareplanService";
 import IOrganizationService from "../services/interfaces/IOrganizationService";
 import ApiContext from "./_context";
 import { CardActions } from "@material-ui/core";
+import { PhoneIcon } from "../components/icons/Icons";
 
 interface State {
     department?: Department,
@@ -96,6 +97,7 @@ export default class ContactPage extends Component<{}, State> {
                                 </CardContent>
                                 <Divider />
                                 <CardActions className="call-hospital-wrapper">
+                                    <PhoneIcon></PhoneIcon>
                                     <Typography className="call-hospital" sx={{ textAlign: 'right' }}>4045 9812</Typography>    
                                 </CardActions>
                             </Card>
