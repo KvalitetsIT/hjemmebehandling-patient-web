@@ -11,6 +11,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Link } from "react-router-dom";
 import { LoadingSmallComponent } from "../Layout/LoadingSmallComponent";
+import { CheckmarkIcon, MessagesIcon } from "../icons/Icons";
 
 
 interface Props {
@@ -87,7 +88,8 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                     <TableCell width="10%">Spørgeskema</TableCell>
                                     <TableCell width="10%">Afdeling</TableCell>
                                     <TableCell width="10%">Besvarelsesdato</TableCell>
-                                    <TableCell width="10%">Status</TableCell>
+                                    <TableCell width="5%">Status</TableCell>
+                                    <TableCell width="10%"></TableCell>
                                     <TableCell width="10%"></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -103,7 +105,8 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                             <TableCell>{questionnaireName}</TableCell>
                                             <TableCell>Afdeling</TableCell>
                                             <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
-                                            <TableCell>{this.GetStatusName(questionnaireResponse.status)}</TableCell>
+                                            <TableCell>{this.GetStatusText(questionnaireResponse.status)}</TableCell>
+                                            <TableCell>{this.GetStatusRepresentation(questionnaireResponse.status)}</TableCell>
                                             <TableCell>
                                                 <LoadingButton component={Link} to={"/questionnaire/" + questionnaire?.id + "/response/" + questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
                                             </TableCell>
@@ -139,8 +142,9 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
         this.forceUpdate()
     }
 
-    GetStatusName(status: QuestionnaireResponseStatus): string {
-        let statusString = "Ukendt";
+    GetStatusText(status: QuestionnaireResponseStatus): string {
+        let statusString: string = "Ukendt";
+
         switch (status) {
             case QuestionnaireResponseStatus.InProgress:
                 statusString = "Sendt (afventer)";
@@ -152,10 +156,31 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                 statusString = "Sendt (afventer)";
                 break;
             case QuestionnaireResponseStatus.Processed:
-                statusString = "Kvitteret";
+                statusString = "Kvitteret"
                 break;
         }
         return statusString;
     }
+
+    GetStatusRepresentation(status: QuestionnaireResponseStatus): JSX.Element {
+        let representation: JSX.Element = <></>;
+
+        switch (status) {
+            case QuestionnaireResponseStatus.InProgress:
+                representation = <MessagesIcon></MessagesIcon>
+                break;
+            case QuestionnaireResponseStatus.NotAnswered:
+                representation = <MessagesIcon></MessagesIcon>
+                break;
+            case QuestionnaireResponseStatus.NotProcessed:
+                representation = <MessagesIcon></MessagesIcon>
+                break;
+            case QuestionnaireResponseStatus.Processed:
+                representation = <CheckmarkIcon></CheckmarkIcon>
+                break;
+        }
+        return representation;
+    }
+
 
 }
