@@ -30,8 +30,10 @@ export class Layout extends Component<{}, State> {
 
   render(): JSX.Element {
 
-
-
+    //Sikker på du ønsker at forlade siden?
+    window.onbeforeunload = function () {
+      return "Du er på vej væk fra KoMo-systemet, ønsker du at fortsætte?"; //Det er ikke alle browsere der faktisk viser denne tekst
+    };
 
     return (
       <>
