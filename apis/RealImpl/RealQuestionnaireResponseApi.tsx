@@ -23,6 +23,7 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
             const request = {
                 carePlanId: carePlanId,
                 pageNumber: page,
+                questionnaireIds: questionnaireIds,
                 pageSize: pagesize
             }
             const responseList = await this.questionnaireResponseApi.getQuestionnaireResponsesByCarePlanId(request)
