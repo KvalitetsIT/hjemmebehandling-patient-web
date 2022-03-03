@@ -35,7 +35,6 @@ export class Layout extends Component<{}, State> {
     this.setState({ createToastData: undefined })
   }
 
-
   render(): JSX.Element {
 
     //Sikker på du ønsker at forlade siden?

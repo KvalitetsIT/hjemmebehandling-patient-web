@@ -87,7 +87,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         this.initializeServices();
         if (this.state.submitted) {
             new CreateToastEvent({ title: "Din besvarelse blev sendt", JsxPrefix: <>Y</> }).dispatchEvent();
-            return (<Redirect push to={"/questionnaire/answered/"} />)
+            return (<Redirect push to={"/"} />)
         }
 
         return this.state.loadingPage ? <LoadingBackdropComponent /> : this.renderPage();
