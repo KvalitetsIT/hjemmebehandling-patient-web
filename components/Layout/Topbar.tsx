@@ -59,7 +59,7 @@ export class Topbar extends Component<{}, State> {
             <List sx={{ width: 350 }}>
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/" key="home">
                 <ListItemIcon>
-                  <HomeIcon  />
+                  <HomeIcon color='white'  />
                 </ListItemIcon>
                 <ListItemText>
                   Overblik
@@ -68,7 +68,7 @@ export class Topbar extends Component<{}, State> {
 
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/questionnaire/answered/" key="answeredquestionnaires">
                 <ListItemIcon>
-                  <SurveyIcon></SurveyIcon>
+                  <SurveyIcon color='white'></SurveyIcon>
                 </ListItemIcon>
                 <ListItemText>
                   Mine spørgeskemaer
@@ -77,7 +77,7 @@ export class Topbar extends Component<{}, State> {
 
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/measurements" key="measurements">
                 <ListItemIcon>
-                  <GrapphIcon></GrapphIcon>
+                  <GrapphIcon color='white'></GrapphIcon>
                 </ListItemIcon>
                 <ListItemText>
                   Mine målinger
@@ -86,7 +86,7 @@ export class Topbar extends Component<{}, State> {
 
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/contact" key="contact">
                 <ListItemIcon>
-                  <ContactIcon></ContactIcon>
+                  <ContactIcon color='white'></ContactIcon>
                 </ListItemIcon>
                 <ListItemText>
                   Kontakt hospitalet
