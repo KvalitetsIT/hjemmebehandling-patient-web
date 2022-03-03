@@ -31,6 +31,10 @@ export class Layout extends Component<{}, State> {
 
   }
 
+  resetToast(): void {
+    this.setState({ createToastData: undefined })
+  }
+
 
   render(): JSX.Element {
 
@@ -45,8 +49,6 @@ export class Layout extends Component<{}, State> {
 
     return (
       <>
-
-
         <Box>
 
           <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -57,7 +59,7 @@ export class Layout extends Component<{}, State> {
                 <Box padding={3}>
                   <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)" showReloadButton={true}>
                     {this.state.createToastData ?
-                      <Toast icon={<CheckmarkIcon color='white' size='2rem' />} positionVertical='top' positionhorizontal='center' snackbarTitle={this.state.createToastData.title} snackbarColor='error'></Toast>
+                      <Toast onClose={() => this.resetToast()} icon={<CheckmarkIcon color='white' size='2rem' />} positionVertical='top' positionhorizontal='center' snackbarTitle={this.state.createToastData.title} snackbarColor='error'></Toast>
                       : <></>
                     }
 
