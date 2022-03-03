@@ -104,13 +104,29 @@ const THEME = createTheme({
     }
   },
   components: {
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          borderRadius : 20
+        }
+      },
+      variants: [
+        {
+          props: { severity: "error" },
+          style: {
+            color: 'white',
+            backgroundColor: regionMidtRed
+          }
+        }
+      ]
+    },
     MuiTypography: {
       variants: [
         {
           props: { variant: "h2" },
           style: {
             color: regionMidtRed,
-            fontWeight : "bold"
+            fontWeight: "bold"
           }
         },
         {
@@ -120,7 +136,7 @@ const THEME = createTheme({
           }
         },
         {
-          props: {className: "call-hospital"},
+          props: { className: "call-hospital" },
           style: {
             color: regionMidtRed,
             padding: "8px"

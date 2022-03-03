@@ -1,4 +1,4 @@
-import {BaseIcon, BaseIconProps} from "@kvalitetsit/hjemmebehandling/icons/BaseIcon"
+import {BaseIcon, BaseIconProps} from "@kvalitetsit/hjemmebehandling/Icons/BaseIcon"
 
 export function HomeIcon(props?: BaseIconProps): JSX.Element {
     
@@ -51,7 +51,7 @@ export function PhoneIcon(props?: BaseIconProps): JSX.Element {
 export function CheckmarkIcon(props?: BaseIconProps): JSX.Element {
     
     return (
-        <BaseIcon {...props} src={'/assets/icons/_checkmark.svg'}></BaseIcon> 
+        <BaseIcon size="1rem" {...props} src={'/assets/icons/_checkmark.svg'}></BaseIcon> 
     );
 }
 export function MessagesIcon(props?: BaseIconProps): JSX.Element {
