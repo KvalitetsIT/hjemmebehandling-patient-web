@@ -51,7 +51,7 @@ export function PhoneIcon(props?: BaseIconProps): JSX.Element {
 export function CheckmarkIcon(props?: BaseIconProps): JSX.Element {
     
     return (
-        <BaseIcon size="1rem" {...props} src={'/assets/icons/_checkmark.svg'}></BaseIcon> 
+        <BaseIcon {...props} src={'/assets/icons/_checkmark.svg'}></BaseIcon> 
     );
 }
 export function MessagesIcon(props?: BaseIconProps): JSX.Element {
