@@ -16,6 +16,7 @@ import LatestResponseCard from './LatestResponseCard';
 
 export interface Props {
     careplan: PatientCareplan;
+    questionnaire : Questionnaire
     question: Question;
 }
 
@@ -35,10 +36,9 @@ export class MiniChartRow extends Component<Props, State> {
     constructor(props: Props) {
 
         super(props);
-        const questionnaire = this.props.careplan.questionnaires.find(qnaire => qnaire.questions?.find(q => q.Id == this.props.question.Id))
 
         this.state = {
-            questionnaire: questionnaire!,
+            questionnaire: props.questionnaire,
             questionnaireResponses: [],
             loading: true
         }

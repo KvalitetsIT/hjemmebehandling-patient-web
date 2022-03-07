@@ -7,11 +7,12 @@ import QuestionnaireAnswerCard from "../components/Cards/QuestionnaireAnswerCard
 import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 import { LoadingBackdropComponent } from "../components/Layout/LoadingBackdropComponent";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import { QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
+import { BaseQuestion, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { ScrollableRow } from "../components/Rows/HomePage/ScrollableRow";
 import QuestionnaireResponseTable from "../components/Tables/QuestionnaireResponseTable";
 import ICareplanService from "../services/interfaces/ICareplanService";
 import ApiContext from "./_context";
+import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 
 interface State {
     careplan?: PatientCareplan,
@@ -53,7 +54,7 @@ export default class HomePage extends Component<{}, State> {
 
     renderPage(): JSX.Element {
         const questionnaires = this.state.careplan?.questionnaires;
-        const observarionQuestions = questionnaires?.flatMap(x => x.questions).filter(x => x?.type == QuestionTypeEnum.OBSERVATION) ?? [];
+        const observarionQuestions = questionnaires?.flatMap(questionnaire => questionnaire?.questions?.map(question => new QuestionQuestionnaire(question,questionnaire))).filter(x => x?.question.type == QuestionTypeEnum.OBSERVATION) ?? [];
         const careplan = this.state.careplan;
 
         return (
@@ -87,7 +88,10 @@ export default class HomePage extends Component<{}, State> {
                                     <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
 
                                         <IsEmptyCard object={this.state.careplan!.questionnaires.find(qu => qu.questions?.find(x => x.type == QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={"Ingen målinger på behandlingsplanen"}>
-                                            <ScrollableRow cols={2.5} jsxList={observarionQuestions.map((q) => <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}><MiniChartRow careplan={this.state.careplan!} question={q!} /></IsEmptyCard>)} />
+                                            <ScrollableRow cols={2.5} jsxList={observarionQuestions.map((q) =>
+                                                <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}>
+                                                    {q ? <MiniChartRow questionnaire={q.questionnaire} careplan={this.state.careplan!} question={q.question!} /> : <></>}
+                                                </IsEmptyCard>)} />
                                         </IsEmptyCard>
                                     </IsEmptyCard>
                                 </IsEmptyCard>
@@ -113,3 +117,12 @@ export default class HomePage extends Component<{}, State> {
     }
 }
 
+class QuestionQuestionnaire {
+    question: BaseQuestion
+    questionnaire: Questionnaire
+
+    constructor(question: BaseQuestion, questionnaire: Questionnaire) {
+        this.question = question;
+        this.questionnaire = questionnaire;
+    }
+}
