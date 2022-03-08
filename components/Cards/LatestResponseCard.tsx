@@ -34,17 +34,31 @@ export default class LatestResponseCard extends Component<Props, State> {
 
     render(): ReactNode {
         const chartData = this.props.chartData;
+        const answerData = chartData.answerData
+
+        const latestData = answerData.pop();
+        const secondLatestData = answerData.pop();
+
+        let status = "Værdier er stabile"
+        if (latestData != undefined && secondLatestData != undefined) {
+            if (latestData > secondLatestData)
+                status = "Værdier er stigende"
+            if (latestData < secondLatestData)
+                status = "Værdier er faldende"
+        }
+
         return (
             <Card >
-                 <CardHeader subheader={chartData.label} />
+                <CardHeader subheader={chartData.label} />
                 <Divider />
-                <CardContent sx={{ textAlign: "center"}}>
+                <CardContent sx={{ textAlign: "center" }}>
                     <Typography>Seneste værdi</Typography>
-                    <Typography variant="h2">{chartData.answerData.pop()}</Typography>
+                    <Typography variant="h2">{latestData}</Typography>
+                    <Typography>{status}</Typography>
                 </CardContent>
                 <Divider />
-                <CardActions sx={{float: "right"}}>
-                    <Button  endIcon={<NavigateNextIcon />} variant="text">Se graf</Button>
+                <CardActions sx={{ float: "right" }}>
+                    <Button endIcon={<NavigateNextIcon />} variant="text">Se graf</Button>
                 </CardActions>
             </Card>
         )
