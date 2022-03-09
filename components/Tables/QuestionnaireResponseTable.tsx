@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Stack, Paper } from '@mui/material';
+import { Button, Card, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Stack } from '@mui/material';
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
@@ -168,10 +168,10 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
     GetStatusRepresentation(status: QuestionnaireResponseStatus): JSX.Element {
         let representation: JSX.Element = <></>;
         
-        let size = "1.2rem"
+        const size = "1.2rem"
 
-        let messageIcon = <MessagesIcon size={size}></MessagesIcon>
-        let checkMarkIcon = <CheckmarkIcon size={size}></CheckmarkIcon>
+        const messageIcon = <MessagesIcon size={size}></MessagesIcon>
+        const checkMarkIcon = <CheckmarkIcon size={size}></CheckmarkIcon>
         switch (status) {
             case QuestionnaireResponseStatus.InProgress:
                 representation = messageIcon
