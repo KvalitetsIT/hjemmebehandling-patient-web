@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, Card, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Stack, Paper } from '@mui/material';
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
@@ -88,8 +88,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                     <TableCell width="10%">Spørgeskema</TableCell>
                                     <TableCell width="10%">Afdeling</TableCell>
                                     <TableCell width="10%">Besvarelsesdato</TableCell>
-                                    <TableCell width="5%">Status</TableCell>
-                                    <TableCell width="10%"></TableCell>
+                                    <TableCell width="10%">Status</TableCell>
                                     <TableCell width="10%"></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -105,8 +104,12 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                             <TableCell>{questionnaireName}</TableCell>
                                             <TableCell>Afdeling</TableCell>
                                             <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
-                                            <TableCell>{this.GetStatusText(questionnaireResponse.status)}</TableCell>
-                                            <TableCell>{this.GetStatusRepresentation(questionnaireResponse.status)}</TableCell>
+                                            <TableCell>
+                                                <Stack spacing={1} direction={"row"}>
+                                                    <div>{this.GetStatusRepresentation(questionnaireResponse.status)}</div>
+                                                    <div>{this.GetStatusText(questionnaireResponse.status)}</div>
+                                                </Stack>
+                                            </TableCell>
                                             <TableCell>
                                                 <LoadingButton component={Link} to={"/questionnaire/" + questionnaire?.id + "/response/" + questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
                                             </TableCell>
@@ -164,19 +167,23 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
 
     GetStatusRepresentation(status: QuestionnaireResponseStatus): JSX.Element {
         let representation: JSX.Element = <></>;
+        
+        let size = "1.2rem"
 
+        let messageIcon = <MessagesIcon size={size}></MessagesIcon>
+        let checkMarkIcon = <CheckmarkIcon size={size}></CheckmarkIcon>
         switch (status) {
             case QuestionnaireResponseStatus.InProgress:
-                representation = <MessagesIcon></MessagesIcon>
+                representation = messageIcon
                 break;
             case QuestionnaireResponseStatus.NotAnswered:
-                representation = <MessagesIcon></MessagesIcon>
+                representation = messageIcon
                 break;
             case QuestionnaireResponseStatus.NotProcessed:
-                representation = <MessagesIcon></MessagesIcon>
+                representation = messageIcon
                 break;
             case QuestionnaireResponseStatus.Processed:
-                representation = <CheckmarkIcon></CheckmarkIcon>
+                representation = checkMarkIcon
                 break;
         }
         return representation;
