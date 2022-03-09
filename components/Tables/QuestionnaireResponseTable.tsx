@@ -85,11 +85,11 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell width="10%">Spørgeskema</TableCell>
-                                    <TableCell width="10%">Afdeling</TableCell>
-                                    <TableCell width="10%">Besvarelsesdato</TableCell>
-                                    <TableCell width="10%">Status</TableCell>
-                                    <TableCell width="10%"></TableCell>
+                                    <TableCell width="20%">Spørgeskema</TableCell>
+                                    <TableCell width="20%">Afdeling</TableCell>
+                                    <TableCell width="20%">Besvarelsesdato</TableCell>
+                                    <TableCell width="20%">Status</TableCell>
+                                    <TableCell width="20%"></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -110,7 +110,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                                     <div>{this.GetStatusText(questionnaireResponse.status)}</div>
                                                 </Stack>
                                             </TableCell>
-                                            <TableCell>
+                                            <TableCell  align="right">
                                                 <LoadingButton component={Link} to={"/questionnaire/" + questionnaire?.id + "/response/" + questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
                                             </TableCell>
                                         </TableRow>
