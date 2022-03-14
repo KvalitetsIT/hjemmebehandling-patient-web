@@ -1,5 +1,6 @@
 import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinition";
 import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
+import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 
 /**
  * CareplanService
@@ -42,5 +43,12 @@ export default interface IValidationService {
      * @returns List of errors if the string is not a number
      */
     ValidateNumber : (posibleNumber : string) => Promise<InvalidInputModel[]>;
+
+    /**
+     * Validates the value against the thresholdCollection, to validate whether the value is contained in the thresholdNumbers
+     * @param value the value that should be validated
+     * @param thresholdCollection The thresholds that should contain the value
+     */
+    ValidateQuestionInput(value: string, thresholdCollection?: ThresholdCollection): Promise<InvalidInputModel[]>
 }
   

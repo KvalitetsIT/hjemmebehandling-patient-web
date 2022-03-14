@@ -194,7 +194,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                         {this.renderProgressbar(questionnaire!)}
                         <Grid component={Box} spacing={4} container textAlign="center">
                             <Grid item xs={12} >
-                                <QuestionPresenterCard key={question?.Id} question={question!} answer={this.state.questionnaireResponse.questions?.get(question!)} setQuestionAnswer={this.setAnswerToQuestion} />
+                                <QuestionPresenterCard key={question?.Id} questionnaire={questionnaire!} question={question!} answer={this.state.questionnaireResponse.questions?.get(question!)} setQuestionAnswer={this.setAnswerToQuestion} />
                             </Grid>
                         </Grid>
 
