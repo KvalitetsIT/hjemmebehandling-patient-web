@@ -102,14 +102,14 @@ export class ObservationCard extends Component<Props, State> {
                         const dateToString = (date: Date) => this.dateHelper.DateToString(date);
                         const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
 
-
+                        const subheader = question.abbreviation ?? question.question ?? "";
                         return (
                             <Grid paddingLeft={isFirst ? 0 : 2} item xs={12}>
                                 <ResponseViewCard chartData={chartData} />
                                 
                                 <IsEmptyCard object={threshold} jsxWhenEmpty="Ingen alarmgrænser">
                                     <Card marginTop={1} component={Box}>
-                                        <CardHeader subheader={question.abbreviation + " - Alarmgrænser"} />
+                                        <CardHeader subheader={subheader + " - Alarmgrænser"} />
                                         <CardContent>
                                             {threshold && threshold.thresholdNumbers ? <ThresholdSlider threshold={threshold.thresholdNumbers} question={question} /> : <></>}
                                         </CardContent>
