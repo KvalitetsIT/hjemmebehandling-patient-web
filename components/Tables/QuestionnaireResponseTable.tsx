@@ -102,7 +102,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                     return (
                                         <TableRow>
                                             <TableCell>{questionnaireName}</TableCell>
-                                            <TableCell>Afdeling</TableCell>
+                                            <TableCell>{this.props.careplan.organization?.name}</TableCell>
                                             <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
                                             <TableCell>
                                                 <Stack spacing={1} direction={"row"}>
@@ -110,7 +110,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                                     <div>{this.GetStatusText(questionnaireResponse.status)}</div>
                                                 </Stack>
                                             </TableCell>
-                                            <TableCell  align="right">
+                                            <TableCell align="right">
                                                 <LoadingButton component={Link} to={"/questionnaire/" + questionnaire?.id + "/response/" + questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
                                             </TableCell>
                                         </TableRow>
@@ -167,7 +167,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
 
     GetStatusRepresentation(status: QuestionnaireResponseStatus): JSX.Element {
         let representation: JSX.Element = <></>;
-        
+
         const size = "1.2rem"
 
         const messageIcon = <MessagesIcon size={size}></MessagesIcon>
