@@ -109,7 +109,7 @@ export class ObservationCard extends Component<Props, State> {
                                 
                                 <IsEmptyCard object={threshold} jsxWhenEmpty="Ingen alarmgrænser">
                                     <Card marginTop={1} component={Box}>
-                                        <CardHeader subheader={question.question + " - Alarmgrænser"} />
+                                        <CardHeader subheader={question.abbreviation + " - Alarmgrænser"} />
                                         <CardContent>
                                             {threshold && threshold.thresholdNumbers ? <ThresholdSlider threshold={threshold.thresholdNumbers} question={question} /> : <></>}
                                         </CardContent>
