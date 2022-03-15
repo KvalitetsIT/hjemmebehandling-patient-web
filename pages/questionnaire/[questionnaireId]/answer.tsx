@@ -86,7 +86,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     render(): JSX.Element {
         this.initializeServices();
         if (this.state.submitted) {
-            new CreateToastEvent({ title: "Din besvarelse blev sendt", JsxPrefix: <>Y</> }).dispatchEvent();
+            new CreateToastEvent({ title: "Din besvarelse blev sendt", JsxPrefix: <>Y</>, alertColor: "success", textColor: "white" }).dispatchEvent();
             return (<Redirect push to={"/"} />)
         }
 

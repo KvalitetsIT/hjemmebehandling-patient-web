@@ -47,7 +47,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             questionnaire.id = "q1"
             questionnaire.name = "Cool questionnaire"
             questionnaire.frequency = new Frequency();
-            questionnaire.frequency.days = [DayEnum.Friday, DayEnum.Monday,DayEnum.Tuesday, DayEnum.Wednesday]
+            questionnaire.frequency.days = [DayEnum.Friday, DayEnum.Monday, DayEnum.Tuesday, DayEnum.Wednesday]
             questionnaire.frequency.deadline = "11:00"
 
             questionnaire.thresholds = [];
@@ -76,6 +76,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             t2.questionId = "CRP"
             const t2green = new ThresholdNumber();
             t2green.category = CategoryEnum.GREEN;
+            t2green.from = 0;
             t2green.to = 25;
             const t2yellow = new ThresholdNumber();
             t2yellow.category = CategoryEnum.YELLOW;
@@ -84,6 +85,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             const t2red = new ThresholdNumber();
             t2red.category = CategoryEnum.RED;
             t2red.from = 50;
+            t2red.to = 100;
 
 
             t2.thresholdNumbers = [t2green, t2yellow, t2red]
@@ -92,14 +94,14 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             question2.question = "Indtast den målte CRP?"
             question2.abbreviation = "CRP"
             question2.type = QuestionTypeEnum.OBSERVATION
-            
+
             const question3 = new Question();
             question3.Id = "betterToday"
             question3.helperText = "Mads er ved at pille ved sin skærm - Mon tabletten oplader"
             question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
             question3.type = QuestionTypeEnum.BOOLEAN
-            
-            questionnaire.questions[0] = question3;            
+
+            questionnaire.questions[0] = question3;
             questionnaire.questions[1] = question2;
             questionnaire.questions[2] = question1;
 
