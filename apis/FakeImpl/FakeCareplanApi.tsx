@@ -58,7 +58,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             const question1 = new Question();
             const t1 = new ThresholdCollection();
             t1.questionId = "temp"
-            questionnaire.thresholds.push(t1);
+            //questionnaire.thresholds.push(t1);
             question1.Id = "temp"
             question1.abbreviation = "Temperatur"
             question1.helperText = "Hvis du får antibiotika på pumpe skal du svare nej hvis der har været problemer med indløb"
@@ -91,6 +91,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             t2.thresholdNumbers = [t2green, t2yellow, t2red]
             questionnaire.thresholds.push(t2);
             question2.Id = "CRP"
+            question2.enableWhen = enableWhen;
             question2.question = "Indtast den målte CRP?"
             question2.abbreviation = "CRP"
             question2.type = QuestionTypeEnum.OBSERVATION
@@ -102,8 +103,8 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             question3.type = QuestionTypeEnum.BOOLEAN
 
             questionnaire.questions[0] = question3;
-            questionnaire.questions[1] = question2;
-            questionnaire.questions[2] = question1;
+            questionnaire.questions[2] = question2;
+            questionnaire.questions[1] = question1;
 
 
             const questionnaire2 = new Questionnaire();
