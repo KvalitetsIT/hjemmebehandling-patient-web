@@ -1,6 +1,5 @@
 
 import { Grid, Stack, Typography } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { Component } from "react";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import { LoadingBackdropComponent } from "../../components/Layout/LoadingBackdropComponent";
@@ -100,7 +99,9 @@ export default class AnsweredPage extends Component<{},State>{
         return (
             <IsEmptyCard object={this.state.careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
-                    <Typography component={Box} paddingBottom={1} variant="h6">Spørgeskemaer til besvarelse i dag</Typography>
+                    <Grid item xs={12} className="headline-wrapper">
+                        <Typography className="headline">Spørgeskemaer til besvarelse i dag</Typography>
+                    </Grid>
 
                     <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Du har ikke flere spørgeskemaer der skal besvares">
                         <Stack direction="row" >
@@ -111,7 +112,9 @@ export default class AnsweredPage extends Component<{},State>{
                         </Stack>
                     </IsEmptyCard>
 
-                    <Typography component={Box} paddingBottom={1} paddingTop={10} variant="h6">Andre spørgeskemaer til besvarelse</Typography>
+                    <Grid item xs={12} className="headline-wrapper">
+                        <Typography className="headline">Andre spørgeskemaer til besvarelse</Typography>
+                    </Grid>
                     <IsEmptyCard list={this.state.answeredOtherdayList} jsxWhenEmpty="Ingen spørgeskemaer">
                         <Stack direction="row" spacing={2} >
                             {this.state.answeredOtherdayList?.map(questionnaire => {
@@ -123,8 +126,8 @@ export default class AnsweredPage extends Component<{},State>{
                 </IsEmptyCard>
                 
                 <Grid paddingTop={10} container>
-                    <Grid  item xs={12}>
-                        <Typography component={Box} paddingBottom={1} variant="h6">Dine tidligere besvarelser</Typography>
+                    <Grid item xs={12} className="headline-wrapper">
+                        <Typography className="headline">Dine tidligere besvarelser</Typography>
                         
                     </Grid>
                     <Grid item xs={12}>

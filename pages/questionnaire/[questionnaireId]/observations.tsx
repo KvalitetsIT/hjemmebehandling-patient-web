@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+import { Grid, Typography } from "@mui/material"
 import { Component } from "react"
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
 import { ObservationCard } from "../../../components/Cards/ObservationCard"
@@ -46,7 +46,9 @@ export default class ObservationPage extends Component<{}, State>{
     renderPage(): JSX.Element {
         return (
             <>
-                <Typography>Målinger</Typography>
+                <Grid item xs={12} className="headline-wrapper">
+                    <Typography className="headline">Målinger</Typography>
+                 </Grid>
                 <IsEmptyCard object={this.state.careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
                     {this.state.careplan?.questionnaires.map(questionnaire => {
                         return (
