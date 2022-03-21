@@ -132,7 +132,7 @@ const THEME = createTheme({
         {
           props: { variant: "h6" },
           style: {
-            color: regionMidtRed,
+            color: regionMidtRed
           }
         },
         {
@@ -140,6 +140,12 @@ const THEME = createTheme({
           style: {
             color: regionMidtRed,
             padding: "8px"
+          }
+        },
+        {
+          props: { className: "headline" },
+          style: {
+            fontWeight: "bold"
           }
         }
       ]
@@ -211,6 +217,33 @@ const THEME = createTheme({
         }
       ]
     },
+    MuiGrid: {
+      variants: [
+        {
+          props: { className: "show-all-answered" },
+          style: {
+            display: "flex",
+            justifyContent: "end",
+            alignSelf: "flex-end"
+          }
+        },
+        {
+          props: { className: "headline-wrapper" },
+          style: {
+            display: "flex",
+            alignSelf: "flex-end",
+            paddingTop: "40px !important"
+          }
+        },
+      ]
+    },
+    MuiCardActions: {
+      styleOverrides: {
+        root: {
+          padding: "15px"
+        }
+      }
+    },
     MuiButton: {
       variants: [
         {
@@ -234,7 +267,7 @@ const THEME = createTheme({
             textTransform: "initial",
             borderRadius: 25,
             padding: 15,
-            background: "linear-gradient(to bottom, " + regionMidtRed + " 0%, #800000 100%)"
+            background: "linear-gradient(to bottom, " + regionMidtRed + "  0%, rgb(175, 10, 65) 100%)"
           }
         },
         {
@@ -251,6 +284,12 @@ const THEME = createTheme({
           style: {
             textTransform: "initial",
             color: regionMidtRed
+          }
+        },
+        {
+          props: { className: "button-show-all-answered" },
+          style: {
+            lineHeight: "1rem"
           }
         }
       ]

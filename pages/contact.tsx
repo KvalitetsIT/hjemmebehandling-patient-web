@@ -67,6 +67,10 @@ export default class ContactPage extends Component<{}, State> {
         return (
             <>
                 <ErrorBoundary>
+                <Grid item xs={12} className="headline-wrapper">
+                    <Typography className="headline">Tilknyttede afdelinger</Typography>
+                </Grid>
+
                     <IsEmptyCard object={department} jsxWhenEmpty={"Ingen informationer om afdelingen fundet"}>
                         <Grid>
                             <Card>   

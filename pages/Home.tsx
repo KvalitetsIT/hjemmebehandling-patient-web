@@ -62,11 +62,8 @@ export default class HomePage extends Component<{}, State> {
                 <ErrorBoundary>
                     <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
                         <Grid container spacing={2}>
-                            <Grid item xs={10}>
-                                <Typography>Spørgeskemaer til besvarelse</Typography>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button component={Link} to="/questionnaire/answered" variant="outlined">Vis alle</Button>
+                            <Grid item xs={12} className="headline-wrapper">
+                                <Typography className="headline">Spørgeskemaer til besvarelse</Typography>
                             </Grid>
                             <Grid item xs={12}>
 
@@ -77,11 +74,8 @@ export default class HomePage extends Component<{}, State> {
                                 </IsEmptyCard>
 
                             </Grid>
-                            <Grid item xs={10}>
-                                <Typography>Dine målinger</Typography>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button component={Link} to="/measurements" variant="outlined">Vis alle</Button>
+                            <Grid item xs={12} className="headline-wrapper">
+                                <Typography className="headline">Dine målinger</Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
@@ -96,11 +90,11 @@ export default class HomePage extends Component<{}, State> {
                                     </IsEmptyCard>
                                 </IsEmptyCard>
                             </Grid>
-                            <Grid item xs={10}>
-                                <Typography>Dine tidligere besvarelser</Typography>
+                            <Grid item xs={10} className="headline-wrapper">
+                                <Typography className="headline">Dine tidligere besvarelser</Typography>
                             </Grid>
-                            <Grid item xs={2}>
-                                <Button component={Link} to="/questionnaire/answered" variant="outlined">Vis alle</Button>
+                            <Grid item xs={2} className="show-all-answered">
+                                <Button component={Link} to="/questionnaire/answered" variant="outlined" className="button-show-all-answered">Vis alle</Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
