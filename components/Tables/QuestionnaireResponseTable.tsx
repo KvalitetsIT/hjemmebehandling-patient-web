@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Stack } from '@mui/material';
+import { Button, Card, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Stack, Typography } from '@mui/material';
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
@@ -86,7 +86,6 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                             <TableHead>
                                 <TableRow>
                                     <TableCell width="20%">Spørgeskema</TableCell>
-                                    <TableCell width="20%">Afdeling</TableCell>
                                     <TableCell width="20%">Besvarelsesdato</TableCell>
                                     <TableCell width="20%">Status</TableCell>
                                     <TableCell width="20%"></TableCell>
@@ -101,13 +100,16 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                     }
                                     return (
                                         <TableRow>
-                                            <TableCell>{questionnaireName}</TableCell>
-                                            <TableCell>{this.props.careplan.organization?.name}</TableCell>
+                                            <TableCell>
+                                                <Stack>
+                                                    <Typography> {questionnaireName}</Typography>
+                                                    <Typography variant="caption">{this.props.careplan.organization?.name}</Typography>
+                                                </Stack>
+                                            </TableCell>
                                             <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
                                             <TableCell>
-                                                <Stack spacing={1} direction={"row"}>
-                                                    <div>{this.GetStatusRepresentation(questionnaireResponse.status)}</div>
-                                                    <div>{this.GetStatusText(questionnaireResponse.status)}</div>
+                                                <Stack>
+                                                    <Typography>{this.GetStatusText(questionnaireResponse.status)}</Typography>
                                                 </Stack>
                                             </TableCell>
                                             <TableCell align="right">
