@@ -22,7 +22,7 @@ import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallTo
 import { CallToActionError } from "../../../components/Errors/CallToActionError";
 import { DialogError } from "@kvalitetsit/hjemmebehandling/Errorhandling/DialogError";
 import ErrorIcon from '@mui/icons-material/Error';
-import { CreateToastEvent } from "@kvalitetsit/hjemmebehandling/Events/CreateToastEvent";
+import { CreateToastEvent, CreateToastEventData } from "@kvalitetsit/hjemmebehandling/Events/CreateToastEvent";
 interface Props {
     match: { params: { questionnaireId: string } };
     startQuestionIndex?: number;
@@ -86,7 +86,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     render(): JSX.Element {
         this.initializeServices();
         if (this.state.submitted) {
-            new CreateToastEvent({ title: "Din besvarelse blev sendt", JsxPrefix: <>Y</>, alertColor: "success", textColor: "white" }).dispatchEvent();
+            new CreateToastEvent(new CreateToastEventData("Din besvarelse blev sendt","","success")).dispatchEvent();
             return (<Redirect push to={"/"} />)
         }
 
