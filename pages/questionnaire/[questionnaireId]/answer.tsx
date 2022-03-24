@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
-import { Button, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import ICareplanService from "../../../services/interfaces/ICareplanService";
 import ApiContext from "../../_context";
@@ -86,7 +86,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     render(): JSX.Element {
         this.initializeServices();
         if (this.state.submitted) {
-            new CreateToastEvent(new CreateToastEventData("Din besvarelse blev sendt","","success")).dispatchEvent();
+            new CreateToastEvent(new CreateToastEventData("Din besvarelse blev sendt", "", "success")).dispatchEvent();
             return (<Redirect push to={"/"} />)
         }
 
@@ -238,8 +238,11 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                     <Grid component={Box} spacing={4} container textAlign="center">
                         <Grid item xs={12} >
-                            <Typography>{questionnaire?.name}</Typography>
-                            <Typography variant="caption">Du bliver ringet op, hvis personalet har brug for yderligere oplysninger</Typography>
+                            <Stack>
+                                <Typography>{questionnaire?.name}</Typography>
+                                <Typography variant="caption">Du bliver ringet op, hvis personalet har brug for yderligere oplysninger</Typography>
+                                <Typography fontWeight="bold" variant="caption">Husk at du ved problemer døgnet rundt kan kontakte afdelingen på 2477 7880.</Typography>
+                            </Stack>
                         </Grid>
                         <Grid item xs={12} >
                             <QuestionAndAnswerTable lastRowJsx={(questionId) => this.createLastColoumn(questionId, questionnaire!)} questionAnswerMap={this.state.questionnaireResponse.questions!} />
