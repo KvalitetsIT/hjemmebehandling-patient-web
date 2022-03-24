@@ -94,7 +94,10 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
                     }
                 </CardContent>
                 <CardActions>
-                    <Button component={Link} to={"/questionnaire/" + questionnaire.id + "/answer"} fullWidth variant="contained">Besvar nu</Button>
+                    {shouldBeAnsweredToday ? 
+                    <Button component={Link} to={"/questionnaire/" + questionnaire.id + "/answer"} fullWidth variant="contained">Besvar nu</Button> :
+                    <Button component={Link} to={"/questionnaire/" + questionnaire.id + "/answer"} fullWidth variant="outlined">Besvar igen</Button>
+                    }
                 </CardActions>
             </Card>
         )

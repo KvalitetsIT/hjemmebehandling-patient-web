@@ -94,7 +94,7 @@ export default class HomePage extends Component<{}, State> {
                                 <Typography className="headline">Dine tidligere besvarelser</Typography>
                             </Grid>
                             <Grid item xs={2} className="show-all-answered">
-                                <Button component={Link} to="/questionnaire/answered" variant="outlined" className="button-show-all-answered">Vis alle</Button>
+                                <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
