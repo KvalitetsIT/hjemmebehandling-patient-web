@@ -11,6 +11,7 @@ import ApiContext from "../_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
+import { LatestResponseEnum } from "../../services/QuestionnaireResponseService";
 
 
 interface State{
@@ -54,8 +55,8 @@ export default class AnsweredPage extends Component<{},State>{
             this.setState({careplan : careplan});
 
             for (const questionnaire of careplan.questionnaires) {
-                const shouldBeAnsweredToday = await this.shouldBeAnsweredToday(questionnaire, careplan);
-                if (shouldBeAnsweredToday)
+                const latestResponse = await this.shouldBeAnsweredToday(questionnaire, careplan);
+                if (latestResponse == LatestResponseEnum.ShouldBeAnsweredToday)
                     questionnairesToAnswerToday.push(questionnaire)
                 else
                     questionnairesToAnswerOtherDay.push(questionnaire)
@@ -83,16 +84,11 @@ export default class AnsweredPage extends Component<{},State>{
         return this.state.loadingPage ? <LoadingBackdropComponent /> : this.renderPage();
     }
 
-    async shouldBeAnsweredToday(questionnaire: Questionnaire, careplan?: PatientCareplan): Promise<boolean> {
+    async shouldBeAnsweredToday(questionnaire: Questionnaire, careplan?: PatientCareplan): Promise<LatestResponseEnum> {
 
-        if (!careplan?.id) {
-            return false;
-        }
+        const latestResponse: LatestResponseEnum  = await this.questionnaireResponseService.GetQuestionnaireAnsweredStatus(careplan!.id!, questionnaire);
 
-
-        const hasBeenAnsweredToday: boolean = await this.questionnaireResponseService.QuestionnaireShouldBeAnsweredToday(careplan?.id, questionnaire);
-
-        return hasBeenAnsweredToday
+        return latestResponse
     }
 
     renderPage() : JSX.Element{
