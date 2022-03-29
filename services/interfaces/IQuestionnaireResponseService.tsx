@@ -3,6 +3,7 @@ import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallTo
 import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+import { LatestResponseEnum } from "../QuestionnaireResponseService";
 
 /**
  * QuestionnaireResponseService
@@ -46,14 +47,16 @@ export default interface IQuestionnaireResponseService {
     
 
     /**
-     * From a careplanId and a questionnaire it calculates whether the questionnaire should be answered today
-     * - It uses the questionnaires frequency to know if the day matches today
-     * - It checks whether the questionnaire has already been answered
+     * From a careplanId and a questionnaire, it calculates the answer-status of the questionnaire
+     * 1) If no responses, we return NeverAnswered
+     * 2) If latest response is today, we return HasBeenAnsweredToday
+     * 3) If frequency matches today, we return ShouldBeAnsweredToday
+     * 4) If non above, we return ShouldNotBeAnsweredToday
      * @param careplanId the id of the careplan, used to get responses to verify if the questionnaire has been answered today
      * @param questionnaire the questionnaire to validate
-     * @returns true if the questionnaire should be answered today
+     * @returns the status 
      */
-    QuestionnaireShouldBeAnsweredToday: (careplanId: string, questionnaire: Questionnaire) => Promise<boolean>;
+     GetQuestionnaireAnsweredStatus(careplanId: string, questionnaire: Questionnaire): Promise<LatestResponseEnum>
 }
 
 export class QuestionAnswerPair{

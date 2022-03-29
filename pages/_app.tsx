@@ -107,7 +107,7 @@ const THEME = createTheme({
     MuiAlert: {
       styleOverrides: {
         root: {
-          borderRadius : 20
+          borderRadius: 20
         }
       },
       variants: [
@@ -249,7 +249,18 @@ const THEME = createTheme({
         {
           props: { variant: "outlined" },
           style: {
+            borderColor : regionMidtRed,
+            color : regionMidtRed,
+            borderRadius: 25,
+            padding: 15,
+            textTransform : "initial"
+          }
+        },
+        {
+          props: { variant: "outlined", className: "showAllButton" },
+          style: {
             border: 0,
+            lineHeight: "1rem",
             backgroundColor: 'white',
             borderRadius: 30,
             textTransform: "initial",
@@ -284,12 +295,6 @@ const THEME = createTheme({
           style: {
             textTransform: "initial",
             color: regionMidtRed
-          }
-        },
-        {
-          props: { className: "button-show-all-answered" },
-          style: {
-            lineHeight: "1rem"
           }
         }
       ]

@@ -23,36 +23,36 @@ export default class QuestionnaireResponseService extends BaseService implements
         let toReturn: { question: Question, answer: Answer } | undefined = undefined;
         questionToAnswerMap?.forEach((answer, question) => {
             if (question.Id == questionId)
-                toReturn = new QuestionAnswerPair(question,answer);
+                toReturn = new QuestionAnswerPair(question, answer);
         });
         return toReturn;
     }
 
-    async QuestionnaireShouldBeAnsweredToday(careplanId: string, questionnaire: Questionnaire): Promise<boolean> {
+    async GetQuestionnaireAnsweredStatus(careplanId: string, questionnaire: Questionnaire): Promise<LatestResponseEnum> {
         try {
-
-
-            // Check if the frequency matches today
-            const todaysDayIndex = this.getTodaysDay();
-            const frequencyIsToday: boolean = questionnaire.frequency?.days?.includes(todaysDayIndex) ?? false
-            if (!frequencyIsToday)
-                return false; // If frequency does not match today we return false
-
 
             //Get latest questionnaire for given questionnaire and determine if it is today
             const result = await this.GetQuestionnaireResponses(careplanId, [questionnaire.id], 1, 1);
-            const latestResponseDate = result.find(() => true)?.answeredTime
-            if (latestResponseDate) {
-                const today = new Date();
-                const hasTodaysDate = today.getDate() <= latestResponseDate.getDate();
-                const hasTodaysMonth = today.getMonth() == latestResponseDate.getMonth();
-                const hasTodaysYear = today.getFullYear() == latestResponseDate.getFullYear();
-                const hasBeenAnsweredToday = hasTodaysDate && hasTodaysMonth && hasTodaysYear;
+            if (result.length == 0)
+                return LatestResponseEnum.NeverAnswered;
 
-                return !hasBeenAnsweredToday //If frequency matches today and we have a response that is today we return false
-            }
+            const latestResponseDate = result.find(() => true)!.answeredTime!;
+            const today = new Date();
+            const hasTodaysDate = today.getDate() <= latestResponseDate.getDate();
+            const hasTodaysMonth = today.getMonth() == latestResponseDate.getMonth();
+            const hasTodaysYear = today.getFullYear() == latestResponseDate.getFullYear();
+            const hasBeenAnsweredToday = hasTodaysDate && hasTodaysMonth && hasTodaysYear;
 
-            return true //If frequency matches today but we have no responses we return true
+            if (hasBeenAnsweredToday)
+                return LatestResponseEnum.HasBeenAnsweredToday
+
+            const todaysDayIndex = this.getTodaysDay();
+            const frequencyIsToday: boolean = questionnaire.frequency?.days?.includes(todaysDayIndex) ?? false
+            if (frequencyIsToday)
+                return LatestResponseEnum.ShouldBeAnsweredToday; // If frequency does not match today we return false
+
+            return LatestResponseEnum.ShouldNotBeAnsweredToday
+
 
         } catch (error) {
             return this.HandleError(error);
@@ -90,4 +90,12 @@ export default class QuestionnaireResponseService extends BaseService implements
         }
     }
 
+}
+
+export enum LatestResponseEnum {
+    NeverAnswered,
+    ShouldNotBeAnsweredToday,
+    HasBeenAnsweredToday,
+    ShouldBeAnsweredToday,
+    Unknown
 }
