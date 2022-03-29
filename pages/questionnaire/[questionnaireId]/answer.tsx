@@ -238,11 +238,17 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                     <Grid component={Box} spacing={4} container textAlign="center">
                         <Grid item xs={12} >
-                            <Typography>{questionnaire?.name}</Typography>
-                            <Typography variant="caption">Du bliver ringet op, hvis personalet har brug for yderligere oplysninger</Typography>
+                            <Typography >Din besvarelse af {questionnaire?.name}</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography>Herunder kan du se din besvarelse. Inden du indsender besvarelsen til afdelingen, kan du tjekke og rette dine svar. </Typography>
+                            <Typography>Når besvarelsen er indsendt, kan du ikke længere rette. Er der fejl i din besvarelse, skal du indsende en ny.</Typography>
                         </Grid>
                         <Grid item xs={12} >
                             <QuestionAndAnswerTable lastRowJsx={(questionId) => this.createLastColoumn(questionId, questionnaire!)} questionAnswerMap={this.state.questionnaireResponse.questions!} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography>Du bliver ringet op, hvis personalet har brug for yderligere oplysninger.</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Button onClick={() => this.submitQuestionnaireResponse()} variant="contained">Indsend</Button>
