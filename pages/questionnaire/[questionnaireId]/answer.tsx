@@ -238,18 +238,21 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                     <Grid component={Box} spacing={4} container textAlign="center">
                         <Grid item xs={12} >
-                            <Typography >Din besvarelse af {questionnaire?.name}</Typography>
+                            <Typography fontWeight="bold" variant="inherit">Din besvarelse af {questionnaire?.name}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography>Herunder kan du se din besvarelse. Inden du indsender besvarelsen til afdelingen, kan du tjekke og rette dine svar. </Typography>
-                            <Typography>Når besvarelsen er indsendt, kan du ikke længere rette. Er der fejl i din besvarelse, skal du indsende en ny.</Typography>
+                            <Typography>Før du indsender besvarelsen til afdelingen, bedes du tjekke og evt. rette dine svar.</Typography>
+                            <Typography>Hvis du kommer til at indsende en besvarelse med fejl, skal du indsende en ny.</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography fontWeight="bold" fontSize="1em" variant="h6">Husk at trykke "Indsend" i bunden af siden</Typography>
                         </Grid>
                         <Grid item xs={12} >
                             <QuestionAndAnswerTable lastRowJsx={(questionId) => this.createLastColoumn(questionId, questionnaire!)} questionAnswerMap={this.state.questionnaireResponse.questions!} />
                         </Grid>
                         <Grid item xs={12}>
                             <Typography>Du bliver ringet op, hvis personalet har brug for yderligere oplysninger.</Typography>
-                            <Typography>Husk at du ved problemer døgnet rundt kan kontakte afdelingen på 2477 7880.</Typography>
+                            <Typography fontWeight="bold" variant="inherit">Husk at du ved problemer døgnet rundt kan kontakte afdelingen på 24 77 78 80.</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Button onClick={() => this.submitQuestionnaireResponse()} variant="contained">Indsend</Button>
