@@ -42,14 +42,17 @@ export class Topbar extends Component<{}, State> {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" textAlign="center" component="div" sx={{ flexGrow: 1 }}>
-              Kommunikation og Monitorering
+              <Typography variant="h6" textAlign="center" component="div" sx={{ mt: 2, flexGrow: 1 }}>
+                <img height="50px" src='/assets/images/logo_fullSize.svg'></img>
               </Typography>
+
+
               <ErrorBoundary>
                 <PatientMenu />
               </ErrorBoundary>
 
             </Toolbar>
+
           </AppBar>
           <Drawer
             variant="temporary"
@@ -59,7 +62,7 @@ export class Topbar extends Component<{}, State> {
             <List sx={{ width: 350 }}>
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} to="/" key="home">
                 <ListItemIcon>
-                  <HomeIcon color='white'  />
+                  <HomeIcon color='white' />
                 </ListItemIcon>
                 <ListItemText>
                   Overblik
