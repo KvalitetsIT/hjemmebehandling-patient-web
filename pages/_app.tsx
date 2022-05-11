@@ -107,7 +107,7 @@ const THEME = createTheme({
     MuiAlert: {
       styleOverrides: {
         root: {
-          borderRadius : 20
+          borderRadius: 20
         }
       },
       variants: [
@@ -132,7 +132,7 @@ const THEME = createTheme({
         {
           props: { variant: "h6" },
           style: {
-            color: regionMidtRed,
+            color: regionMidtRed
           }
         },
         {
@@ -140,6 +140,12 @@ const THEME = createTheme({
           style: {
             color: regionMidtRed,
             padding: "8px"
+          }
+        },
+        {
+          props: { className: "headline" },
+          style: {
+            fontWeight: "bold"
           }
         }
       ]
@@ -211,12 +217,50 @@ const THEME = createTheme({
         }
       ]
     },
+    MuiGrid: {
+      variants: [
+        {
+          props: { className: "show-all-answered" },
+          style: {
+            display: "flex",
+            justifyContent: "end",
+            alignSelf: "flex-end"
+          }
+        },
+        {
+          props: { className: "headline-wrapper" },
+          style: {
+            display: "flex",
+            alignSelf: "flex-end",
+            paddingTop: "40px !important"
+          }
+        },
+      ]
+    },
+    MuiCardActions: {
+      styleOverrides: {
+        root: {
+          padding: "15px"
+        }
+      }
+    },
     MuiButton: {
       variants: [
         {
           props: { variant: "outlined" },
           style: {
+            borderColor : regionMidtRed,
+            color : regionMidtRed,
+            borderRadius: 25,
+            padding: 15,
+            textTransform : "initial"
+          }
+        },
+        {
+          props: { variant: "outlined", className: "showAllButton" },
+          style: {
             border: 0,
+            lineHeight: "1rem",
             backgroundColor: 'white',
             borderRadius: 30,
             textTransform: "initial",
@@ -234,7 +278,7 @@ const THEME = createTheme({
             textTransform: "initial",
             borderRadius: 25,
             padding: 15,
-            background: "linear-gradient(to bottom, " + regionMidtRed + " 0%, #800000 100%)"
+            background: "linear-gradient(to bottom, " + regionMidtRed + "  0%, rgb(175, 10, 65) 100%)"
           }
         },
         {

@@ -67,6 +67,10 @@ export default class ContactPage extends Component<{}, State> {
         return (
             <>
                 <ErrorBoundary>
+                <Grid item xs={12} className="headline-wrapper">
+                    <Typography className="headline">Tilknyttede afdelinger</Typography>
+                </Grid>
+
                     <IsEmptyCard object={department} jsxWhenEmpty={"Ingen informationer om afdelingen fundet"}>
                         <Grid>
                             <Card>   
@@ -79,18 +83,18 @@ export default class ContactPage extends Component<{}, State> {
                                     <Typography>8200 Aarhus N</Typography>
 
                                     <br/>
-                                    <Typography sx={{ fontWeight: 'bold' }}>Infektionsklnikken</Typography>
+                                    <Typography sx={{ fontWeight: 'bold' }}>Infektionsklinikken</Typography>
                                     <Typography>Infektionsklinikken kan kontaktes på hverdage, i nedenstående tidsrum</Typography>
                                     <br/>
                                     <Typography sx={{ fontWeight: 'bold' }}>Sekretær</Typography>
-                                    <Typography>Alle dage <span>9.00-12.00</span></Typography>
+                                    <Typography>Alle hverdage <span>kl. 9.00-12.00</span></Typography>
                                     <br/>
                                     <Typography sx={{ fontWeight: 'bold' }}>Sygeplejerske</Typography>
-                                    <Typography>Mandag <span>8.15-9.00 og 13.00-14.30</span></Typography>
-                                    <Typography>Tirsdag <span>8.15-9.00 og 13.00-14.30</span></Typography>
-                                    <Typography>Onsdag <span>8.15-9.00</span></Typography>
-                                    <Typography>Torsdag <span>8.15-9.00 og 13.00-14.30</span></Typography>
-                                    <Typography>Fredag <span>8.15-9.00 og 13.00-14.00</span> </Typography> 
+                                    <Typography>Mandag <span>kl. 8.15-9.00 og 13.00-14.30</span></Typography>
+                                    <Typography>Tirsdag <span>kl. 8.15-9.00 og 13.00-14.30</span></Typography>
+                                    <Typography>Onsdag <span>kl. 8.15-9.00</span></Typography>
+                                    <Typography>Torsdag <span>kl. 8.15-9.00 og 13.00-14.30</span></Typography>
+                                    <Typography>Fredag <span>kl. 8.15-9.00 og 13.00-14.00</span> </Typography> 
                                     <br/>
                                     <Typography sx={{ fontWeight: 'bold' }}>Sengeafsnittet</Typography>
                                     <Typography>Ved behov for hjælp uden for ovenstående tidspunkter, ring på telefon 2477 7880 (hele døgnet)</Typography>                                 

@@ -52,7 +52,6 @@ export class PatientCard extends Component<{}, State> {
 
     renderCard(): JSX.Element {
         const patient = this.state.careplan?.patient;
-        console.log(patient)
         return (
 
                 <Card sx={{ borderRadius: 0 }} elevation={0}>
@@ -70,7 +69,7 @@ export class PatientCard extends Component<{}, State> {
                         <Typography align="right" variant="body2">{patient?.primaryPhonenumberToString()}</Typography>
                         <Typography align="right" variant="body2">{patient?.secondaryPhonenumberToString()}</Typography>
                         <br />
-                        <Typography align="right" variant="body2">Primære kontakt</Typography>
+                        <Typography align="right" variant="body2">Primær kontakt</Typography>
                         <Typography align="right" variant="body2">{patient?.contact?.fullname}</Typography>
                         <Typography align="right" variant="body2">{patient?.contact?.affiliation}</Typography>
                         <Typography align="right" variant="body2">{patient?.contact?.primaryPhonenumberToString()}</Typography>

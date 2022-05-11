@@ -1,6 +1,5 @@
 
 import { Grid, Stack, Typography } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { Component } from "react";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import { LoadingBackdropComponent } from "../../components/Layout/LoadingBackdropComponent";
@@ -12,6 +11,7 @@ import ApiContext from "../_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
+import { LatestResponseEnum } from "../../services/QuestionnaireResponseService";
 
 
 interface State{
@@ -55,8 +55,8 @@ export default class AnsweredPage extends Component<{},State>{
             this.setState({careplan : careplan});
 
             for (const questionnaire of careplan.questionnaires) {
-                const shouldBeAnsweredToday = await this.shouldBeAnsweredToday(questionnaire, careplan);
-                if (shouldBeAnsweredToday)
+                const latestResponse = await this.shouldBeAnsweredToday(questionnaire, careplan);
+                if (latestResponse == LatestResponseEnum.ShouldBeAnsweredToday)
                     questionnairesToAnswerToday.push(questionnaire)
                 else
                     questionnairesToAnswerOtherDay.push(questionnaire)
@@ -84,23 +84,20 @@ export default class AnsweredPage extends Component<{},State>{
         return this.state.loadingPage ? <LoadingBackdropComponent /> : this.renderPage();
     }
 
-    async shouldBeAnsweredToday(questionnaire: Questionnaire, careplan?: PatientCareplan): Promise<boolean> {
+    async shouldBeAnsweredToday(questionnaire: Questionnaire, careplan?: PatientCareplan): Promise<LatestResponseEnum> {
 
-        if (!careplan?.id) {
-            return false;
-        }
+        const latestResponse: LatestResponseEnum  = await this.questionnaireResponseService.GetQuestionnaireAnsweredStatus(careplan!.id!, questionnaire);
 
-
-        const hasBeenAnsweredToday: boolean = await this.questionnaireResponseService.QuestionnaireShouldBeAnsweredToday(careplan?.id, questionnaire);
-
-        return hasBeenAnsweredToday
+        return latestResponse
     }
 
     renderPage() : JSX.Element{
         return (
             <IsEmptyCard object={this.state.careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
-                    <Typography component={Box} paddingBottom={1} variant="h6">Spørgeskemaer til besvarelse i dag</Typography>
+                    <Grid item xs={12} className="headline-wrapper">
+                        <Typography className="headline">Spørgeskemaer til besvarelse i dag</Typography>
+                    </Grid>
 
                     <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Du har ikke flere spørgeskemaer der skal besvares">
                         <Stack direction="row" >
@@ -111,7 +108,9 @@ export default class AnsweredPage extends Component<{},State>{
                         </Stack>
                     </IsEmptyCard>
 
-                    <Typography component={Box} paddingBottom={1} paddingTop={10} variant="h6">Andre spørgeskemaer til besvarelse</Typography>
+                    <Grid item xs={12} className="headline-wrapper">
+                        <Typography className="headline">Andre spørgeskemaer til besvarelse</Typography>
+                    </Grid>
                     <IsEmptyCard list={this.state.answeredOtherdayList} jsxWhenEmpty="Ingen spørgeskemaer">
                         <Stack direction="row" spacing={2} >
                             {this.state.answeredOtherdayList?.map(questionnaire => {
@@ -123,8 +122,8 @@ export default class AnsweredPage extends Component<{},State>{
                 </IsEmptyCard>
                 
                 <Grid paddingTop={10} container>
-                    <Grid  item xs={12}>
-                        <Typography component={Box} paddingBottom={1} variant="h6">Dine tidligere besvarelser</Typography>
+                    <Grid item xs={12} className="headline-wrapper">
+                        <Typography className="headline">Dine tidligere besvarelser</Typography>
                         
                     </Grid>
                     <Grid item xs={12}>

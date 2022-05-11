@@ -191,6 +191,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.type = this.mapQuestionType(questionDto.questionType!)
         question.question = questionDto.text
         question.helperText = questionDto.helperText;
+        question.abbreviation = questionDto.abbreviation
 
         if (questionDto.enableWhens != undefined) {
             question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])

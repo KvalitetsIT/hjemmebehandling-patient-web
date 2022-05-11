@@ -7,6 +7,7 @@ import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateH
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import ICareplanService from "../../services/interfaces/ICareplanService";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
+import { LatestResponseEnum } from "../../services/QuestionnaireResponseService";
 
 interface Props {
     questionnaire: Questionnaire
@@ -14,7 +15,7 @@ interface Props {
 }
 
 interface State {
-    shouldBeAnswered: boolean;
+    latestResponse: LatestResponseEnum;
     loading: boolean;
 }
 
@@ -29,7 +30,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
         super(props);
         this.state = {
             loading: true,
-            shouldBeAnswered: false
+            latestResponse: LatestResponseEnum.Unknown
         }
     }
 
@@ -39,20 +40,16 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
         this.questionnaireResponseService = this.context.questionnaireResponseService;
     }
 
-    async shouldBeAnsweredToday(): Promise<boolean> {
+    async shouldBeAnsweredToday(): Promise<LatestResponseEnum> {
 
         const careplan = this.props.careplan;
         const questionnaire = this.props.questionnaire;
 
-        if (!careplan?.id) {
-            return false;
-        }
-
-        const shouldBeAnswered: boolean = await this.questionnaireResponseService.QuestionnaireShouldBeAnsweredToday(careplan?.id, questionnaire);
+        const shouldBeAnswered: LatestResponseEnum = await this.questionnaireResponseService.GetQuestionnaireAnsweredStatus(careplan!.id!, questionnaire);
         return shouldBeAnswered;
     }
 
-    async componentDidMount() : Promise<void>{
+    async componentDidMount(): Promise<void> {
         this.setState({
             loading: true
         });
@@ -60,7 +57,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
         try {
             const shouldBeAnswered = await this.shouldBeAnsweredToday();
             this.setState({
-                shouldBeAnswered: shouldBeAnswered
+                latestResponse: shouldBeAnswered
             });
         } catch (error) {
             this.setState(() => { throw error });
@@ -78,7 +75,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
         }
 
         const questionnaire = this.props.questionnaire;
-        const shouldBeAnsweredToday = this.state.shouldBeAnswered
+        const latestResponse = this.state.latestResponse
 
         return (
             <Card>
@@ -88,13 +85,20 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
                     <Typography variant="subtitle2">
                         Infektionssygdomme har sendt dig dette spørgeskema
                     </Typography>
-                    {shouldBeAnsweredToday ?
-                        <Typography variant="caption">Besvares i dag, senest kl {questionnaire?.frequency?.deadline}</Typography> :
+                    {latestResponse == LatestResponseEnum.ShouldBeAnsweredToday ?
+                        <Typography variant="caption">Besvares i dag, senest kl. {questionnaire?.frequency?.deadline}</Typography> :
                         <Typography variant="caption">Besvares {questionnaire?.frequency?.ToString()}</Typography>
                     }
                 </CardContent>
                 <CardActions>
-                    <Button component={Link} to={"/questionnaire/" + questionnaire.id + "/answer"} fullWidth variant="contained">Besvar nu</Button>
+                    {latestResponse == LatestResponseEnum.NeverAnswered ?
+                        <Button component={Link} to={"/questionnaire/" + questionnaire.id + "/answer"} fullWidth variant="contained">Besvar nu</Button> : <></>}
+                    {latestResponse == LatestResponseEnum.HasBeenAnsweredToday ?
+                        <Button component={Link} to={"/questionnaire/" + questionnaire.id + "/answer"} fullWidth variant="outlined">Besvar igen</Button> : <></>}
+                    {latestResponse == LatestResponseEnum.ShouldBeAnsweredToday ?
+                        <Button component={Link} to={"/questionnaire/" + questionnaire.id + "/answer"} fullWidth variant="contained">Besvar nu</Button> : <></>}
+                    {latestResponse == LatestResponseEnum.ShouldNotBeAnsweredToday ?
+                        <Button component={Link} to={"/questionnaire/" + questionnaire.id + "/answer"} fullWidth variant="outlined">Besvar igen</Button> : <></>}
                 </CardActions>
             </Card>
         )

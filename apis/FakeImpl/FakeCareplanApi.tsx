@@ -47,7 +47,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             questionnaire.id = "q1"
             questionnaire.name = "Cool questionnaire"
             questionnaire.frequency = new Frequency();
-            questionnaire.frequency.days = [DayEnum.Friday, DayEnum.Monday,DayEnum.Tuesday, DayEnum.Wednesday]
+            questionnaire.frequency.days = [DayEnum.Friday, DayEnum.Monday, DayEnum.Tuesday, DayEnum.Wednesday]
             questionnaire.frequency.deadline = "11:00"
 
             questionnaire.thresholds = [];
@@ -58,18 +58,17 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             const question1 = new Question();
             const t1 = new ThresholdCollection();
             t1.questionId = "temp"
-            questionnaire.thresholds.push(t1);
+            //questionnaire.thresholds.push(t1);
             question1.Id = "temp"
+            question1.abbreviation = "Temperatur"
             question1.helperText = "Hvis du får antibiotika på pumpe skal du svare nej hvis der har været problemer med indløb"
             const enableWhen = new EnableWhen<boolean>();
             enableWhen.questionId = "betterToday";
             enableWhen.answer = false;
             question1.enableWhen = enableWhen;
-            
 
             question1.question = "Indtast din morgen temperatur?"
             question1.type = QuestionTypeEnum.OBSERVATION
-            
 
             const question2 = new Question();
             question2.helperText = "when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
@@ -77,6 +76,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             t2.questionId = "CRP"
             const t2green = new ThresholdNumber();
             t2green.category = CategoryEnum.GREEN;
+            t2green.from = 0;
             t2green.to = 25;
             const t2yellow = new ThresholdNumber();
             t2yellow.category = CategoryEnum.YELLOW;
@@ -85,30 +85,33 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             const t2red = new ThresholdNumber();
             t2red.category = CategoryEnum.RED;
             t2red.from = 50;
+            t2red.to = 100;
 
 
             t2.thresholdNumbers = [t2green, t2yellow, t2red]
             questionnaire.thresholds.push(t2);
             question2.Id = "CRP"
+            question2.enableWhen = enableWhen;
             question2.question = "Indtast den målte CRP?"
+            question2.abbreviation = "CRP"
             question2.type = QuestionTypeEnum.OBSERVATION
-            
+
             const question3 = new Question();
             question3.Id = "betterToday"
             question3.helperText = "Mads er ved at pille ved sin skærm - Mon tabletten oplader"
             question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
             question3.type = QuestionTypeEnum.BOOLEAN
-            
-            questionnaire.questions[0] = question3;            
-            questionnaire.questions[1] = question2;
-            questionnaire.questions[2] = question1;
+
+            questionnaire.questions[0] = question3;
+            questionnaire.questions[2] = question2;
+            questionnaire.questions[1] = question1;
 
 
             const questionnaire2 = new Questionnaire();
             questionnaire2.id = "q2"
             questionnaire2.name = "Lastbilchauførers surhed"
             questionnaire2.frequency = new Frequency();
-            questionnaire2.frequency.days = [DayEnum.Wednesday]
+            questionnaire2.frequency.days = [DayEnum.Thursday]
             questionnaire2.frequency.deadline = "11:00"
 
             questionnaire2.questions = [];

@@ -14,7 +14,7 @@ export class CallToActionError extends BaseServiceError {
         return this.message;
     }
     displayTitle(): string {
-        return "Din besvarelse betyder at du skal reagere";
+        return "Din besvarelse betyder, at du skal reagere";
     }
     displayUrl(): string {
         return "";
