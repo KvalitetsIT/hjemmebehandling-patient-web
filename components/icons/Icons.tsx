@@ -1,11 +1,6 @@
 import {BaseIcon, BaseIconProps} from "@kvalitetsit/hjemmebehandling/Icons/BaseIcon"
 
 export function HomeIcon(props?: BaseIconProps): JSX.Element {
-    
-    props = {
-        color: "white"
-    }
-
     return (
         <BaseIcon {...props} src={'/assets/icons/_home.svg'}></BaseIcon>
     );
@@ -59,5 +54,20 @@ export function MessagesIcon(props?: BaseIconProps): JSX.Element {
    
     return (
         <BaseIcon {...props} src={'/assets/icons/_messages.svg'}></BaseIcon> 
+    );
+}
+
+export function LogoTextlessIcon(props?: BaseIconProps): JSX.Element {
+    
+   
+    return (
+        <BaseIcon {...props} src={'/assets/icons/_logo_textless.svg'}></BaseIcon> 
+    );
+}
+
+
+export function LogoIcon(props?: BaseIconProps): JSX.Element {
+    return (
+        <BaseIcon {...props} src={'/assets/icons/_logo.svg'}></BaseIcon> 
     );
 }

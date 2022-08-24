@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import ICareplanService from "../../../services/interfaces/ICareplanService";
 import ApiContext from "../../_context";
@@ -238,14 +238,21 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                     <Grid component={Box} spacing={4} container textAlign="center">
                         <Grid item xs={12} >
-                            <Stack>
-                                <Typography>{questionnaire?.name}</Typography>
-                                <Typography variant="caption">Du bliver ringet op, hvis personalet har brug for yderligere oplysninger</Typography>
-                                <Typography fontWeight="bold" variant="caption">Husk at du ved problemer døgnet rundt kan kontakte afdelingen på 2477 7880.</Typography>
-                            </Stack>
+                            <Typography fontWeight="bold" variant="inherit">Din besvarelse af {questionnaire?.name}</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography>Før du indsender besvarelsen til afdelingen, bedes du tjekke og evt. rette dine svar.</Typography>
+                            <Typography>Hvis du kommer til at indsende en besvarelse med fejl, skal du indsende en ny.</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography fontWeight="bold" fontSize="1em" variant="h6">Husk at trykke "Indsend" i bunden af siden</Typography>
                         </Grid>
                         <Grid item xs={12} >
                             <QuestionAndAnswerTable lastRowJsx={(questionId) => this.createLastColoumn(questionId, questionnaire!)} questionAnswerMap={this.state.questionnaireResponse.questions!} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography>Du bliver ringet op, hvis personalet har brug for yderligere oplysninger.</Typography>
+                            <Typography fontWeight="bold" variant="inherit">Husk at du ved problemer døgnet rundt kan kontakte afdelingen på 24 77 78 80.</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Button onClick={() => this.submitQuestionnaireResponse()} variant="contained">Indsend</Button>
