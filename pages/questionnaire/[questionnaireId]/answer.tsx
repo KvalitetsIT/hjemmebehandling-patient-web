@@ -198,7 +198,11 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     }
     renderQuestion(questionnaire: Questionnaire | undefined): JSX.Element {
 
-        const questions = questionnaire?.questions;
+        let questions : Question[] = []
+        questionnaire?.getParentQuestions().map(q => 
+            questions.push(q, ...questionnaire?.getChildQuestions(q.Id))
+        )
+                
         let question: Question | undefined = undefined;
         const currentPage = this.GetLastElement(this.state.indexJourney);
         if (questions) {
