@@ -13,10 +13,24 @@ export default class QuestionAndAnswerTable extends Component<Props, {}>{
     static contextType = ApiContext
 
     render(): JSX.Element {
-        const array: { q: Question, a: Answer }[] = [];
+        const parentQuestions: Question[] = [], childQuestions: Question[] = [];
         this.props.questionAnswerMap.forEach((answer, question) => {
-            array.push({ q: question, a: answer })
+            if (question.enableWhen) {
+                childQuestions.push(question);
+            }
+            else {
+                parentQuestions.push(question);
+            }
         });
+
+        const array: { q: Question, a: Answer }[] = [];
+        parentQuestions.forEach(question => {
+            array.push({ q: question, a: this.props.questionAnswerMap.get(question)! })
+
+            childQuestions.filter(q => q instanceof Question && q.enableWhen?.questionId == question.Id).forEach(question => {
+                array.push({ q: question, a: this.props.questionAnswerMap.get(question)! })
+            })
+        })
 
         return (
             <>
