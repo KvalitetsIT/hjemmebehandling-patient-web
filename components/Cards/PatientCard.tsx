@@ -69,10 +69,10 @@ export class PatientCard extends Component<{}, State> {
                         <Typography align="right" variant="body2">{patient?.primaryPhonenumberToString()}</Typography>
                         <Typography align="right" variant="body2">{patient?.secondaryPhonenumberToString()}</Typography>
                         <br />
-                        <Typography align="right" variant="body2">{(patient?.contact?.fullname!=null || 
-                                                                    patient?.contact?.affiliation!=null || 
-                                                                    patient?.contact?.primaryPhone!=null || 
-                                                                    patient?.contact?.secondaryPhone!=null) ?"Primær kontakt":""}</Typography>
+                        <Typography align="right" variant="body2">{(patient?.contact?.fullname!="" || 
+                                                                    patient?.contact?.affiliation!="" || 
+                                                                    patient?.contact?.primaryPhone!="" || 
+                                                                    patient?.contact?.secondaryPhone!="") ?"Primær kontakt":""}</Typography>
                         <Typography align="right" variant="body2">{patient?.contact?.fullname}</Typography>
                         <Typography align="right" variant="body2">{patient?.contact?.affiliation}</Typography>
                         <Typography align="right" variant="body2">{patient?.contact?.primaryPhonenumberToString()}</Typography>
