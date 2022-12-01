@@ -93,7 +93,7 @@ export class ObservationCard extends Component<Props, State> {
         let counter = 0
 
         return (
-            <IsEmptyCard list={allQuestions} jsxWhenEmpty={"Ingen besvarelser for spørgskema " + this.props.questionnaire.name}>
+            <IsEmptyCard list={allQuestions} jsxWhenEmpty={""}>
                 <Grid container spacing={5}>
                     {allQuestions.map(question => {
                         const isFirst = counter++ == 0;

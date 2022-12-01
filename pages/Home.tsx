@@ -81,7 +81,7 @@ export default class HomePage extends Component<{}, State> {
                                 <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
                                     <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
 
-                                        <IsEmptyCard object={this.state.careplan!.questionnaires.find(qu => qu.questions?.find(x => x.type == QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={"Ingen målinger på behandlingsplanen"}>
+                                        <IsEmptyCard object={this.state.careplan!.questionnaires.find(qu => qu.questions?.find(x => x.type == QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={""}>
                                             <ScrollableRow cols={2.5} jsxList={observarionQuestions.map((q) =>
                                                 <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}>
                                                     {q ? <MiniChartRow questionnaire={q.questionnaire} careplan={this.state.careplan!} question={q.question!} /> : <></>}
