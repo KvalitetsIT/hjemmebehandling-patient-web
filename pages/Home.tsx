@@ -75,7 +75,7 @@ export default class HomePage extends Component<{}, State> {
 
                             </Grid>
                             <Grid item xs={12} className="headline-wrapper">
-                                <Typography className="headline">Dine målinger</Typography>
+                                <Typography className="headline">Mine målinger</Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
@@ -91,7 +91,7 @@ export default class HomePage extends Component<{}, State> {
                                 </IsEmptyCard>
                             </Grid>
                             <Grid item xs={10} className="headline-wrapper">
-                                <Typography className="headline">Dine tidligere besvarelser</Typography>
+                                <Typography className="headline">Mine tidligere besvarelser</Typography>
                             </Grid>
                             <Grid item xs={2} className="show-all-answered">
                                 <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
