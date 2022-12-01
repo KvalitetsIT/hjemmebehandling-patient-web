@@ -114,7 +114,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                                 </Stack>
                                             </TableCell>
                                             <TableCell align="right">
-                                                <LoadingButton component={Link} to={"/questionnaire/" + questionnaire?.id + "/response/" + questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se besvarelse</LoadingButton>
+                                                <LoadingButton component={Link} to={"/questionnaire/" + questionnaire?.id + "/response/" + questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se mine svar</LoadingButton>
                                             </TableCell>
                                         </TableRow>
                                     )

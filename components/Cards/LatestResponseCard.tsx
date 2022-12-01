@@ -39,12 +39,12 @@ export default class LatestResponseCard extends Component<Props, State> {
         const latestData = answerData.pop();
         const secondLatestData = answerData.pop();
 
-        let status = "Værdier er stabile"
+        let status = "Værdien er stabil"
         if (latestData != undefined && secondLatestData != undefined) {
             if (latestData > secondLatestData)
-                status = "Værdier er stigende"
+                status = "Værdien er stigende"
             if (latestData < secondLatestData)
-                status = "Værdier er faldende"
+                status = "Værdien er faldende"
         }
 
         return (

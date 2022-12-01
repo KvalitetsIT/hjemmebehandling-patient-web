@@ -68,7 +68,7 @@ export default class ContactPage extends Component<{}, State> {
             <>
                 <ErrorBoundary>
                 <Grid item xs={12} className="headline-wrapper">
-                    <Typography className="headline">Tilknyttede afdelinger</Typography>
+                    <Typography className="headline">Mine afdelinger</Typography>
                 </Grid>
 
                     <IsEmptyCard object={department} jsxWhenEmpty={"Ingen informationer om afdelingen fundet"}>
@@ -84,7 +84,7 @@ export default class ContactPage extends Component<{}, State> {
 
                                     <br/>
                                     <Typography sx={{ fontWeight: 'bold' }}>Infektionsklinikken</Typography>
-                                    <Typography>Infektionsklinikken kan kontaktes på hverdage, i nedenstående tidsrum</Typography>
+                                    <Typography>Infektionsklinikken kan kontaktes telefonisk på 40 45 98 12 på hverdage i nedenstående tidsrum</Typography>
                                     <br/>
                                     <Typography sx={{ fontWeight: 'bold' }}>Sekretær</Typography>
                                     <Typography>Alle hverdage <span>kl. 9.00-12.00</span></Typography>
@@ -97,12 +97,12 @@ export default class ContactPage extends Component<{}, State> {
                                     <Typography>Fredag <span>kl. 8.15-9.00 og 13.00-14.00</span> </Typography> 
                                     <br/>
                                     <Typography sx={{ fontWeight: 'bold' }}>Sengeafsnittet</Typography>
-                                    <Typography>Ved behov for hjælp uden for ovenstående tidspunkter, ring på telefon 2477 7880 (hele døgnet)</Typography>                                 
+                                    <Typography>Ved behov for hjælp uden for ovenstående tidspunkter, ring på telefon 24 77 78 80 (hele døgnet)</Typography>                                 
                                 </CardContent>
                                 <Divider />
                                 <CardActions className="call-hospital-wrapper">
                                     <PhoneIcon></PhoneIcon>
-                                    <Typography className="call-hospital" sx={{ textAlign: 'right' }}>4045 9812</Typography>    
+                                    <Typography className="call-hospital" sx={{ textAlign: 'right' }}>40 45 98 12</Typography>    
                                 </CardActions>
                             </Card>
                         </Grid>
