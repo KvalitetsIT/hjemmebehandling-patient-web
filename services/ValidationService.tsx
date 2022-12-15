@@ -86,7 +86,7 @@ export default class ValidationService extends BaseService implements IValidatio
 
         const valueIsValid = thresholdCollection.thresholdNumbers?.find(threshold => (threshold.from ?? Number.MIN_VALUE) <= Number.parseFloat(value) && Number.parseFloat(value) <= (threshold.to ?? Number.MAX_VALUE))
         if (!valueIsValid) {
-            const error = new InvalidInputModel(propName, "Indtastning ligger uden for normaltområdet")
+            const error = new InvalidInputModel(propName, "Indtastning ligger uden for normal området")
             errors.push(error)
         }
 
