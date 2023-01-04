@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Typography, Button } from '@mui/material';
+import { Grid, Typography, Button, Box } from '@mui/material';
 import ApiContext from "../../pages/_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper"
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
@@ -63,8 +63,9 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
                     </Grid>
                     <Grid item xs={12} >
-
-                        {this.renderQuestionInput(this.props.question)}
+                        <Box sx={{ height:60 }}>
+                            {this.renderQuestionInput(this.props.question)}
+                        </Box>
                     </Grid>
 
                     <Grid item xs={12}>
@@ -167,7 +168,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         variant = "contained"
 
                     return (
-                        <Button variant={variant} onClick={() => this.setState({ tempAnswer: optionAsString })}>{option ? "Ja" : "Nej"}</Button>
+                        <Button sx={{pt: 2, pb: 2}} variant={variant} onClick={() => this.setState({ tempAnswer: optionAsString })}>{option ? "Ja" : "Nej"}</Button>
                     )
                 })}
             </>
