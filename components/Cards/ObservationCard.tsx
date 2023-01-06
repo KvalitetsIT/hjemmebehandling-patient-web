@@ -93,34 +93,31 @@ export class ObservationCard extends Component<Props, State> {
         let counter = 0
 
         return (
-            <IsEmptyCard list={allQuestions} jsxWhenEmpty={""}>
-                <Grid container spacing={5}>
-                    {allQuestions.map(question => {
-                        const isFirst = counter++ == 0;
-                        const threshold = this.props.questionnaire?.thresholds?.find(x => x.questionId == question.Id)
-
-                        const dateToString = (date: Date) => this.dateHelper.DateToString(date);
-                        const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
-
-                        const subheader = question.abbreviation ?? question.question ?? "";
-                        return (
-                            <Grid paddingLeft={isFirst ? 0 : 2} item xs={12}>
-                                <ResponseViewCard chartData={chartData} />
-                                
-                                <IsEmptyCard object={threshold} jsxWhenEmpty="Ingen alarmgrænser">
-                                    <Card marginTop={1} component={Box}>
-                                        <CardHeader subheader={subheader + " - Alarmgrænser"} />
-                                        <CardContent>
-                                            {threshold && threshold.thresholdNumbers ? <ThresholdSlider threshold={threshold.thresholdNumbers} question={question} /> : <></>}
-                                        </CardContent>
-                                    </Card>
-                                </IsEmptyCard>
-
-                            </Grid>
-                        )
-                    })}
-                </Grid>
-            </IsEmptyCard>
+            <Grid container spacing={5}>
+                {allQuestions.map(question => {
+                    const isFirst = counter++ == 0;
+                    const threshold = this.props.questionnaire?.thresholds?.find(x => x.questionId == question.Id)
+                    
+                    const dateToString = (date: Date) => this.dateHelper.DateToString(date);
+                    const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
+                    
+                    const subheader = question.abbreviation ?? question.question ?? "";
+                    return (
+                        <Grid paddingLeft={isFirst ? 0 : 2} item xs={12}>
+                            <ResponseViewCard chartData={chartData} />
+                            
+                            <IsEmptyCard object={threshold} jsxWhenEmpty="Ingen alarmgrænser">
+                                <Card marginTop={1} component={Box}>
+                                    <CardHeader subheader={subheader + " - Alarmgrænser"} />
+                                    <CardContent>
+                                        {threshold && threshold.thresholdNumbers ? <ThresholdSlider threshold={threshold.thresholdNumbers} question={question} /> : <></>}
+                                    </CardContent>
+                                </Card>
+                            </IsEmptyCard>
+                        </Grid>
+                    )
+                })}
+            </Grid>
         );
     }
 }
