@@ -321,7 +321,18 @@ const THEME = createTheme({
           }
         }
       ]
-    }
+    },
+    //About button, sidebar
+    MuiList: {
+      variants: [
+        {
+          props: { className: 'BottomList' },
+          style: {
+            marginTop: "auto",
+          }
+        }
+      ]
+    },
   }
 });
 

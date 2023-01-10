@@ -13,6 +13,7 @@ import HomePage from '../../pages/Home';
 import ContactPage from '../../pages/contact';
 import { CheckmarkIcon } from '../icons/Icons';
 import { Toast } from '@kvalitetsit/hjemmebehandling/Errorhandling/Toast';
+import AboutPage from '../../pages/about';
 
 export interface State {
   drawerIsOpen: boolean,
@@ -68,6 +69,7 @@ export class Layout extends Component<{}, State> {
                       <Route path="/questionnaire/answered" render={(props) => <AnsweredPage  {...props} />} />
                       <Route path="/measurements" render={(props) => <ObservationPage {...props} />} />
                       <Route path="/contact" render={(props) => <ContactPage {...props} />} />
+                      <Route path="/about"><AboutPage /></Route>
                       <Route path="/" render={(props) => <HomePage {...props} />} />
                     </Switch>
                   </ErrorBoundary>

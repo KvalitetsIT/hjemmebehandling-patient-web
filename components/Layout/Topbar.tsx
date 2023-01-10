@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import { Link } from 'react-router-dom';
 import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 import { PatientMenu } from '../Cards/PatientMenu';
-import { ContactIcon, GrapphIcon, HomeIcon, SurveyIcon } from '../icons/Icons';
+import { ContactIcon, GrapphIcon, HomeIcon, SurveyIcon, AboutIcon } from '../icons/Icons';
 
 export interface State {
   drawerIsOpen: boolean,
@@ -94,6 +94,15 @@ export class Topbar extends Component<{}, State> {
                 <ListItemText>
                   Kontakt hospitalet
                 </ListItemText>
+              </ListItem>
+            </List>
+
+            <List className='BottomList'>
+              <ListItem button component={Link} color="inherit" to="/about">
+                <ListItemIcon>
+                  <AboutIcon size='2.2em' color='white' />
+                </ListItemIcon>
+                <ListItemText primary="Om KOMO" />
               </ListItem>
             </List>
           </Drawer>
