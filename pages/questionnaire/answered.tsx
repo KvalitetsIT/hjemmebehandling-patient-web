@@ -13,7 +13,6 @@ import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnair
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
 import { LatestResponseEnum } from "../../services/QuestionnaireResponseService";
 import { ScrollableRow } from "../../components/Rows/HomePage/ScrollableRow";
-import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 
 interface State{
     loadingPage : boolean;
