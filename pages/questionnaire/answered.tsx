@@ -12,7 +12,8 @@ import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateH
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
 import { LatestResponseEnum } from "../../services/QuestionnaireResponseService";
-
+import { ScrollableRow } from "../../components/Rows/HomePage/ScrollableRow";
+import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 
 interface State{
     loadingPage : boolean;
@@ -94,32 +95,33 @@ export default class AnsweredPage extends Component<{},State>{
     renderPage() : JSX.Element{
         return (
             <IsEmptyCard object={this.state.careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
-                <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
-                    <Grid item xs={12} className="headline-wrapper">
-                        <Typography className="headline">Spørgeskemaer til besvarelse i dag</Typography>
-                    </Grid>
+                <Grid container spacing={2}>
+                    <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
+                        <Grid item xs={12} className="headline-wrapper">
+                            <Typography className="headline">Spørgeskemaer til besvarelse i dag</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Du har ikke flere spørgeskemaer der skal besvares">
+                                <ScrollableRow cols={2.5} jsxList={this.state.answeredTodayList!.map(questionnaire => 
+                                        <QuestionnaireAnswerCard careplan={this.state.careplan} questionnaire={questionnaire} />
+                                    )}
+                                />
+                            </IsEmptyCard>
+                        </Grid>
 
-                    <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Du har ikke flere spørgeskemaer der skal besvares">
-                        <Stack direction="row" >
-                            {this.state.answeredTodayList?.map(questionnaire => {
-                                return <QuestionnaireAnswerCard careplan={this.state.careplan}questionnaire={questionnaire} />
-                            })}
-
-                        </Stack>
+                        <Grid item xs={12} className="headline-wrapper">
+                            <Typography className="headline">Andre spørgeskemaer til besvarelse</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <IsEmptyCard list={this.state.answeredOtherdayList} jsxWhenEmpty="Ingen spørgeskemaer">
+                                <ScrollableRow cols={2.5} jsxList={this.state.answeredOtherdayList!.map(questionnaire => 
+                                       <QuestionnaireAnswerCard careplan={this.state.careplan} questionnaire={questionnaire} />
+                                    )}
+                                />
+                            </IsEmptyCard>
+                        </Grid>
                     </IsEmptyCard>
-
-                    <Grid item xs={12} className="headline-wrapper">
-                        <Typography className="headline">Andre spørgeskemaer til besvarelse</Typography>
-                    </Grid>
-                    <IsEmptyCard list={this.state.answeredOtherdayList} jsxWhenEmpty="Ingen spørgeskemaer">
-                        <Stack direction="row" spacing={2} >
-                            {this.state.answeredOtherdayList?.map(questionnaire => {
-                                return <QuestionnaireAnswerCard careplan={this.state.careplan} questionnaire={questionnaire} />
-                            })}
-
-                        </Stack>
-                    </IsEmptyCard>
-                </IsEmptyCard>
+                </Grid>
                 
                 <Grid paddingTop={10} container>
                     <Grid item xs={12} className="headline-wrapper">
