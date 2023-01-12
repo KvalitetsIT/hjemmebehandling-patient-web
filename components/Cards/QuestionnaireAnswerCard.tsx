@@ -76,6 +76,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
 
         const questionnaire = this.props.questionnaire;
         const latestResponse = this.state.latestResponse
+        const today = this.dateHelper.DayIndexToDay( new Date().getDay());
 
         return (
             <Card>
@@ -85,7 +86,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
                     <Typography variant="subtitle2">
                         Infektionssygdomme har sendt dig dette spørgeskema
                     </Typography>
-                    {latestResponse == LatestResponseEnum.ShouldBeAnsweredToday ?
+                    {questionnaire.frequency?.days.find(day => day === today) ?
                         <Typography variant="caption">Besvares i dag, senest kl. {questionnaire?.frequency?.deadline}</Typography> :
                         <Typography variant="caption">Besvares {questionnaire?.frequency?.ToString()}</Typography>
                     }

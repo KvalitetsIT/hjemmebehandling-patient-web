@@ -1,5 +1,5 @@
 
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import React, { Component } from "react";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import { LoadingBackdropComponent } from "../../components/Layout/LoadingBackdropComponent";
@@ -11,7 +11,6 @@ import ApiContext from "../_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
-import { LatestResponseEnum } from "../../services/QuestionnaireResponseService";
 import { ScrollableRow } from "../../components/Rows/HomePage/ScrollableRow";
 
 interface State{
@@ -30,12 +29,11 @@ export default class AnsweredPage extends Component<{},State>{
     constructor(props : {}){
         super(props);
         this.state = {
-            loadingPage : false,
+            loadingPage : true,
             careplan : undefined,
             answeredOtherdayList: [],
             answeredTodayList: []
         }
-        this.shouldBeAnsweredToday = this.shouldBeAnsweredToday.bind(this);
     }
 
     initializeServices() : void{
@@ -45,50 +43,37 @@ export default class AnsweredPage extends Component<{},State>{
     }
 
     async componentDidMount() : Promise<void>{
-
-        this.setState({loadingPage : true});
-
         try{
             const careplan = await this.careplanService.GetActiveCareplan()
             const questionnairesToAnswerToday: Questionnaire[] = []
             const questionnairesToAnswerOtherDay: Questionnaire[] = []
-            this.setState({careplan : careplan});
 
+            const today = this.dateHelper.DayIndexToDay( new Date().getDay());
             for (const questionnaire of careplan.questionnaires) {
-                const latestResponse = await this.shouldBeAnsweredToday(questionnaire, careplan);
-                if (latestResponse == LatestResponseEnum.ShouldBeAnsweredToday)
+                if (questionnaire.frequency?.days.find(day => day === today)) {
                     questionnairesToAnswerToday.push(questionnaire)
-                else
-                    questionnairesToAnswerOtherDay.push(questionnaire)
+                }
+                else {
+                    questionnairesToAnswerOtherDay.push(questionnaire);
+                }
             }
 
-            console.log(questionnairesToAnswerToday)
             this.setState({
                 careplan: careplan,
                 answeredTodayList: questionnairesToAnswerToday,
-                answeredOtherdayList: questionnairesToAnswerOtherDay
+                answeredOtherdayList: questionnairesToAnswerOtherDay,
+                loadingPage: false
             })
 
         } 
         catch(error){
             this.setState(()=>{throw error});
         }
-
-        this.setState({loadingPage : false});
-
-        
     }
 
     render() : JSX.Element{
         this.initializeServices();
         return this.state.loadingPage ? <LoadingBackdropComponent /> : this.renderPage();
-    }
-
-    async shouldBeAnsweredToday(questionnaire: Questionnaire, careplan?: PatientCareplan): Promise<LatestResponseEnum> {
-
-        const latestResponse: LatestResponseEnum  = await this.questionnaireResponseService.GetQuestionnaireAnsweredStatus(careplan!.id!, questionnaire);
-
-        return latestResponse
     }
 
     renderPage() : JSX.Element{
