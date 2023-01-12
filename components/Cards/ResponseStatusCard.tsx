@@ -66,17 +66,17 @@ export default class ResponseStatusCard extends Component<Props,{}>{
                                     {this.getStatusIcon(questionnaireResponse.status)}
                                 </Avatar>
                             </Grid>
-                            <Grid item sx={{padding:2}} xs={8}>
+                            <Grid xs={8} sx={{margin: 2 }}>
                                 <Typography variant="subtitle1">{questionnaire?.name}</Typography>
                                 <Typography variant="subtitle2">{organizationName}</Typography>
                             </Grid>
                             {(questionnaireResponse.status ==  QuestionnaireResponseStatus.Processed) ?
-                                <Grid item sx={{padding:2}} xs={2}>
+                                <Grid xs sx={{ margin: 2, textAlign: 'right' }}>
                                     <Typography variant="subtitle1">Kvitteret den</Typography>
                                     <Typography variant="subtitle2">{this.dateHelper.DateToString(questionnaireResponse.examinedTime!)}</Typography>
                                 </Grid>
                                 :
-                                <Grid item sx={{padding:2}} xs={2}>
+                                <Grid item xs sx={{ margin: 2, textAlign: 'right' }}>
                                     <Typography variant="subtitle1">Sendt den</Typography>
                                     <Typography variant="subtitle2">{questionnaireResponse.answeredTime ? this.dateHelper.DateToString(questionnaireResponse!.answeredTime) : "-"}</Typography>
                                 </Grid>
