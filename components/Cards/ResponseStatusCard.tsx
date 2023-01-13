@@ -66,7 +66,7 @@ export default class ResponseStatusCard extends Component<Props,{}>{
                                     {this.getStatusIcon(questionnaireResponse.status)}
                                 </Avatar>
                             </Grid>
-                            <Grid xs={8} sx={{margin: 2 }}>
+                            <Grid xs={7} sx={{margin: 2 }}>
                                 <Typography variant="subtitle1">{questionnaire?.name}</Typography>
                                 <Typography variant="subtitle2">{organizationName}</Typography>
                             </Grid>
