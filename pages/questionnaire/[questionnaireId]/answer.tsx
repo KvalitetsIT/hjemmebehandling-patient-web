@@ -168,7 +168,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
                     <Grid component={Box} textAlign="left" item xs={12} >
                         <LinearProgress variant="determinate" value={this.GetPercentageDone(questionnaire)} />
-                        <Button size="small" disabled={this.GetLastElement(this.state.indexJourney) == 0} onClick={() => this.GoToPreviousPage()}>
+                        <Button size="small" disabled={this.GetLastElement(this.state.indexJourney) == 0} onClick={() => this.GoToPreviousPage()} sx={{ 'text-transform': 'none'}}>
                             <NavigateBeforeIcon />
                             <Typography fontSize={10}>
                                 Forrige
