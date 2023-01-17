@@ -13,9 +13,35 @@ import { ThresholdNumber } from "@kvalitetsit/hjemmebehandling/Models/ThresholdN
 import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
 import ICareplanApi from "../interfaces/ICareplanApi";
 import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
+import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
 
 export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
     timeToWait: number = 1000;
+
+    async GetAllMeasurementTypes(organizationId: string) : Promise<MeasurementType[]> {
+        console.debug("GetAllMeasurementTypes for org:", organizationId);
+        try {
+            await new Promise(f => setTimeout(f, this.timeToWait));
+
+            const measurementType = new MeasurementType();
+            measurementType.code = "NPU08676";
+            measurementType.displayName = "Legeme temp.;Pt";
+            measurementType.system = "urn:oid:1.2.208.176.2.1";
+
+            const threshold = new ThresholdNumber();
+            threshold.id = "NPU08676";
+            threshold.category = CategoryEnum.GREEN;
+            threshold.from = 35;
+            threshold.to = 43;
+
+            measurementType.threshold = threshold;
+
+            return [measurementType];
+
+        } catch (error) {
+            return await this.HandleError(error);
+        }
+    }
 
     async GetActiveCareplan(): Promise<PatientCareplan> {
         try {

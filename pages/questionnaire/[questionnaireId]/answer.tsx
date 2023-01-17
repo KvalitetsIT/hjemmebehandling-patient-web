@@ -9,7 +9,7 @@ import IQuestionnaireResponseService from "../../../services/interfaces/IQuestio
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { LoadingBackdropComponent } from "../../../components/Layout/LoadingBackdropComponent";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
-import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
+import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { Answer, BooleanAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import LinearProgress from '@mui/material/LinearProgress';
@@ -23,6 +23,10 @@ import { CallToActionError } from "../../../components/Errors/CallToActionError"
 import { DialogError } from "@kvalitetsit/hjemmebehandling/Errorhandling/DialogError";
 import ErrorIcon from '@mui/icons-material/Error';
 import { CreateToastEvent, CreateToastEventData } from "@kvalitetsit/hjemmebehandling/Events/CreateToastEvent";
+import IValueSetService from "../../../services/interfaces/IValueSetService";
+import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
+import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
+
 interface Props {
     match: { params: { questionnaireId: string } };
     startQuestionIndex?: number;
@@ -35,12 +39,14 @@ interface State {
     indexJourney: number[];
     callToActions: CallToActionMessage[];
     questionnaireResponse: QuestionnaireResponse; //The new response
+    measurementTypes: MeasurementType[];
 }
 
 export default class QuestionnaireResponseCreationPage extends Component<Props, State>{
     static contextType = ApiContext
     questionnaireResponseService!: IQuestionnaireResponseService;
     careplanService!: ICareplanService;
+    valueSetService!: IValueSetService;
 
     constructor(props: Props) {
         super(props);
@@ -51,7 +57,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             indexJourney: props.startQuestionIndex ? [props.startQuestionIndex] : [0],
             questionnaireResponse: newQuestionnaireResponse,
             careplan: undefined,
-            callToActions: []
+            callToActions: [],
+            measurementTypes: []
         }
         this.setAnswerToQuestion = this.setAnswerToQuestion.bind(this)
     }
@@ -59,15 +66,22 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     initializeServices(): void {
         this.questionnaireResponseService = this.context.questionnaireResponseService;
         this.careplanService = this.context.careplanService;
+        this.valueSetService = this.context.valueSetService;
 
     }
 
     async componentDidMount(): Promise<void> {
         try {
-            this.setState({ loadingPage: true })
             const careplan = await this.careplanService.GetActiveCareplan();
             this.ResetResponse(careplan);
-            this.setState({ careplan: careplan, loadingPage: false })
+            const questionnaire = careplan.questionnaires.find(x => x.id == this.props.match.params.questionnaireId);
+            
+            let measurementTypes: MeasurementType[] = [];
+            if (questionnaire?.questions!.find(q => q.type == QuestionTypeEnum.OBSERVATION)) {
+                measurementTypes = await this.valueSetService.GetAllMeasurementTypes(careplan.organization!.id!);
+            }
+
+            this.setState({ careplan: careplan, measurementTypes: measurementTypes, loadingPage: false })
         } catch (error) {
             this.setState(() => { throw error })
         }
@@ -218,6 +232,15 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             return <></>
         }
 
+        const thresholds = new ThresholdCollection();
+        if (question!.type == QuestionTypeEnum.OBSERVATION) {
+            const measurementType = this.state.measurementTypes.find(m => m.code === question?.measurementType?.code);
+            
+            if (measurementType && measurementType.threshold) {
+                thresholds.thresholdNumbers = [measurementType.threshold]
+            }
+        }
+
         return (
             <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                 <IsEmptyCard list={questions} jsxWhenEmpty="Ingen spørgsmål blev fundet i spørgeskemaet">
@@ -225,7 +248,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                         {this.renderProgressbar(questionnaire!)}
                         <Grid component={Box} spacing={4} container textAlign="center">
                             <Grid item xs={12} >
-                                <QuestionPresenterCard key={question?.Id} questionnaire={questionnaire!} question={question!} answer={this.state.questionnaireResponse.questions?.get(question!)} setQuestionAnswer={this.setAnswerToQuestion} />
+                                <QuestionPresenterCard key={question?.Id} /*questionnaire={questionnaire!}*/ question={question!} thresholds={thresholds} answer={this.state.questionnaireResponse.questions?.get(question!)} setQuestionAnswer={this.setAnswerToQuestion} />
                             </Grid>
                         </Grid>
 
