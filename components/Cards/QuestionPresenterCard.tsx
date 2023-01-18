@@ -92,7 +92,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         switch (question.type) {
             case QuestionTypeEnum.OBSERVATION:
                 const observationAnswer = new NumberAnswer();
-                observationAnswer.answer = answerString as unknown as number;
+                observationAnswer.answer = parseFloat(answerString);
                 answer = observationAnswer;
                 break;
             case QuestionTypeEnum.INTEGER:

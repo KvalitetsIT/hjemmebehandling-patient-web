@@ -11,16 +11,15 @@ export default class ValidationService extends BaseService implements IValidatio
         const erorrs: InvalidInputModel[] = []
         const propName = "Tal"
         
-        const result = parseFloat(posibleNumber)
-        if (isNaN(result)) {
-            const error = new InvalidInputModel(propName, "Skal være et tal")
-            erorrs.push(error)
-        }
-        
         if (posibleNumber.includes(",")) {
             const error = new InvalidInputModel(propName, "Kommatal skal skrives med punktum")
             erorrs.push(error)
         }
+        if (isNaN(Number(posibleNumber))) {
+            const error = new InvalidInputModel(propName, "Skal være et tal")
+            erorrs.push(error)
+        }
+        
         return erorrs;
     }
 
