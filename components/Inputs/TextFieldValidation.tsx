@@ -87,7 +87,11 @@ async validate(input : string) : Promise<void>{
             required={this.props.required} 
             size={this.props.size} 
             type={this.props.type}
-            value={this.props.value}>
+            value={this.props.value}
+            inputProps={ this.props.type === 'number' ? {
+                type: "text",
+                inputMode: "numeric",
+              } : {}}>
             </TextField>
         </FormControl>
     )

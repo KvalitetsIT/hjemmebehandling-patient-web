@@ -10,17 +10,17 @@ export default class ValidationService extends BaseService implements IValidatio
     async ValidateNumber(posibleNumber: string): Promise<InvalidInputModel[]> {
         const erorrs: InvalidInputModel[] = []
         const propName = "Tal"
-        if (posibleNumber.includes(",")) {
-            const error = new InvalidInputModel(propName, "Kommatal skal skrives med punktum")
-            erorrs.push(error)
-        }
-
+        
         const result = parseFloat(posibleNumber)
         if (isNaN(result)) {
             const error = new InvalidInputModel(propName, "Skal være et tal")
             erorrs.push(error)
         }
-
+        
+        if (posibleNumber.includes(",")) {
+            const error = new InvalidInputModel(propName, "Kommatal skal skrives med punktum")
+            erorrs.push(error)
+        }
         return erorrs;
     }
 
@@ -77,7 +77,7 @@ export default class ValidationService extends BaseService implements IValidatio
         const errors: InvalidInputModel[] = []
         const propName = "Indtastning"
 
-        if (thresholdCollection == undefined)
+        if (value.length == 0 || thresholdCollection == undefined)
             return errors;
 
         const numberErrors = await this.ValidateNumber(value)
