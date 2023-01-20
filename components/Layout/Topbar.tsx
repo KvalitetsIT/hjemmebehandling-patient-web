@@ -100,7 +100,7 @@ export class Topbar extends Component<{}, State> {
             <List className='BottomList'>
               <ListItem button onClick={() => this.setState({ drawerIsOpen: false })} component={Link} color="inherit" to="/about">
                 <ListItemIcon>
-                  <AboutIcon size='2.2em' color='white' />
+                  <AboutIcon color='white' />
                 </ListItemIcon>
                 <ListItemText primary="Om KOMO" />
               </ListItem>
