@@ -15,18 +15,42 @@ import SimpleDepartment from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganiz
 import { Task } from "@kvalitetsit/hjemmebehandling/Models/Task";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { User } from "@kvalitetsit/hjemmebehandling/Models/User";
-import { AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
 import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
 import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
+import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
+import { ThresholdNumber } from "@kvalitetsit/hjemmebehandling/Models/ThresholdNumber";
 
 
 /**
  * This class maps from the external models (used in bff-api) to the internal models (used in frontend)
  */
 export default class ExternalToInternalMapper extends BaseMapper {
+    
+    mapMeasurementType(measurementType: MeasurementTypeDto): MeasurementType {
+
+        const toReturn = new MeasurementType();
+        toReturn.displayName = measurementType.display
+        toReturn.code = measurementType.code
+        toReturn.system = measurementType.system
+
+        if (measurementType.threshold) {
+            toReturn.threshold = this.mapThresholdNumber(measurementType.threshold!);
+        }
+        return toReturn;
+    }
+
+    mapThresholdNumber(thresholdDto : ThresholdDto): ThresholdNumber {
+        const number = new ThresholdNumber();
+        number.from = thresholdDto.valueQuantityLow;
+        number.to = thresholdDto.valueQuantityHigh;
+        number.category = this.mapTresholdCategory(thresholdDto.type!);
+        number.id = thresholdDto.questionId!;
+        return number;
+    }
 
     mapCallToActionMessage(response: CallToActionDTO): CallToActionMessage[] {
 
@@ -201,6 +225,9 @@ export default class ExternalToInternalMapper extends BaseMapper {
         }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Choice) {
             question.options = questionDto.options
+        }
+        if (questionDto.measurementType != undefined) {
+            question.measurementType = this.mapMeasurementType(questionDto.measurementType);
         }
 
         return question;

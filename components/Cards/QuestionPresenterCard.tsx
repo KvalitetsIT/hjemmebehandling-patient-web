@@ -7,11 +7,11 @@ import IValidationService from "../../services/interfaces/IValidationService";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
 import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
+import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 
 interface Props {
-    questionnaire: Questionnaire;
     question: Question;
+    thresholds: ThresholdCollection;
     answer?: Answer;
     setQuestionAnswer: (question: Question, answer: Answer) => void;
 }
@@ -92,7 +92,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         switch (question.type) {
             case QuestionTypeEnum.OBSERVATION:
                 const observationAnswer = new NumberAnswer();
-                observationAnswer.answer = answerString as unknown as number;
+                observationAnswer.answer = parseFloat(answerString);
                 answer = observationAnswer;
                 break;
             case QuestionTypeEnum.INTEGER:
@@ -176,12 +176,11 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     }
 
     getNumberInput(): JSX.Element {
-        const questionThresholds = this.props.questionnaire.thresholds?.find(threshold => threshold.questionId == this.props.question.Id)
         return (
             <TextFieldValidation
                 id="questionInput"
                 onValidation={(uid, errors) => this.onValidation(uid, errors)}
-                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr,questionThresholds)}
+                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr,this.props.thresholds)}
                 required={true}
                 label="Svar"
                 type="number"

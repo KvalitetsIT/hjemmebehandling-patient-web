@@ -16,6 +16,7 @@ import FakeQuestionnaireResponseApi from '../apis/FakeImpl/FakeQuestionnaireResp
 import QuestionnaireResponseService from '../services/QuestionnaireResponseService';
 
 import CareplanService from '../services/CareplanService';
+import ValueSetService from '../services/ValueSetService';
 import FakeCareplanApi from '../apis/FakeImpl/FakeCareplanApi';
 import RealQuestionnaireResponseApi from '../apis/RealImpl/RealQuestionnaireResponseApi';
 import RealCareplanApi from '../apis/RealImpl/RealCareplanApi';
@@ -25,12 +26,15 @@ import IOrganizationApi from '../apis/interfaces/IOrganizationApi';
 import OrganizationService from '../services/OrganizationService';
 import FakeOrganizationApi from '../apis/FakeImpl/FakeOrganizationApi';
 import RealOrganizationApi from '../apis/RealImpl/RealOrganizationApi';
+import RealValueSetApi from '../apis/RealImpl/RealValueSetApi';
+import IValueSetApi from '../apis/interfaces/IValueSetApi';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
 
   let questionnaireResponseApi: IQuestionnaireResponseApi = new RealQuestionnaireResponseApi();
   let careplanApi: ICareplanApi = new RealCareplanApi();
+  let valueSetApi: IValueSetApi = new RealValueSetApi();
   let organizationApi: IOrganizationApi = new RealOrganizationApi();
 
   if (process?.env.NODE_ENV === 'development') {
@@ -39,6 +43,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     }
     if (process.env.NEXT_PUBLIC_MOCK_CAREPLAN_SERVICE === "true") {
       careplanApi = new FakeCareplanApi();
+    }
+    if (process.env.NEXT_PUBLIC_MOCK_VALUESET_SERVICE === "true") {
+      valueSetApi = new FakeCareplanApi();
     }
     if (process.env.NEXT_PUBLIC_MOCK_ORGANIZATION_SERVICE === "true") {
       organizationApi = new FakeOrganizationApi();
@@ -57,6 +64,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
               //Services
               questionnaireResponseService: new QuestionnaireResponseService(questionnaireResponseApi, dateHelper),
               careplanService: new CareplanService(careplanApi),
+              valueSetService: new ValueSetService(valueSetApi),
               organizationService: new OrganizationService(organizationApi),
 
               //Helpers

@@ -18,10 +18,13 @@ import CareplanService from '../services/CareplanService';
 import IOrganizationService from '../services/interfaces/IOrganizationService';
 import OrganizationService from '../services/OrganizationService';
 import FakeOrganizationApi from '../apis/FakeImpl/FakeOrganizationApi';
+import IValueSetService from '../services/interfaces/IValueSetService';
+import ValueSetService from '../services/ValueSetService';
 
 interface IApiContext {
     questionnaireResponseService : IQuestionnaireResponseService,
     careplanService : ICareplanService,
+    valueSetService : IValueSetService,
     organizationService : IOrganizationService,
     validationService : IValidationService,
     dateHelper : IDateHelper
@@ -32,6 +35,7 @@ const ApiContext = createContext<IApiContext>(
     {
         questionnaireResponseService : new QuestionnaireResponseService(new FakeQuestionnaireResponseApi(),new DanishDateHelper()),
         careplanService : new CareplanService(new FakeCareplanApi()),
+        valueSetService : new ValueSetService(new FakeCareplanApi()),
         organizationService : new OrganizationService(new FakeOrganizationApi()),
 
         validationService : new ValidationService(),
