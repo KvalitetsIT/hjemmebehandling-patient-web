@@ -131,6 +131,12 @@ const THEME = createTheme({
     MuiTypography: {
       variants: [
         {
+          props: { variant: "body1" },
+          style: {
+            fontSize: '0.875rem'
+          }
+        },
+        {
           props: { variant: "h2" },
           style: {
             color: regionMidtRed,
@@ -153,7 +159,8 @@ const THEME = createTheme({
         {
           props: { className: "headline" },
           style: {
-            fontWeight: "bold"
+            fontWeight: "bold",
+            fontSize: "1rem"
           }
         }
       ]
@@ -341,6 +348,26 @@ const THEME = createTheme({
         }
       ]
     },
+    MuiStack: {
+      variants: [
+        {
+          props: { className: 'questionnaireStatus'},
+          style: {
+            alignItems: 'center',
+          }
+        }
+      ]
+    },
+    MuiTableCell: {
+      variants: [
+        {
+          props: {variant: 'head'},
+          style: {
+            fontWeight: 'bold',
+          }
+        }
+      ]
+    }
   }
 });
 
