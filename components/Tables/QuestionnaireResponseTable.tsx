@@ -108,7 +108,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                             </TableCell>
                                             <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
                                             <TableCell>
-                                                <Stack direction="row" spacing={1}>
+                                                <Stack direction="row" spacing={1} className="questionnaireStatus">
                                                     <Typography>{this.GetStatusRepresentation(questionnaireResponse.status)}</Typography>
                                                     <Typography>{this.GetStatusText(questionnaireResponse.status)}</Typography>
                                                 </Stack>
