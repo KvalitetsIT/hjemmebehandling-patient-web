@@ -68,8 +68,7 @@ export default class QuestionnaireResponseDetailsPage extends Component<Props, S
                                 <ResponseStatusCard careplan={this.state.careplan!} questionnaireResponse={this.state.questionnaireResponse!} />
                             </Grid>
                             <Grid item xs={12}>
-
-                                <Typography variant="h6">Besvarelse</Typography>
+                                <Typography className="headline">Besvarelse</Typography>
                                 <QuestionAndAnswerTable questionAnswerMap={this.state.questionnaireResponse!.questions!} />
 
 

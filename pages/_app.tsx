@@ -137,6 +137,13 @@ const THEME = createTheme({
           }
         },
         {
+          props: { variant: "subtitle1" },
+          style: {
+            fontWeight: 'bold',
+            lineHeight: 'initial'
+          }
+        },
+        {
           props: { variant: "h2" },
           style: {
             color: regionMidtRed,
@@ -201,7 +208,8 @@ const THEME = createTheme({
     MuiCardHeader: {
       styleOverrides: {
         subheader: {
-          color: regionMidtRed
+          color: regionMidtRed,
+          fontSize: '1rem'
         }
       }
     },
@@ -248,6 +256,13 @@ const THEME = createTheme({
             display: "flex",
             alignSelf: "flex-end",
             paddingTop: "40px !important"
+          }
+        },
+        {
+          props: { className: "container-avatar" },
+          style: {
+            display: "flex",
+            alignItems: "center"
           }
         },
       ]
@@ -366,6 +381,19 @@ const THEME = createTheme({
             fontWeight: 'bold',
           }
         }
+      ]
+    },
+    MuiAvatar: {
+      variants: [
+        {
+          props: {variant: 'rounded' },
+          style: {
+          borderRadius: '20px',
+          margin: '10px',
+          width: '60px',
+          height: '60px'
+        }
+      }
       ]
     }
   }
