@@ -29,7 +29,7 @@ export default class AboutPage extends Component<{}> {
                                         <AboutMedicalDeviceIcon size="65px"/>
                                     </ListItemIcon>
                                     <ListItemText disableTypography
-                                        primary={<Typography variant="h6" color={'inherit'}>Medicinsk udstyr</Typography>}
+                                        primary={<Typography className="headline" color={'inherit'}>Medicinsk udstyr</Typography>}
                                         secondary={<Typography>Versionsnummer på software: 2.0.0</Typography>}
                                     />
                                 </ListItem>
@@ -38,7 +38,7 @@ export default class AboutPage extends Component<{}> {
                                         <AboutUserGuideIcon />
                                     </ListItemIcon>
                                     <ListItemText disableTypography
-                                        primary={<Typography variant="h6" color={'inherit'}>Brugervejledning</Typography>}
+                                        primary={<Typography className="headline" color={'inherit'}>Brugervejledning</Typography>}
                                         secondary={<Typography>Udleveres af klinisk personale</Typography>
                                         }
                                     />
@@ -48,7 +48,7 @@ export default class AboutPage extends Component<{}> {
                                         <AboutWarningsIcon />
                                     </ListItemIcon>
                                     <ListItemText disableTypography
-                                        primary={<Typography variant="h6" color={'inherit'}>Advarsler og begrænsninger</Typography>}
+                                        primary={<Typography className="headline" color={'inherit'}>Advarsler og begrænsninger</Typography>}
                                         secondary={
                                             <List dense sx = {{listStyleType: 'disc', pl: 3, '& .MuiListItem-root': {display: 'list-item', mt: -1 },}}>
                                                 <ListItem disableGutters>
@@ -67,7 +67,7 @@ export default class AboutPage extends Component<{}> {
                                                     <Typography>Det er ligeledes klinikkens ansvar at udarbejde arbejdsgange for kvalitetssikring af spørgeskemaer og patientgrupper.</Typography>
                                                 </ListItem>
                                                 <ListItem disableGutters>
-                                                    <Typography>Enhver fejl eller uhensigtsmæssighed, der er indtruffet i forbindelse med den medicinske software, skal indberettes til it.dias.support@rm.dk.</Typography>
+                                                    <Typography>Enhver fejl eller uhensigtsmæssighed, der er indtruffet i forbindelse med den medicinske software, skal indberettes til afdelingen.</Typography>
                                                 </ListItem>
                                             </List>
                                         }
@@ -77,17 +77,10 @@ export default class AboutPage extends Component<{}> {
                                     <ListItemIcon>
                                         <AboutManufacturerIcon />
                                     </ListItemIcon>
-                                    <ListItemText disableTypography
-                                        primary={<Typography variant="h6" color={'inherit'}>Fabrikant</Typography>}
+                                    <ListItemText MuiListItemText-multiline disableTypography
+                                        primary={<Typography className="headline" color={'inherit'}>Fabrikant</Typography>}
                                         secondary={
-                                            <List dense sx = {{listStyleType: 'disc', pl: 3, '& .MuiListItem-root': {display: 'list-item', mt: -1 },}}>
-                                                <ListItem disableGutters>
-                                                    <Typography>Center for Telemedicin, Region Midtjylland</Typography>
-                                                </ListItem>
-                                                <ListItem disableGutters>
-                                                    <Typography>Olof Palmes Allé 36, 8200 Århus</Typography>
-                                                </ListItem>
-                                            </List>
+                                            <Typography>Center for Telemedicin, Region Midtjylland, Olof Palmes Allé 36, 8200 Aarhus N</Typography>
                                         }
                                     />
                                 </ListItem>
