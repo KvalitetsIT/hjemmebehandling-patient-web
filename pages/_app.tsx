@@ -133,41 +133,60 @@ const THEME = createTheme({
         {
           props: { variant: "body1" },
           style: {
-            fontSize: '0.875rem'
+            fontSize: '0.875rem',
+            letterSpacing: 'initial'
+
           }
         },
         {
           props: { variant: "subtitle1" },
           style: {
             fontWeight: 'bold',
-            lineHeight: 'initial'
+            lineHeight: 'initial',
+            letterSpacing: 'initial'
           }
         },
         {
           props: { variant: "h2" },
           style: {
             color: regionMidtRed,
-            fontWeight: "bold"
+            fontWeight: "bold",
+            letterSpacing: 'initial'
           }
         },
         {
           props: { variant: "h6" },
           style: {
-            color: regionMidtRed
+            color: regionMidtRed,
+            letterSpacing: 'initial'
+          }
+        },
+        {
+          props: { variant: "caption" },
+          style: {
+            letterSpacing: 'initial'
+          }
+        },
+        {
+          props: { variant: "subtitle2" },
+          style: {
+            letterSpacing: 'initial'
           }
         },
         {
           props: { className: "call-hospital" },
           style: {
             color: regionMidtRed,
-            padding: "8px"
+            padding: "8px",
+            letterSpacing: 'initial'
           }
         },
         {
           props: { className: "headline" },
           style: {
             fontWeight: "bold",
-            fontSize: "1rem"
+            fontSize: "1rem",
+            letterSpacing: 'initial'
           }
         }
       ]
