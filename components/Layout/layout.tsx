@@ -1,4 +1,3 @@
-import { Box } from '@material-ui/core';
 import React, { Component } from 'react';
 import { Topbar } from './Topbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -14,6 +13,7 @@ import ContactPage from '../../pages/contact';
 import { CheckmarkIcon } from '../icons/Icons';
 import { Toast } from '@kvalitetsit/hjemmebehandling/Errorhandling/Toast';
 import AboutPage from '../../pages/about';
+import { Box } from '@mui/material';
 
 export interface State {
   drawerIsOpen: boolean,

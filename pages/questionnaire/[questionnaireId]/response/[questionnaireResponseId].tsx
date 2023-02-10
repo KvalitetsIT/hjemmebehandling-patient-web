@@ -1,4 +1,3 @@
-import { Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
@@ -9,7 +8,7 @@ import IQuestionnaireResponseService from "../../../../services/interfaces/IQues
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
 import { LoadingBackdropComponent } from "../../../../components/Layout/LoadingBackdropComponent";
 import ICareplanService from "../../../../services/interfaces/ICareplanService";
-import { Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import QuestionAndAnswerTable from "../../../../components/Tables/QuestionAndAnswerTable";
 
 interface Props {

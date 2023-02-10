@@ -1,9 +1,8 @@
-import { Typography } from '@material-ui/core';
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
-import { Divider, Skeleton } from '@mui/material';
+import { Divider, Skeleton, Typography } from '@mui/material';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import ApiContext from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';

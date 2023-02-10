@@ -1,7 +1,6 @@
-import { Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
-import { Button, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import ICareplanService from "../../../services/interfaces/ICareplanService";
 import ApiContext from "../../_context";

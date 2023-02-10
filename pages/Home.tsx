@@ -8,7 +8,7 @@ import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/Error
 import { LoadingBackdropComponent } from "../components/Layout/LoadingBackdropComponent";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { BaseQuestion, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { ScrollableRow } from "../components/Rows/HomePage/ScrollableRow";
+import ScrollableRow from "../components/ScrollableRow";
 import QuestionnaireResponseTable from "../components/Tables/QuestionnaireResponseTable";
 import ICareplanService from "../services/interfaces/ICareplanService";
 import ApiContext from "./_context";
@@ -69,7 +69,7 @@ export default class HomePage extends Component<{}, State> {
 
                                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
                                     <ErrorBoundary>
-                                        <ScrollableRow cols={2.5} jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)} />
+                                        <ScrollableRow cols={2} jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)} />
                                     </ErrorBoundary>
                                 </IsEmptyCard>
 
@@ -82,7 +82,7 @@ export default class HomePage extends Component<{}, State> {
                                     <IsEmptyCard list={this.state.careplan!.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
 
                                         <IsEmptyCard object={this.state.careplan!.questionnaires.find(qu => qu.questions?.find(x => x.type == QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={""}>
-                                            <ScrollableRow cols={2.5} jsxList={observarionQuestions.map((q) =>
+                                            <ScrollableRow cols={3} jsxList={observarionQuestions.map((q) =>
                                                 <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}>
                                                     {q ? <MiniChartRow questionnaire={q.questionnaire} careplan={this.state.careplan!} question={q.question!} /> : <></>}
                                                 </IsEmptyCard>)} />
