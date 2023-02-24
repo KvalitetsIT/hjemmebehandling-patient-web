@@ -54,7 +54,7 @@ export default class HomePage extends Component<{}, State> {
 
     renderPage(): JSX.Element {
         const questionnaires = this.state.careplan?.questionnaires;
-        const observarionQuestions = questionnaires?.flatMap(questionnaire => questionnaire?.questions?.map(question => new QuestionQuestionnaire(question,questionnaire))).filter(x => x?.question.type == QuestionTypeEnum.OBSERVATION) ?? [];
+        const observarionQuestions = questionnaires?.flatMap(questionnaire => questionnaire?.questions?.map(question => new QuestionQuestionnaire(question, questionnaire))).filter(x => x?.question.type == QuestionTypeEnum.OBSERVATION) ?? [];
         const careplan = this.state.careplan;
 
         return (
@@ -62,19 +62,17 @@ export default class HomePage extends Component<{}, State> {
                 <ErrorBoundary>
                     <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} className="headline-wrapper">
+                            <Grid item xs={12}>
                                 <Typography className="headline">Spørgeskemaer til besvarelse</Typography>
                             </Grid>
                             <Grid item xs={12}>
-
                                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
                                     <ErrorBoundary>
                                         <ScrollableRow cols={2} jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)} />
                                     </ErrorBoundary>
                                 </IsEmptyCard>
-
                             </Grid>
-                            <Grid item xs={12} className="headline-wrapper">
+                            <Grid item xs={12} mt={6}>
                                 <Typography className="headline">Mine målinger</Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -90,18 +88,20 @@ export default class HomePage extends Component<{}, State> {
                                     </IsEmptyCard>
                                 </IsEmptyCard>
                             </Grid>
-                            <Grid item xs={10} className="headline-wrapper">
-                                <Typography className="headline">Mine tidligere besvarelser</Typography>
-                            </Grid>
-                            <Grid item xs={2} className="show-all-answered">
-                                <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
-                                    <ErrorBoundary>
-                                        <QuestionnaireResponseTable careplan={this.state.careplan!} />
-                                    </ErrorBoundary>
-                                </IsEmptyCard>
+                            <Grid item container xs={12} mt={6}>
+                                <Grid item xs={10}>
+                                    <Typography className="headline">Mine tidligere besvarelser</Typography>
+                                </Grid>
+                                <Grid item xs={2} className="show-all-answered">
+                                    <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
+                                        <ErrorBoundary>
+                                            <QuestionnaireResponseTable careplan={this.state.careplan!} />
+                                        </ErrorBoundary>
+                                    </IsEmptyCard>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </IsEmptyCard>
