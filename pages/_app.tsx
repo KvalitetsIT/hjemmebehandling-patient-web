@@ -260,6 +260,7 @@ const THEME = createTheme({
       styleOverrides: {
         root: {
           flexGrow: 1,
+          overflowWrap: "break-word",
         }
       }
     },
