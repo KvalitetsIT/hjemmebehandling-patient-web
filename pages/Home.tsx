@@ -56,6 +56,7 @@ export default class HomePage extends Component<{}, State> {
         const questionnaires = this.state.careplan?.questionnaires;
         const observarionQuestions = questionnaires?.flatMap(questionnaire => questionnaire?.questions?.map(question => new QuestionQuestionnaire(question, questionnaire))).filter(x => x?.question.type == QuestionTypeEnum.OBSERVATION) ?? [];
         const careplan = this.state.careplan;
+        const jsxList = this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />);
 
         return (
             <>
@@ -68,10 +69,11 @@ export default class HomePage extends Component<{}, State> {
                             <Grid item xs={12}>
                                 <IsEmptyCard list={this.state.careplan?.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
                                     <ErrorBoundary>
-                                        <ScrollableRow cols={2} jsxList={this.state.careplan!.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)} />
+                                        <ScrollableRow cols={2} jsxList={jsxList} />
                                     </ErrorBoundary>
                                 </IsEmptyCard>
                             </Grid>
+
                             <Grid item xs={12} mt={6}>
                                 <Typography className="headline">Mine målinger</Typography>
                             </Grid>
@@ -88,14 +90,14 @@ export default class HomePage extends Component<{}, State> {
                                     </IsEmptyCard>
                                 </IsEmptyCard>
                             </Grid>
-                            <Grid item container xs={12} mt={6}>
+                            <Grid item container xs={12} mt={6} alignItems="center">
                                 <Grid item xs={10}>
                                     <Typography className="headline">Mine tidligere besvarelser</Typography>
                                 </Grid>
                                 <Grid item xs={2} className="show-all-answered">
                                     <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} mt={2}>
                                     <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
                                         <ErrorBoundary>
                                             <QuestionnaireResponseTable careplan={this.state.careplan!} />

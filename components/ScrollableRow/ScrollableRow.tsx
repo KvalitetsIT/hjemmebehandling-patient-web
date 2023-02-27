@@ -11,7 +11,7 @@ const ScrollableRow: React.FC<Props> = ({jsxList, cols}) => {
 
     return (
         <Root>
-            <List columns={cols}>
+            <List columns={cols} numOfItems={jsxList.length}>
                 {jsxList.map(x => (
                     <Item key={x.key}>
                         {x}
