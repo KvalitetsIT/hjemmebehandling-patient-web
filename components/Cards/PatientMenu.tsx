@@ -1,8 +1,7 @@
-import { Typography } from '@material-ui/core';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Component } from 'react';
-import { Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem, Typography } from '@mui/material';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import ApiContext from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';

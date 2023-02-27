@@ -16,7 +16,7 @@ import LatestResponseCard from './LatestResponseCard';
 
 export interface Props {
     careplan: PatientCareplan;
-    questionnaire : Questionnaire
+    questionnaire: Questionnaire
     question: Question;
 }
 
@@ -65,7 +65,7 @@ export class MiniChartRow extends Component<Props, State> {
         this.initialiseServices()
 
         if (this.state.loading)
-            return (<Skeleton width="20em" height="100%" />)
+            return (<Skeleton width="100%" height="20em" />)
 
         const question = this.props.question;
 
@@ -75,15 +75,15 @@ export class MiniChartRow extends Component<Props, State> {
         const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
 
         return (
-            <IsEmptyCard list={this.state.questionnaireResponses} jsxWhenEmpty={
-                <>
-                    <Typography variant="subtitle2">{question.question}</Typography>
-                    <Typography variant="caption">Ingen tilgængelige målinger</Typography>
-                </>
-            }>
-
-
-                <Link to="/measurements">
+            <IsEmptyCard
+                list={this.state.questionnaireResponses}
+                jsxWhenEmpty={
+                    <>
+                        <Typography variant="subtitle2">{question.question}</Typography>
+                        <Typography variant="caption">Ingen tilgængelige målinger</Typography>
+                    </>
+                }>
+                <Link to="/measurements" style={{flexGrow: 1, display: 'flex'}}>
                     <LatestResponseCard chartData={chartData} />
                 </Link>
             </IsEmptyCard>

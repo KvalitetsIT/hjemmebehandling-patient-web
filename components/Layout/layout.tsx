@@ -1,4 +1,3 @@
-import { Box } from '@material-ui/core';
 import React, { Component } from 'react';
 import { Topbar } from './Topbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -14,6 +13,7 @@ import ContactPage from '../../pages/contact';
 import { CheckmarkIcon } from '../icons/Icons';
 import { Toast } from '@kvalitetsit/hjemmebehandling/Errorhandling/Toast';
 import AboutPage from '../../pages/about';
+import { Box } from '@mui/material';
 
 export interface State {
   drawerIsOpen: boolean,
@@ -56,7 +56,7 @@ export class Layout extends Component<{}, State> {
             <Router>
               <Box component="main" sx={{ flexGrow: 1 }}>
                 <Topbar />
-                <Box padding={3}>
+                <Box padding={3} pt={6}>
                   <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)" showReloadButton={true}>
                     {this.state.createToastData ?
                       <Toast onClose={() => this.resetToast()} icon={<CheckmarkIcon color='white' size='2rem' />} positionVertical='top' positionhorizontal='center' snackbarTitle={this.state.createToastData.title} snackbarColor='error'></Toast>

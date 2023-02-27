@@ -233,13 +233,26 @@ const THEME = createTheme({
     },
     MuiCardHeader: {
       styleOverrides: {
+        content: {
+          overflow: 'hidden',
+        },
         subheader: {
           color: regionMidtRed,
-          fontSize: '1rem'
+          fontSize: '1rem',
+          textOverflow: 'ellipsis',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
         }
       }
     },
     MuiCard: {
+      styleOverrides: {
+        root: {
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+        },
+      },
       variants: [
         {
           props: {},
@@ -249,6 +262,14 @@ const THEME = createTheme({
           }
         }
       ]
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          flexGrow: 1,
+          overflowWrap: "break-word",
+        }
+      }
     },
     MuiLinearProgress: {
       styleOverrides: {
@@ -296,7 +317,9 @@ const THEME = createTheme({
     MuiCardActions: {
       styleOverrides: {
         root: {
-          padding: "15px"
+          padding: "15px",
+          alignSelf: 'stretch',
+          justifyContent: 'flex-end',
         }
       }
     },
@@ -305,11 +328,11 @@ const THEME = createTheme({
         {
           props: { variant: "outlined" },
           style: {
-            borderColor : regionMidtRed,
-            color : regionMidtRed,
+            borderColor: regionMidtRed,
+            color: regionMidtRed,
             borderRadius: 25,
             padding: 15,
-            textTransform : "initial"
+            textTransform: "initial"
           }
         },
         {
@@ -319,6 +342,7 @@ const THEME = createTheme({
             lineHeight: "1rem",
             backgroundColor: 'white',
             borderRadius: 30,
+            padding: 10,
             textTransform: "initial",
             color: "black",
             ":hover": {
@@ -392,7 +416,7 @@ const THEME = createTheme({
     MuiStack: {
       variants: [
         {
-          props: { className: 'questionnaireStatus'},
+          props: { className: 'questionnaireStatus' },
           style: {
             alignItems: 'center',
           }
@@ -402,7 +426,7 @@ const THEME = createTheme({
     MuiTableCell: {
       variants: [
         {
-          props: {variant: 'head'},
+          props: { variant: 'head' },
           style: {
             fontWeight: 'bold',
           }
@@ -412,14 +436,14 @@ const THEME = createTheme({
     MuiAvatar: {
       variants: [
         {
-          props: {variant: 'rounded' },
+          props: { variant: 'rounded' },
           style: {
-          borderRadius: '20px',
-          margin: '10px',
-          width: '60px',
-          height: '60px'
+            borderRadius: '20px',
+            margin: '10px',
+            width: '60px',
+            height: '60px'
+          }
         }
-      }
       ]
     }
   }
