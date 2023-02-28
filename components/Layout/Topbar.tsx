@@ -1,5 +1,4 @@
-import { Box } from '@material-ui/core';
-import { AppBar, Drawer, IconButton, List, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Drawer, IconButton, List, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
 import React, { Component } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItem from '@mui/material/ListItem';

@@ -24,25 +24,25 @@ export default class ResponseStatusCard extends Component<Props,{}>{
         let toReturn = (<></>);
         switch(status){
             case QuestionnaireResponseStatus.InProgress:
-                toReturn = (<MessagesIcon size="3rem" color="white"/>)
+                toReturn = (<MessagesIcon size="2.5rem" color="#5D74AC"/>)
             break;
             case QuestionnaireResponseStatus.NotAnswered:
-                toReturn = (<MessagesIcon size="3rem" color="white"/>)
+                toReturn = (<MessagesIcon size="2.5rem" color="#5D74AC"/>)
             break;
             case QuestionnaireResponseStatus.NotProcessed:
-                toReturn = (<MessagesIcon size="3rem" color="white"/>)
+                toReturn = (<MessagesIcon size="2.5rem" color="#5D74AC"/>)
             break;
             case QuestionnaireResponseStatus.Processed:
-                toReturn = (<CheckmarkIcon size="3rem" color="white"/>)
+                toReturn = (<CheckmarkIcon size="2.5rem" color="#4A6F58"/>)
             break;
         }
         return toReturn;
     }
-    getStatusColor(status : QuestionnaireResponseStatus) : "lightblue" | "green" {
-        let toReturn : "lightblue" | "green"  = "lightblue";
+    getStatusColor(status : QuestionnaireResponseStatus) : "#E8EFF7" | "#D0EFDC" {
+        let toReturn : "#E8EFF7" | "#D0EFDC"  = "#E8EFF7";
         switch(status){
             case QuestionnaireResponseStatus.Processed:
-                toReturn = "green"
+                toReturn = "#D0EFDC"
             break;
         }
         return toReturn;
@@ -60,9 +60,9 @@ export default class ResponseStatusCard extends Component<Props,{}>{
             <IsEmptyCard object={questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet" >
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema fundet" >
                     <Card>
-                        <Grid container>
+                        <Grid className="container-avatar" container>
                             <Grid item xs={1}>
-                                <Avatar sx={{height:"100%",width:"100%", bgcolor : this.getStatusColor(questionnaireResponse.status)}} variant="square">
+                                <Avatar sx={{height:"60px",width:"60px", bgcolor : this.getStatusColor(questionnaireResponse.status)}} variant="rounded">
                                     {this.getStatusIcon(questionnaireResponse.status)}
                                 </Avatar>
                             </Grid>

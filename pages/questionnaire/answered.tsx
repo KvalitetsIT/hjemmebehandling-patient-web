@@ -11,7 +11,7 @@ import ApiContext from "../_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
-import { ScrollableRow } from "../../components/Rows/HomePage/ScrollableRow";
+import ScrollableRow from "../../components/ScrollableRow";
 
 interface State{
     loadingPage : boolean;

@@ -151,7 +151,7 @@ export class ObservationCard extends Component<Props, State> {
                     const subheader = question.abbreviation ?? question.question ?? "";
                     return (
                         <Grid paddingLeft={isFirst ? 0 : 2} item xs={12}>
-                            <ResponseViewCard chartData={chartData} />
+                            <ResponseViewCard chartData={chartData} />  
                             
                             <IsEmptyCard object={threshold} jsxWhenEmpty="Ingen alarmgrænser">
                                 <Card marginTop={1} component={Box}>
