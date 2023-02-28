@@ -47,7 +47,7 @@
     "test-watch": "jest --watch",
     "e2e-test": "playwright test",
     "update-visual-snapshot": "playwright test --update-snapshots",
-    "preinstall": "openapi-generator-cli generate -i resources/bff.json -g typescript-fetch -o generated --additional-properties=typescriptThreePlus=true"
+    "preinstall": "rm -rf generated; openapi-generator-cli generate -i resources/bff.json -g typescript-fetch -o generated --additional-properties=typescriptThreePlus=true"
   },
   "eslintConfig": {
     "extends": [
