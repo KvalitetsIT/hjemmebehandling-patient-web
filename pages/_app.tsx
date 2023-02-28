@@ -188,6 +188,13 @@ const THEME = createTheme({
             fontSize: "1rem",
             letterSpacing: 'initial'
           }
+        },
+        {
+          props: { className: "question" },
+          style: {
+            fontWeight: "bold",
+            letterSpacing: 'initial'
+          }
         }
       ]
     },

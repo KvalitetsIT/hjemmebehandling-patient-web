@@ -1,4 +1,4 @@
-import { styled, css } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 const DEFAULT_GAP = 1;
 const DEFAULT_COLUMNS = 2;
