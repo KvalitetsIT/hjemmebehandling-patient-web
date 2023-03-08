@@ -37,6 +37,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   let valueSetApi: IValueSetApi = new RealValueSetApi();
   let organizationApi: IOrganizationApi = new RealOrganizationApi();
 
+  
   if (process?.env.NODE_ENV === 'development') {
     if (process.env.NEXT_PUBLIC_MOCK_QUESTIONNAIRE_RESPONSE_SERVICE === "true") {
       questionnaireResponseApi = new FakeQuestionnaireResponseApi();
