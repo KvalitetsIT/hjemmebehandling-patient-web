@@ -107,8 +107,8 @@ export default class AnsweredPage extends Component<{},State>{
                     </IsEmptyCard>
                 </Grid>
                 
-                <Grid paddingTop={10} container>
-                    <Grid item xs={12} className="headline-wrapper">
+                <Grid paddingTop={10} container spacing={2}>
+                    <Grid item xs={12} >
                         <Typography className="headline">Dine tidligere besvarelser</Typography>
                         
                     </Grid>
