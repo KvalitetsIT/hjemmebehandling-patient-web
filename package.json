@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@kvalitetsit/hjemmebehandling": "^1.4.93",
+    "@kvalitetsit/hjemmebehandling": "^1.4.94",
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.54",
     "@mui/material": "^5.2.8",
@@ -47,7 +47,7 @@
     "test-watch": "jest --watch",
     "e2e-test": "playwright test",
     "update-visual-snapshot": "playwright test --update-snapshots",
-    "preinstall": "openapi-generator-cli generate -i resources/bff.json -g typescript-fetch -o generated --additional-properties=typescriptThreePlus=true"
+    "preinstall": "rm -rf generated; openapi-generator-cli generate -i resources/bff.json -g typescript-fetch -o generated --additional-properties=typescriptThreePlus=true"
   },
   "eslintConfig": {
     "extends": [
