@@ -61,8 +61,8 @@ export default class ResponseStatusCard extends Component<Props,{}>{
             <IsEmptyCard object={questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet" >
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema fundet" >
                     <Card>
-                        <Grid className="container-avatar" container  p={1}>
-                            <Grid item>
+                        <Grid className="container-avatar" container  p={2}>
+                            <Grid>
                                 <Avatar sx={{ margin: 0, marginRight: 2, bgcolor : this.getStatusColor(questionnaireResponse.status)}} variant="rounded">
                                     {this.getStatusIcon(questionnaireResponse.status)}
                                 </Avatar>
@@ -77,7 +77,7 @@ export default class ResponseStatusCard extends Component<Props,{}>{
                                     <Typography variant="subtitle2">{this.dateHelper.DateToString(questionnaireResponse.examinedTime!)}</Typography>
                                 </Grid>
                                 :
-                                <Grid sx={{ justifyContent: 'end' }}>
+                                <Grid sx={{ textAlign: 'right', flexGrow: 1}}>
                                     <Typography variant="subtitle1">Sendt den</Typography>
                                     <Typography variant="subtitle2">{questionnaireResponse.answeredTime ? this.dateHelper.DateToString(questionnaireResponse!.answeredTime) : "-"}</Typography>
                                 </Grid>
