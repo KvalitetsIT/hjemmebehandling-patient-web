@@ -30,7 +30,7 @@ export default class AboutPage extends Component<{}> {
                                     </ListItemIcon>
                                     <ListItemText disableTypography
                                         primary={<Typography className="headline" color={'inherit'}>Medicinsk udstyr</Typography>}
-                                        secondary={<Typography>Versionsnummer på software: 2.0.0</Typography>}
+                                        secondary={<Typography>Versionsnummer på software: 2.0.0-2023-03-29</Typography>}
                                     />
                                 </ListItem>
                                 <ListItem alignItems="flex-start">
