@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Stack, Typography } from '@mui/material';
+import { Button, ButtonGroup, Table as MuiTable, TableBody, TableCell as MuiTableCell, TableContainer, TableHead as MuiTableHead, TableRow as MuiTableRow, Stack, Typography, styled } from '@mui/material';
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
@@ -13,6 +13,37 @@ import { Link } from "react-router-dom";
 import { LoadingSmallComponent } from "../Layout/LoadingSmallComponent";
 import { CheckmarkIcon, MessagesIcon } from "../icons/Icons";
 
+const Table = styled(MuiTable)(() => ({
+    borderCollapse: 'separate',
+    borderSpacing: '0 0.4em',
+}));
+
+const TableCell = styled(MuiTableCell)(({ theme }) => ({
+    '&:first-child': {
+        paddingLeft: theme.spacing(3),
+    },
+    '&:last-child': {
+        paddingRight: theme.spacing(3),
+    },
+    borderWidth: 0
+}));
+
+const TableRow = styled(MuiTableRow)(() => ({
+    position: 'relative',
+    overflow: 'hidden',
+}));
+
+const TableHead = styled(MuiTableHead)(() => ({}));
+
+const Bar = styled('div')(() => ({
+    background: 'white',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: -1,
+}));
 
 interface Props {
     careplan: PatientCareplan
@@ -81,14 +112,14 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
         return (
             <>
                 <IsEmptyCard jsxWhenEmpty="Ingen besvarelser fundet" list={this.state.questionnaireResponses}>
-                    <TableContainer component={Card}>
+                    <TableContainer>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell width="20%">Spørgeskema</TableCell>
-                                    <TableCell width="20%">Besvarelsesdato</TableCell>
+                                    <TableCell width="25%">Spørgeskema</TableCell>
+                                    <TableCell width="25%">Besvarelsesdato</TableCell>
                                     <TableCell width="20%">Status</TableCell>
-                                    <TableCell width="20%"></TableCell>
+                                    <TableCell width="30%"></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -99,24 +130,27 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                         questionnaireName = "Ukendt"
                                     }
                                     return (
-                                        <TableRow>
-                                            <TableCell>
-                                                <Stack>
-                                                    <Typography> {questionnaireName}</Typography>
-                                                    <Typography variant="caption">{this.props.careplan.organization?.name}</Typography>
-                                                </Stack>
-                                            </TableCell>
-                                            <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
-                                            <TableCell>
-                                                <Stack direction="row" spacing={1} className="questionnaireStatus">
-                                                    <Typography>{this.GetStatusRepresentation(questionnaireResponse.status)}</Typography>
-                                                    <Typography>{this.GetStatusText(questionnaireResponse.status)}</Typography>
-                                                </Stack>
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                <LoadingButton component={Link} to={"/questionnaire/" + questionnaire?.id + "/response/" + questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se mine svar</LoadingButton>
-                                            </TableCell>
-                                        </TableRow>
+                                        <>
+                                            <TableRow>
+                                                <TableCell>
+                                                    <Stack>
+                                                        <Typography> {questionnaireName}</Typography>
+                                                        <Typography variant="caption">{this.props.careplan.organization?.name}</Typography>
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
+                                                <TableCell>
+                                                    <Stack direction="row" spacing={1} className="questionnaireStatus">
+                                                        <Typography>{this.GetStatusRepresentation(questionnaireResponse.status)}</Typography>
+                                                        <Typography>{this.GetStatusText(questionnaireResponse.status)}</Typography>
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell align="right">
+                                                    <LoadingButton component={Link} to={"/questionnaire/" + questionnaire?.id + "/response/" + questionnaireResponse.id} endIcon={<NavigateNextIcon />} variant="text">Se mine svar</LoadingButton>
+                                                </TableCell>
+                                                <Bar />
+                                            </TableRow>
+                                        </>
                                     )
                                 })}
                             </TableBody>

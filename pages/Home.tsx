@@ -97,7 +97,7 @@ export default class HomePage extends Component<{}, State> {
                                 <Grid item xs={2} className="show-all-answered">
                                     <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
                                 </Grid>
-                                <Grid item xs={12} mt={2}>
+                                <Grid item mt={2} mx={-3} sx={{maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)`}}>
                                     <IsEmptyCard object={this.state.careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
                                         <ErrorBoundary>
                                             <QuestionnaireResponseTable careplan={this.state.careplan!} />

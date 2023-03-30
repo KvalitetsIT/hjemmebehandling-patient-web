@@ -60,23 +60,23 @@ export default class ResponseStatusCard extends Component<Props,{}>{
             <IsEmptyCard object={questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet" >
                 <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema fundet" >
                     <Card>
-                        <Grid className="container-avatar" container>
-                            <Grid item xs={1}>
-                                <Avatar sx={{height:"60px",width:"60px", bgcolor : this.getStatusColor(questionnaireResponse.status)}} variant="rounded">
+                        <Grid className="container-avatar" container  p={2}>
+                            <Grid>
+                                <Avatar sx={{ margin: 0, marginRight: 2, bgcolor : this.getStatusColor(questionnaireResponse.status)}} variant="rounded">
                                     {this.getStatusIcon(questionnaireResponse.status)}
                                 </Avatar>
                             </Grid>
-                            <Grid xs={7} sx={{margin: 2 }}>
+                            <Grid>
                                 <Typography variant="subtitle1">{questionnaire?.name}</Typography>
                                 <Typography variant="subtitle2">{organizationName}</Typography>
                             </Grid>
                             {(questionnaireResponse.status ==  QuestionnaireResponseStatus.Processed) ?
-                                <Grid xs sx={{ margin: 2, textAlign: 'right' }}>
+                                <Grid sx={{ textAlign: 'right', flexGrow: 1}}>
                                     <Typography variant="subtitle1">Kvitteret den</Typography>
                                     <Typography variant="subtitle2">{this.dateHelper.DateToString(questionnaireResponse.examinedTime!)}</Typography>
                                 </Grid>
                                 :
-                                <Grid item xs sx={{ margin: 2, textAlign: 'right' }}>
+                                <Grid sx={{ textAlign: 'right', flexGrow: 1}}>
                                     <Typography variant="subtitle1">Sendt den</Typography>
                                     <Typography variant="subtitle2">{questionnaireResponse.answeredTime ? this.dateHelper.DateToString(questionnaireResponse!.answeredTime) : "-"}</Typography>
                                 </Grid>

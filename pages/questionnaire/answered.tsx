@@ -110,9 +110,8 @@ export default class AnsweredPage extends Component<{},State>{
                 <Grid paddingTop={10} container spacing={2}>
                     <Grid item xs={12} >
                         <Typography className="headline">Dine tidligere besvarelser</Typography>
-                        
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item mt={2} mx={-3} sx={{maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)`}}>
                         <QuestionnaireResponseTable careplan={this.state.careplan!}/>
                     </Grid>
                 </Grid>
