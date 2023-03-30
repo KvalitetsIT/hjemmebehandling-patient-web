@@ -6,7 +6,6 @@ import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard
 import ApiContext from "../../pages/_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
 import { CheckmarkIcon, MessagesIcon } from "../icons/Icons";
-import { Margin } from "@mui/icons-material";
 
 interface Props{
     questionnaireResponse : QuestionnaireResponse;

@@ -9,7 +9,6 @@ import { LoadingBackdropComponent } from "../../../../components/Layout/LoadingB
 import ICareplanService from "../../../../services/interfaces/ICareplanService";
 import { Grid, Typography, Card, Box } from "@mui/material";
 import QuestionAndAnswerTable from "../../../../components/Tables/QuestionAndAnswerTable";
-import InfoIcon from '@mui/icons-material/Info';
 
 interface Props {
     match: { params: { questionnaireId: string, questionnaireResponseId: string } };

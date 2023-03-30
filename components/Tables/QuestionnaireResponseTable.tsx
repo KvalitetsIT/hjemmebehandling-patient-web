@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, ButtonGroup, Table as MuiTable, TableBody, TableCell as MuiTableCell, TableContainer, TableHead as MuiTableHead, TableRow as MuiTableRow, Stack, Typography, styled, Box } from '@mui/material';
+import { Button, ButtonGroup, Table as MuiTable, TableBody, TableCell as MuiTableCell, TableContainer, TableHead as MuiTableHead, TableRow as MuiTableRow, Stack, Typography, styled } from '@mui/material';
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { LoadingSmallComponent } from "../Layout/LoadingSmallComponent";
 import { CheckmarkIcon, MessagesIcon } from "../icons/Icons";
 
-const Table = styled(MuiTable)(({ theme }) => ({
+const Table = styled(MuiTable)(() => ({
     borderCollapse: 'separate',
     borderSpacing: '0 0.4em',
 }));
@@ -28,16 +28,14 @@ const TableCell = styled(MuiTableCell)(({ theme }) => ({
     borderWidth: 0
 }));
 
-const TableRow = styled(MuiTableRow)(({ theme }) => ({
+const TableRow = styled(MuiTableRow)(() => ({
     position: 'relative',
     overflow: 'hidden',
 }));
 
-const TableHead = styled(MuiTableHead)(({ theme }) => ({
-    
-}));
+const TableHead = styled(MuiTableHead)(() => ({}));
 
-const Bar = styled('div')(({ theme }) => ({
+const Bar = styled('div')(() => ({
     background: 'white',
     position: 'absolute',
     left: 0,
