@@ -9,7 +9,7 @@
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.54",
     "@mui/material": "^5.2.8",
-    "@openapitools/openapi-generator-cli": "^2.4.25",
+    "@openapitools/openapi-generator-cli": "^2.4.26",
     "chart.js": "^3.7.0",
     "chartjs-plugin-datalabels": "^2.0.0",
     "eslint-plugin-jsdoc": "^37.7.0",
