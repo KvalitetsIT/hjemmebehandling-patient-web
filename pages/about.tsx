@@ -5,11 +5,14 @@ import { AboutManufacturerIcon, AboutUserGuideIcon, AboutMedicalDeviceIcon, Abou
 
 export default class AboutPage extends Component<{}> {
     render() : JSX.Element{
+        window.onbeforeunload = function () {
+            return null; //Vi behøver ikke at give en warning fra aboutsiden
+          };
         return (
             <>
                 <Typography className="headline" sx={{ mt: 2, mb: 2 }}>Om KOMO</Typography>
 
-                <Card>
+                <Card >
                     <CardHeader subheader={"Infektionssygdomme"} sx={{ pl: 3 }}/>
                     <Divider />
                     <CardContent>
@@ -33,16 +36,25 @@ export default class AboutPage extends Component<{}> {
                                         secondary={<Typography>Versionsnummer på software: 2.0.0-2023-03-29</Typography>}
                                     />
                                 </ListItem>
+
                                 <ListItem alignItems="flex-start">
-                                    <ListItemIcon>
-                                        <AboutUserGuideIcon />
-                                    </ListItemIcon>
-                                    <ListItemText disableTypography
-                                        primary={<Typography className="headline" color={'inherit'}>Brugervejledning</Typography>}
-                                        secondary={<Typography>Udleveres af klinisk personale</Typography>
-                                        }
-                                    />
-                                </ListItem>
+                                <ListItemIcon>
+                                    <AboutUserGuideIcon size="65px" />
+                                </ListItemIcon>
+                                <ListItemText disableTypography
+                                    primary={<Typography className="headline" color={'inherit'}>Brugervejledning</Typography>}
+                                    secondary={
+                                        <List dense sx = {{listStyleType: 'disc', pl: 3, '& .MuiListItem-root': {display: 'list-item', mt: -1 },}}>
+                                            <ListItem disableGutters>
+                                                <Link fontSize={'0.875rem'} href="https://www.auh.dk/globalassets/allepatientinformationer/auh/afdelinger/infektionssygdomme/komo/komo_brugermanualer_patient_version2.0.pdf" color="inherit">Link til guide</Link>
+                                            </ListItem>
+                                            <ListItem disableGutters>
+                                            <Link fontSize={'0.875rem'} href="https://www.auh.dk/globalassets/allepatientinformationer/auh/afdelinger/infektionssygdomme/komo/komo_brugermanualer_patientkvik_version2.0.pdf" color="inherit">Link til kvikguide</Link>
+                                            </ListItem>
+                                        </List>
+                                    }
+                                />
+                            </ListItem>
                                 <ListItem alignItems="flex-start">
                                     <ListItemIcon>
                                         <AboutWarningsIcon />
@@ -96,7 +108,7 @@ export default class AboutPage extends Component<{}> {
                         <Stack direction="row">
                             <Typography>Oplever du fejl, så</Typography>
                             <Typography>&nbsp;</Typography>
-                            <Link href="/contact" color="inherit">kontakt hospitalet.</Link> 
+                            <Link fontSize={'0.875rem'} href="/contact" color="inherit">kontakt hospitalet.</Link> 
                         </Stack>
                     </CardContent>
                 </Card>
