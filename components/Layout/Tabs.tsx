@@ -17,6 +17,7 @@ export interface BasicTabsProps {
   tabLabels : string[]
   tabIds : string[]
   tabContent : JSX.Element[]
+  children: JSX.Element
 }
 export interface BasicTabsState {
     value : number

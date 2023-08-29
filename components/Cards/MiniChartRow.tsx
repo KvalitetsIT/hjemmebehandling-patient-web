@@ -29,6 +29,7 @@ export interface State {
 export class MiniChartRow extends Component<Props, State> {
     static displayName = MiniChartRow.name;
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
     questionnaireService!: IQuestionnaireResponseService;
     collectionHelper!: ICollectionHelper;
     dateHelper!: IDateHelper

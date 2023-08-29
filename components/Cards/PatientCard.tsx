@@ -15,6 +15,7 @@ export interface State {
 export class PatientCard extends Component<{}, State> {
     static displayName = PatientCard.name;
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
     careplanService!: ICareplanService;
 
     constructor(props: {}) {

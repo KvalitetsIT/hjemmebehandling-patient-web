@@ -18,6 +18,7 @@ export default class ContactPage extends Component<{}, State> {
     careplanService!: ICareplanService;
     organizationService!: IOrganizationService;
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
 
     constructor(props: {}) {
         super(props);

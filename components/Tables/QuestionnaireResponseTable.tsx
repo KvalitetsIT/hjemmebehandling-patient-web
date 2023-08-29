@@ -56,6 +56,7 @@ interface State {
 }
 export default class QuestionnaireResponseTable extends Component<Props, State>{
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
     questionnaireResponseService!: IQuestionnaireResponseService;
     dateHelper!: IDateHelper;
 

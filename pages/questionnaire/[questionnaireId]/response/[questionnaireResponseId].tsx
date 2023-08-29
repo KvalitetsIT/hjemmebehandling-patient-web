@@ -22,6 +22,7 @@ interface State {
 
 export default class QuestionnaireResponseDetailsPage extends Component<Props, State>{
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
     questionnaireResponseService!: IQuestionnaireResponseService;
     careplanService!: ICareplanService;
 

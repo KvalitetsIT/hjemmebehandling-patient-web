@@ -22,6 +22,7 @@ interface State {
 export default class QuestionnaireAnswerCard extends Component<Props, State>{
     dateHelper!: IDateHelper;
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
 
     careplanService!: ICareplanService;
     questionnaireResponseService!: IQuestionnaireResponseService;

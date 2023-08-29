@@ -21,6 +21,7 @@ interface State {
 export default class HomePage extends Component<{}, State> {
     careplanService!: ICareplanService;
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
 
     constructor(props: {}) {
         super(props);

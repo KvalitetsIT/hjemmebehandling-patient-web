@@ -14,6 +14,7 @@ interface Props{
 
 export default class ResponseStatusCard extends Component<Props,{}>{
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
     dateHelper!: IDateHelper;
 
     initializeServices() : void{

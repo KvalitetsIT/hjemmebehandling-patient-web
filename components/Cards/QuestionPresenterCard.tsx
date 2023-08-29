@@ -22,6 +22,7 @@ interface State {
 }
 export default class QuestionPresenterCard extends Component<Props, State>{
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
     dateHelper!: IDateHelper;
     validationService!: IValidationService;
 

@@ -13,6 +13,7 @@ interface State {
 }
 export default class ObservationPage extends Component<{}, State>{
     static contextType = ApiContext
+    declare context: React.ContextType<typeof ApiContext>
     careplanService!: ICareplanService;
 
     constructor(props: {}) {
