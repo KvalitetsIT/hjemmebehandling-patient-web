@@ -1,19 +1,44 @@
-FROM node:20.5.0-alpine3.18
+# Generates the required models from the openapi json file
+FROM openapitools/openapi-generator-cli:v6.6.0 as api-generator
+WORKDIR /generator
+COPY ./react-app/resources/bff.json /generator
+RUN ["java", "-jar", "/opt/openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar", "generate", "-i", "bff.json", "-g", "typescript-fetch", "-o", "./generated", "--additional-properties=typescriptThreePlus=true"]
 
-# set working directory
+# Build the application using the generated api
+FROM node:20.4.0-alpine as build
 WORKDIR /app
+COPY ./react-app /app
+COPY --from=api-generator /generator/generated .
+RUN npm install
+RUN npm run build
 
-# add app
-COPY . ./
+# Download and build our environment injector
+FROM golang:1.19.3-alpine3.16 as go-downloader
+RUN apk update && apk upgrade && apk add --no-cache bash git openssh
+RUN go install github.com/lithictech/runtime-js-env@latest
 
-# install java for openapi-generator
-#RUN apt update; apt install -y openjdk-11-jre
-RUN apk --no-cache add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
-RUN export JAVA_HOME=/usr/lib/jvm/java-11-openjdk && export PATH=$JAVA_HOME/bin:$PATH
+# Copy the built application into Nginx for serving
+FROM nginx:alpine3.17
 
-# install app dependencies
-RUN npm install 
-RUN npm run-script build
+COPY --from=build /app/build /usr/share/nginx/html
+ 
+# Copy the runtime-js-env binary
+COPY --from=go-downloader /go/bin/runtime-js-env /
 
-# start app
-CMD ["npm", "start"]
+COPY ./react-app/nginx/nginx.conf /usr/share/nginx/nginx.conf
+COPY ./react-app/nginx/mime.types /usr/share/nginx/mime.types
+RUN rm /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+
+
+RUN mkdir -p /var/cache/nginx/
+RUN chmod 777 /var/cache/nginx/
+
+# Run envsubst to substitute environment variables in nginx.conf and save it to a temporary file
+# Run our startup script
+CMD /runtime-js-env -i usr/share/nginx/html/index.html && \
+    chmod 777 /usr/share/nginx/html/index.html &&\
+    envsubst  '$REACT_APP_BFF_BASE_URL' < /usr/share/nginx/nginx.conf > /tmp/nginx.conf &&\
+    mv /tmp/nginx.conf /usr/share/nginx/nginx.conf &&\
+    cp -R /usr/share/nginx/* /temp/etc/nginx/ &&\
+    cp -R -p /var/cache/nginx /temp/var/cache/ &&\
+    cp -R /docker-entrypoint.d/* /temp/docker-entrypoint.d/
