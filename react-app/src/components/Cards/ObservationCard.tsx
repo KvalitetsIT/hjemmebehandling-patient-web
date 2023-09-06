@@ -19,6 +19,31 @@ import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard
 import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
 import { ThresholdNumber } from '@kvalitetsit/hjemmebehandling/Models/ThresholdNumber';
 import { CategoryEnum } from '@kvalitetsit/hjemmebehandling/Models/CategoryEnum';
+import { LineChart} from '@kvalitetsit/hjemmebehandling/Charts/LineChart';
+import { TableChart} from '@kvalitetsit/hjemmebehandling/Charts/TableChart';
+import { Line } from 'react-chartjs-2';
+import annotationPlugin from "chartjs-plugin-annotation";
+
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Legend,
+  } from 'chart.js';
+  
+  ChartJS && ChartJS.register(
+  
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    annotationPlugin,
+    Title,
+    Legend
+  );
 
 export interface Props {
     careplan: PatientCareplan;
@@ -150,8 +175,14 @@ export class ObservationCard extends Component<Props, State> {
                     const subheader = question.abbreviation ?? question.question ?? "";
                     return (
                         <Grid paddingLeft={isFirst ? 0 : 2} item xs={12}>
-                            <ResponseViewCard chartData={chartData} />  
+                            {/* <ResponseViewCard chartData={chartData} /> */}  
                             
+                            <ResponseViewCard
+                                chartData={chartData}
+                                graph={<LineChart renderChart={(options, data, plugins) => <Line style={{ minHeight: "400px", maxHeight: "600px" }} plugins={plugins} options={options} data={data as any} />} chartData={chartData} />}
+                                table={<TableChart chartData={chartData} />}
+                            />
+
                             <IsEmptyCard object={threshold} jsxWhenEmpty="Ingen alarmgrænser">
                                 <Card marginTop={1} component={Box}>
                                     <CardHeader subheader={subheader + " - Alarmgrænser"} />
