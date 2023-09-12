@@ -10,6 +10,7 @@ The doctor will recieve the questionnaire using the [medarbejder-web](https://gi
 ## Get started
 To run:
 ```
+cd react_app
 npm run-script generate-api
 npm install
 npm run-script build
