@@ -16,13 +16,13 @@ interface Props {
 
 interface State {
     loadingPage: boolean;
-    careplan: PatientCareplan | undefined;
+    careplans: PatientCareplan[] | undefined;
     questionnaireResponse: QuestionnaireResponse | undefined;
 }
 
 export default class QuestionnaireResponseDetailsPage extends Component<Props, State>{
     static contextType = ApiContext
-     
+
     questionnaireResponseService!: IQuestionnaireResponseService;
     careplanService!: ICareplanService;
 
@@ -31,7 +31,7 @@ export default class QuestionnaireResponseDetailsPage extends Component<Props, S
         this.state = {
             loadingPage: true,
             questionnaireResponse: undefined,
-            careplan: undefined
+            careplans: undefined
         }
     }
 
@@ -46,8 +46,8 @@ export default class QuestionnaireResponseDetailsPage extends Component<Props, S
         try {
             this.setState({ loadingPage: true })
             const response = await this.questionnaireResponseService.GetQuestionnaireResponse(this.props.match.params.questionnaireResponseId);
-            const careplan = await this.careplanService.GetActiveCareplan();
-            this.setState({ questionnaireResponse: response, careplan: careplan, loadingPage: false })
+            const careplan = await this.careplanService.GetActiveCareplans();
+            this.setState({ questionnaireResponse: response, careplans: careplan, loadingPage: false })
         } catch (error) {
             this.setState(() => { throw error })
         }
@@ -60,30 +60,37 @@ export default class QuestionnaireResponseDetailsPage extends Component<Props, S
 
     renderPage(): JSX.Element {
         return (
-            <IsEmptyCard object={this.state.careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
-                <IsEmptyCard object={this.state.questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet">
-                    <IsEmptyCard object={this.state.questionnaireResponse?.questions} jsxWhenEmpty="Ingen spørgsmål på besvarelse">
-                        <Grid component={Box} spacing={3} container>
-                            <Grid item xs={12}>
-                                <Card>
-                                    <Box display="flex" p={2} alignItems="center" gap={2}>
-                                        <Box display="flex" alignItems="center" justifyContent="center" borderRadius="50%" height="2rem" sx={{ backgroundColor: "rgb(153,0,51)", aspectRatio: "1 / 1" }}>
-                                            <Typography color="white" fontSize="1.25rem">i</Typography>
-                                        </Box>
-                                        <Typography>Denne besvarelse er indsendt og kan derfor ikke rettes. Er der fejl i din besvarelse, skal du indsende en ny.</Typography>
-                                    </Box>
-                                </Card>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ResponseStatusCard careplan={this.state.careplan!} questionnaireResponse={this.state.questionnaireResponse!} />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Typography className="headline">Besvarelse</Typography>
-                                <QuestionAndAnswerTable questionAnswerMap={this.state.questionnaireResponse!.questions!} />
-                            </Grid>
-                        </Grid>
-                    </IsEmptyCard>
-                </IsEmptyCard>
+
+            <IsEmptyCard list={this.state.careplans} jsxWhenEmpty="Ingen behandlingsplaner fundet">
+                {
+                    this.state.careplans?.map(careplan => (
+                        <IsEmptyCard object={careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
+                            <IsEmptyCard object={this.state.questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet">
+                                <IsEmptyCard object={this.state.questionnaireResponse?.questions} jsxWhenEmpty="Ingen spørgsmål på besvarelse">
+                                    <Grid component={Box} spacing={3} container>
+                                        <Grid item xs={12}>
+                                            <Card>
+                                                <Box display="flex" p={2} alignItems="center" gap={2}>
+                                                    <Box display="flex" alignItems="center" justifyContent="center" borderRadius="50%" height="2rem" sx={{ backgroundColor: "rgb(153,0,51)", aspectRatio: "1 / 1" }}>
+                                                        <Typography color="white" fontSize="1.25rem">i</Typography>
+                                                    </Box>
+                                                    <Typography>Denne besvarelse er indsendt og kan derfor ikke rettes. Er der fejl i din besvarelse, skal du indsende en ny.</Typography>
+                                                </Box>
+                                            </Card>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <ResponseStatusCard careplan={careplan} questionnaireResponse={this.state.questionnaireResponse!} />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Typography className="headline">Besvarelse</Typography>
+                                            <QuestionAndAnswerTable questionAnswerMap={this.state.questionnaireResponse!.questions!} />
+                                        </Grid>
+                                    </Grid>
+                                </IsEmptyCard>
+                            </IsEmptyCard>
+                        </IsEmptyCard>
+                    ))
+                }
             </IsEmptyCard>
         )
     }

@@ -9,18 +9,18 @@ import ApiContext, { IApiContext } from "../../_context"
 
 interface State {
     loadingPage: boolean
-    careplan?: PatientCareplan
+    careplans?: PatientCareplan[]
 }
 export default class ObservationPage extends Component<{}, State>{
     static contextType = ApiContext
-     
+
     careplanService!: ICareplanService;
 
     constructor(props: {}) {
         super(props);
         this.state = {
             loadingPage: false,
-            careplan: undefined
+            careplans: undefined
         }
     }
 
@@ -28,8 +28,8 @@ export default class ObservationPage extends Component<{}, State>{
         this.setState({ loadingPage: true })
         try {
 
-            const careplan = await this.careplanService.GetActiveCareplan();
-            this.setState({ careplan: careplan })
+            const careplan = await this.careplanService.GetActiveCareplans();
+            this.setState({ careplans: careplan })
         } catch (error) {
             this.setState(() => { throw error })
         }
@@ -50,14 +50,19 @@ export default class ObservationPage extends Component<{}, State>{
             <>
                 <Grid item xs={12} className="headline-wrapper">
                     <Typography className="headline">Målinger</Typography>
-                 </Grid>
-                <IsEmptyCard object={this.state.careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
-                    {this.state.careplan?.questionnaires.map(questionnaire => {
-                        return (
-                            <ObservationCard careplan={this.state.careplan!} questionnaire={questionnaire} />
-                        )
-
-                    })}
+                </Grid>
+                <IsEmptyCard list={this.state.careplans} jsxWhenEmpty="Ingen behandlingsplaner fundet">
+                    {
+                        this.state.careplans?.map(careplan => (
+                            <IsEmptyCard object={this.state.careplans} jsxWhenEmpty="Ingen behandlingsplan fundet">
+                                {careplan?.questionnaires.map(questionnaire => {
+                                    return (
+                                        <ObservationCard careplan={careplan} questionnaire={questionnaire} />
+                                    )
+                                })}
+                            </IsEmptyCard>
+                        ))
+                    }
                 </IsEmptyCard>
             </>
         )

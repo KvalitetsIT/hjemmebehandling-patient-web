@@ -99,7 +99,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         const carePlan = new PatientCareplan();
 
         carePlan.id = FhirUtils.unqualifyId(carePlanDto.id);
-        carePlan.planDefinitions = carePlanDto.planDefinitions!.map(pd => this.mapPlanDefinitionDto(pd))
+        carePlan.planDefinitions = carePlanDto.planDefinitions?.map(p => this.mapPlanDefinitionDto(p)) ?? []
         carePlan.questionnaires = carePlanDto?.questionnaires?.map(q => this.mapQuestionnaireDto(q)) ?? []
         carePlan.patient = this.mapPatientDto(carePlanDto.patientDto!);
         carePlan.creationDate = carePlanDto.created
@@ -163,7 +163,6 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
     mapThresholdDtos(thresholdDtos: Array<ThresholdDto>): Array<ThresholdCollection> {
 
-        console.log(thresholdDtos)
         const thresholds: ThresholdCollection[] = [];
 
 
@@ -176,7 +175,6 @@ export default class ExternalToInternalMapper extends BaseMapper {
             }
 
             if (!(thresholdDto.valueBoolean === undefined)) {
-                console.log(threshold.questionId + "=thresholdOption")
                 const thresholdOption = this.CreateOption(
                     thresholdDto.questionId!,
                     String(thresholdDto.valueBoolean!),
@@ -185,7 +183,6 @@ export default class ExternalToInternalMapper extends BaseMapper {
                 threshold.thresholdOptions!.push(thresholdOption);
             }
             else {
-                console.log(threshold.questionId + "=thresholdNumber")
                 const thresholdNumber = this.CreateThresholdNumber(
                     thresholdDto.questionId!,
                     Number(thresholdDto.valueQuantityLow),
@@ -195,7 +192,6 @@ export default class ExternalToInternalMapper extends BaseMapper {
                 threshold.thresholdNumbers!.push(thresholdNumber);
             }
         }
-        console.log(thresholds)
         return thresholds;
 
     }

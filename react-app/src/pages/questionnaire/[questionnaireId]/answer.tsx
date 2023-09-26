@@ -34,7 +34,7 @@ interface Props {
 interface State {
     submitted: boolean;
     loadingPage: boolean;
-    careplan: PatientCareplan | undefined;
+    careplans: PatientCareplan[] | undefined;
     indexJourney: number[];
     callToActions: CallToActionMessage[];
     questionnaireResponse: QuestionnaireResponse; //The new response
@@ -43,7 +43,7 @@ interface State {
 
 export default class QuestionnaireResponseCreationPage extends Component<Props, State>{
     static contextType = ApiContext
-     
+
     questionnaireResponseService!: IQuestionnaireResponseService;
     careplanService!: ICareplanService;
     valueSetService!: IValueSetService;
@@ -56,7 +56,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             loadingPage: true,
             indexJourney: props.startQuestionIndex ? [props.startQuestionIndex] : [0],
             questionnaireResponse: newQuestionnaireResponse,
-            careplan: undefined,
+            careplans: undefined,
             callToActions: [],
             measurementTypes: []
         }
@@ -74,16 +74,19 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
     async componentDidMount(): Promise<void> {
         try {
-            const careplan = await this.careplanService.GetActiveCareplan();
-            this.ResetResponse(careplan);
-            const questionnaire = careplan.questionnaires.find(x => x.id === this.props.match.params.questionnaireId);
-            
+            const careplans = await this.careplanService.GetActiveCareplans();
+            careplans.forEach(x => this.ResetResponse(x));
+
+            const questionnaire = careplans.flatMap(careplan => careplan.questionnaires).find(x => x.id === this.props.match.params.questionnaireId)
+
             let measurementTypes: MeasurementType[] = [];
             if (questionnaire?.questions!.find(q => q.type === QuestionTypeEnum.OBSERVATION)) {
-                measurementTypes = await this.valueSetService.GetAllMeasurementTypes(careplan.organization!.id!);
+                measurementTypes = []
+                
+                careplans.forEach(async (careplan: PatientCareplan) => (await this.valueSetService.GetAllMeasurementTypes(careplan.organization!.id!)).forEach(measurementType => measurementTypes.push(measurementType)));
             }
 
-            this.setState({ careplan: careplan, measurementTypes: measurementTypes, loadingPage: false })
+            this.setState({ careplans: careplans, measurementTypes: measurementTypes, loadingPage: false })
         } catch (error) {
             this.setState(() => { throw error })
         }
@@ -129,7 +132,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     }
 
     renderPage(): JSX.Element {
-        const questionnaire = this.state.careplan?.questionnaires.find(x => x.id === this.props.match.params.questionnaireId);
+        const questionnaire = this.state.careplans?.flatMap(careplan => ( careplan.questionnaires )).find(x => x.id === this.props.match.params.questionnaireId);
         const showReview = questionnaire?.questions?.length === this.GetLastElement(this.state.indexJourney)
 
         const prompt = (
@@ -184,7 +187,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
                     <Grid component={Box} textAlign="left" item xs={12} >
                         <LinearProgress variant="determinate" value={this.GetPercentageDone(questionnaire)} />
-                        <Button size="small" disabled={this.GetLastElement(this.state.indexJourney) === 0} onClick={() => this.GoToPreviousPage()} sx={{ 'text-transform': 'none'}}>
+                        <Button size="small" disabled={this.GetLastElement(this.state.indexJourney) === 0} onClick={() => this.GoToPreviousPage()} sx={{ 'text-transform': 'none' }}>
                             <NavigateBeforeIcon />
                             <Typography fontSize={10}>
                                 Forrige
@@ -215,7 +218,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     renderQuestion(questionnaire: Questionnaire | undefined): JSX.Element {
 
         const questions: Question[] = []
-        questionnaire?.getParentQuestions().map(q => 
+        questionnaire?.getParentQuestions().map(q =>
             questions.push(q, ...questionnaire?.getChildQuestions(q.Id))
         )
 
@@ -237,7 +240,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         const thresholds = new ThresholdCollection();
         if (question!.type === QuestionTypeEnum.OBSERVATION) {
             const measurementType = this.state.measurementTypes.find(m => m.code === question?.measurementType?.code);
-            
+
             if (measurementType && measurementType.threshold) {
                 thresholds.thresholdNumbers = [measurementType.threshold]
             }
@@ -318,8 +321,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     }
 
     createLastColoumn(questionId: string, questionnaire: Questionnaire): JSX.Element {
-        const questions : Question[] = []
-        questionnaire?.getParentQuestions().map(q => 
+        const questions: Question[] = []
+        questionnaire?.getParentQuestions().map(q =>
             questions.push(q, ...questionnaire?.getChildQuestions(q.Id))
         )
         const questionIndex: number | undefined = questions!.findIndex(x => x.Id === questionId);

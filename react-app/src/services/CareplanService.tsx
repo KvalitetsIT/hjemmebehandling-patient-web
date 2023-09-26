@@ -13,9 +13,9 @@ export default class CareplanService extends BaseService implements ICareplanSer
         this.AddStatusCodeToErrorMap(new StatusCodeMap(404,() => new NoActiveCareplanFound()));
     }
     
-    async GetActiveCareplan() : Promise<PatientCareplan>{
+    async GetActiveCareplans() : Promise<PatientCareplan[]>{
         try {
-            return await this.api.GetActiveCareplan();
+            return await this.api.GetActiveCareplans();
         } catch(error){
             return this.HandleError(error);
         }

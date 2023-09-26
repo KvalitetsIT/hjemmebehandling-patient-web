@@ -11,5 +11,5 @@ export default interface ICareplanService {
      * Retrieves the active careplan for the user logged in
      * @returns active careplan
      */
-    GetActiveCareplan : () => Promise<PatientCareplan>;
+    GetActiveCareplans : () => Promise<PatientCareplan[]>;
 }

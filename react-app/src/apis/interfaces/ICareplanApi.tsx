@@ -11,5 +11,5 @@ export default interface ICareplanApi {
      * It uses the token to know who the user is
      * @returns the one active careplan that belongs to the logged in user
      */
-    GetActiveCareplan : () => Promise<PatientCareplan>;
+    GetActiveCareplans : () => Promise<PatientCareplan[]>;
 }

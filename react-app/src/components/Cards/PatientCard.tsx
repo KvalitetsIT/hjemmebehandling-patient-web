@@ -6,29 +6,30 @@ import { Divider, Skeleton, Typography } from '@mui/material';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import ApiContext, { IApiContext } from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';
+import { PatientDetail } from '@kvalitetsit/hjemmebehandling/Models/PatientDetail';
 
 export interface State {
     loading: boolean;
-    careplan?: PatientCareplan
+    careplans?: PatientCareplan[]
 }
 
 export class PatientCard extends Component<{}, State> {
     static displayName = PatientCard.name;
     static contextType = ApiContext
-     
+
     careplanService!: ICareplanService;
 
     constructor(props: {}) {
         super(props);
         this.state = {
             loading: true,
-            careplan: undefined
+            careplans: undefined
         }
     }
 
     render(): JSX.Element {
         this.initialiseServices();
-        const contents = this.state.loading ? <Skeleton height="10em" width="12em" /> : this.renderCard();
+        const contents = this.state.loading ? <Skeleton height="10em" width="12em" /> : this.renderCards();
         return contents;
     }
     initialiseServices(): void {
@@ -47,40 +48,49 @@ export class PatientCard extends Component<{}, State> {
     }
 
     async PopulateCareplan(): Promise<void> {
-        const activeCareplan = await this.careplanService.GetActiveCareplan();
-        this.setState({ careplan: activeCareplan })
+        const activeCareplans = await this.careplanService.GetActiveCareplans();
+        this.setState({ careplans: activeCareplans })
+    }
+    renderCards(): JSX.Element {
+        return (<>
+            {
+                this.state.careplans?.map(careplan => this.renderCard(careplan.patient))
+
+            }
+        </>
+        )
     }
 
-    renderCard(): JSX.Element {
-        const patient = this.state.careplan?.patient;
+    renderCard(patient: PatientDetail | undefined): JSX.Element {
+        
         return (
 
-                <Card sx={{ borderRadius: 0 }} elevation={0}>
-                    <CardContent>
-                        <Typography align="right" variant="h6">Dine oplysninger</Typography>
-                    </CardContent>
-                    <Divider />
-                    <CardContent>
-                        <Typography align="right" variant="body2">{patient?.firstname} {patient?.lastname}</Typography>
-                        <Typography align="right" variant="body2">{patient?.cprToString()}</Typography>
-                        <br />
-                        <Typography align="right" variant="body2">{patient?.address?.street}</Typography>
-                        <Typography align="right" variant="body2">{patient?.address?.zipCode} {patient?.address?.city}</Typography>
-                        <br />
-                        <Typography align="right" variant="body2">{patient?.primaryPhonenumberToString()}</Typography>
-                        <Typography align="right" variant="body2">{patient?.secondaryPhonenumberToString()}</Typography>
-                        <br />
-                        <Typography align="right" variant="body2">{(patient?.contact?.fullname !== "" || 
-                                                                    patient?.contact?.affiliation !== "" || 
-                                                                    patient?.contact?.primaryPhone !== "" || 
-                                                                    patient?.contact?.secondaryPhone !== "") ?"Primær kontakt":""}</Typography>
-                        <Typography align="right" variant="body2">{patient?.contact?.fullname}</Typography>
-                        <Typography align="right" variant="body2">{patient?.contact?.affiliation}</Typography>
-                        <Typography align="right" variant="body2">{patient?.contact?.primaryPhonenumberToString()}</Typography>
-                        <Typography align="right" variant="body2">{patient?.contact?.secondaryPhonenumberToString()}</Typography>
-                    </CardContent>
-                    <Divider />
-                </Card>
+            <Card sx={{ borderRadius: 0 }} elevation={0}>
+                <CardContent>
+                    <Typography align="right" variant="h6">Dine oplysninger</Typography>
+                </CardContent>
+                <Divider />
+                <CardContent>
+                    <Typography align="right" variant="body2">{patient?.firstname} {patient?.lastname}</Typography>
+                    <Typography align="right" variant="body2">{patient?.cprToString()}</Typography>
+                    <br />
+                    <Typography align="right" variant="body2">{patient?.address?.street}</Typography>
+                    <Typography align="right" variant="body2">{patient?.address?.zipCode} {patient?.address?.city}</Typography>
+                    <br />
+                    <Typography align="right" variant="body2">{patient?.primaryPhonenumberToString()}</Typography>
+                    <Typography align="right" variant="body2">{patient?.secondaryPhonenumberToString()}</Typography>
+                    <br />
+                    <Typography align="right" variant="body2">{(patient?.contact?.fullname !== "" ||
+                        patient?.contact?.affiliation !== "" ||
+                        patient?.contact?.primaryPhone !== "" ||
+                        patient?.contact?.secondaryPhone !== "") ? "Primær kontakt" : ""}</Typography>
+                    <Typography align="right" variant="body2">{patient?.contact?.fullname}</Typography>
+                    <Typography align="right" variant="body2">{patient?.contact?.affiliation}</Typography>
+                    <Typography align="right" variant="body2">{patient?.contact?.primaryPhonenumberToString()}</Typography>
+                    <Typography align="right" variant="body2">{patient?.contact?.secondaryPhonenumberToString()}</Typography>
+                </CardContent>
+                <Divider />
+            </Card>
         )
     }
 }
