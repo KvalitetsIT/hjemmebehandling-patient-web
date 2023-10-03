@@ -72,6 +72,7 @@ export default class ValidationService extends BaseService implements IValidatio
 
         return errors;
     }
+    
     async ValidateQuestionInput(value: string, thresholdCollection?: ThresholdCollection): Promise<InvalidInputModel[]> {
         const errors: InvalidInputModel[] = []
         const propName = "Indtastning"
@@ -83,15 +84,20 @@ export default class ValidationService extends BaseService implements IValidatio
         if (numberErrors.length !== 0)
             return numberErrors;
 
-        const valueIsValid = thresholdCollection.thresholdNumbers?.find(threshold => (threshold.from ?? Number.MIN_VALUE) <= Number.parseFloat(value) && Number.parseFloat(value) <= (threshold.to ?? Number.MAX_VALUE))
+        const valueIsValid = thresholdCollection.thresholdNumbers?.find(threshold => {
+            const min = threshold.from ?? Number.MIN_VALUE
+            const max = threshold.to ?? Number.MAX_VALUE
+
+            return min <= Number.parseFloat(value) && Number.parseFloat(value) <= max
+        })
+       console.log("thresholdCollection.thresholdNumbers", thresholdCollection.thresholdNumbers)
         if (!valueIsValid) {
             const error = new InvalidInputModel(propName, "Indtastning ligger uden for normal området")
             errors.push(error)
         }
-
-
         return errors;
     }
+
 
     async ValidatePlanDefinitions(planDefinitions: PlanDefinition[]): Promise<InvalidInputModel[]> {
         const errors: InvalidInputModel[] = []

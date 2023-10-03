@@ -25,6 +25,7 @@ import { CreateToastEvent, CreateToastEventData } from "@kvalitetsit/hjemmebehan
 import IValueSetService from "../../../services/interfaces/IValueSetService";
 import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
+import { error } from "console";
 
 interface Props {
     match: { params: { questionnaireId: string } };
@@ -34,7 +35,7 @@ interface Props {
 interface State {
     submitted: boolean;
     loadingPage: boolean;
-    careplans: PatientCareplan[] | undefined;
+    careplan: PatientCareplan | undefined;
     indexJourney: number[];
     callToActions: CallToActionMessage[];
     questionnaireResponse: QuestionnaireResponse; //The new response
@@ -56,7 +57,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             loadingPage: true,
             indexJourney: props.startQuestionIndex ? [props.startQuestionIndex] : [0],
             questionnaireResponse: newQuestionnaireResponse,
-            careplans: undefined,
+            careplan: undefined,
             callToActions: [],
             measurementTypes: []
         }
@@ -65,28 +66,38 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
     initializeServices(): void {
         const api = this.context as IApiContext
-
         this.questionnaireResponseService = api.questionnaireResponseService;
         this.careplanService = api.careplanService;
         this.valueSetService = api.valueSetService;
+    }
+
+    findCareplanContainingQuestionnaireWithId(id: string, careplans: PatientCareplan[]) {
+        const careplan: PatientCareplan = careplans.find(
+            careplan => {
+                const questionnaireIds = careplan.questionnaires.flatMap(questionnaire => questionnaire.id)
+                return questionnaireIds.includes(id)
+            }
+        ) as PatientCareplan
+
+
+        return careplan
 
     }
 
     async componentDidMount(): Promise<void> {
         try {
             const careplans = await this.careplanService.GetActiveCareplans();
-            careplans.forEach(x => this.ResetResponse(x));
+            const careplan = this.findCareplanContainingQuestionnaireWithId(this.props.match.params.questionnaireId, careplans)
 
-            const questionnaire = careplans.flatMap(careplan => careplan.questionnaires).find(x => x.id === this.props.match.params.questionnaireId)
+            this.ResetResponse(careplan);
+            const questionnaire = careplan.questionnaires.find(x => x.id === this.props.match.params.questionnaireId);
 
             let measurementTypes: MeasurementType[] = [];
             if (questionnaire?.questions!.find(q => q.type === QuestionTypeEnum.OBSERVATION)) {
-                measurementTypes = []
-                
-                careplans.forEach(async (careplan: PatientCareplan) => (await this.valueSetService.GetAllMeasurementTypes(careplan.organization!.id!)).forEach(measurementType => measurementTypes.push(measurementType)));
+                measurementTypes = await this.valueSetService.GetAllMeasurementTypes(careplan.organization!.id!);
             }
 
-            this.setState({ careplans: careplans, measurementTypes: measurementTypes, loadingPage: false })
+            this.setState({ careplan: careplan, measurementTypes: measurementTypes, loadingPage: false })
         } catch (error) {
             this.setState(() => { throw error })
         }
@@ -132,7 +143,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
     }
 
     renderPage(): JSX.Element {
-        const questionnaire = this.state.careplans?.flatMap(careplan => ( careplan.questionnaires )).find(x => x.id === this.props.match.params.questionnaireId);
+        const questionnaire =  this.state.careplan?.questionnaires.find(x => x.id === this.props.match.params.questionnaireId);
         const showReview = questionnaire?.questions?.length === this.GetLastElement(this.state.indexJourney)
 
         const prompt = (
@@ -237,6 +248,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             return <></>
         }
 
+        console.log("this.state.measurementTypes", this.state.measurementTypes)
         const thresholds = new ThresholdCollection();
         if (question!.type === QuestionTypeEnum.OBSERVATION) {
             const measurementType = this.state.measurementTypes.find(m => m.code === question?.measurementType?.code);
@@ -246,6 +258,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             }
         }
 
+        console.log("thresholds", thresholds)
         return (
             <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                 <IsEmptyCard list={questions} jsxWhenEmpty="Ingen spørgsmål blev fundet i spørgeskemaet">
