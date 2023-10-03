@@ -51,8 +51,8 @@ export default class ContactPage extends Component<{}, State> {
         } catch (error) {
             this.setState(() => { throw error });
         }
-
     }
+
     initialiseServices(): void {
         const api = this.context as IApiContext
         this.careplanService = api.careplanService;

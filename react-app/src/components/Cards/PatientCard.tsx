@@ -29,7 +29,10 @@ export class PatientCard extends Component<{}, State> {
 
     render(): JSX.Element {
         this.initialiseServices();
-        const contents = this.state.loading ? <Skeleton height="10em" width="12em" /> : this.renderCards();
+                
+        let patients: PatientDetail[] | undefined = this.state.careplans?.filter(careplan => careplan.patient !== undefined).map(careplan => careplan.patient as PatientDetail)
+
+        const contents = this.state.loading ? <Skeleton height="10em" width="12em" /> : this.renderCard(patients);
         return contents;
     }
     initialiseServices(): void {
@@ -51,18 +54,12 @@ export class PatientCard extends Component<{}, State> {
         const activeCareplans = await this.careplanService.GetActiveCareplans();
         this.setState({ careplans: activeCareplans })
     }
-    renderCards(): JSX.Element {
-        return (<>
-            {
-                this.state.careplans?.map(careplan => this.renderCard(careplan.patient))
 
-            }
-        </>
-        )
-    }
 
-    renderCard(patient: PatientDetail | undefined): JSX.Element {
+    renderCard(patients: PatientDetail[] | undefined): JSX.Element {
         
+        let patient = patients && patients[0] ; // This is done since the patient details is global across every careplan
+
         return (
 
             <Card sx={{ borderRadius: 0 }} elevation={0}>
