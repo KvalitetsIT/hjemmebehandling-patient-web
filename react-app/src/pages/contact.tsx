@@ -65,6 +65,70 @@ export default class ContactPage extends Component<{}, State> {
     }
 
     renderPage(): JSX.Element {
+
+
+        /*
+        // Hermed et evt. udkast til en modelering af "Department"
+        
+        Department: {
+            hospitalsnavn: String,
+            addresse: {
+                vej: String
+                nummer/bogstav: String,
+                postnummer: String,
+                by: String,
+            },
+            krydspunkt: String,
+            telefontider: [
+                {
+                    instans: String //sygeplejerske, sekratær etc., 
+                    dage: [
+                        {
+                            dag: String // Mandag, Tirsdag etc.,
+                            tidsrum: [
+                                {
+                                    start: Date //09:15,
+                                    slut: Date //12.00,
+                                },
+                                {
+                                    start: Date //13.00,
+                                    slut: Date //16.00,
+                                }
+
+                            ]
+                        }
+                    ],
+                    info: String // Ved behov for hjælp uden for ovenstående tidspunkter, ring på telefon 24 77 78 80 (hele døgnet)
+                }
+            ],
+            åbningstider: [
+                {
+                    instans: String //sygeplejerske, sekratær etc., 
+                    dage: [
+                        {
+                            dag: String // Mandag, Tirsdag etc.,
+                            tidsrum: [
+                                {
+                                    start: Date //09:15,
+                                    slut: Date //12.00,
+                                },
+                                {
+                                    start: Date //13.00,
+                                    slut: Date //16.00,
+                                }
+
+                            ]
+                        }
+                    ]
+                }
+            ],
+           
+
+
+
+        }
+        */
+
         return (
             <>
                 <ErrorBoundary>
@@ -85,7 +149,7 @@ export default class ContactPage extends Component<{}, State> {
 
                                         <br />
                                         <Typography sx={{ fontWeight: 'bold' }}>Infektionsklinikken</Typography>
-                                        <Typography>Infektionsklinikken kan kontaktes telefonisk på 40 45 98 12 på hverdage i nedenstående tidsrum</Typography>
+                                        <Typography>Infektionsklinikken kan kontaktes telefonisk på {department.phoneNumber} hverdage i nedenstående tidsrum</Typography>
                                         <br />
                                         <Typography sx={{ fontWeight: 'bold' }}>Sekretær</Typography>
                                         <Typography>Alle hverdage <span>kl. 9.00-12.00</span></Typography>
@@ -103,7 +167,7 @@ export default class ContactPage extends Component<{}, State> {
                                     <Divider />
                                     <CardActions className="call-hospital-wrapper">
                                         <PhoneIcon></PhoneIcon>
-                                        <Typography className="call-hospital" sx={{ textAlign: 'right' }}>40 45 98 12</Typography>
+                                        <Typography className="call-hospital" sx={{ textAlign: 'right' }}>{department.phoneNumber}</Typography>
                                     </CardActions>
                                 </Card>
                             </Grid>

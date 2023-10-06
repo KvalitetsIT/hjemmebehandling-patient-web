@@ -26,7 +26,6 @@ export default class QuestionnaireResponseService extends BaseService implements
         this.api = api;
         this.datehelper = datehelper;
     }
-
     GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string): QuestionAnswerPair | undefined {
         let toReturn: { question: Question, answer: Answer } | undefined = undefined;
         questionToAnswerMap?.forEach((answer, question) => {
@@ -35,6 +34,9 @@ export default class QuestionnaireResponseService extends BaseService implements
         });
         return toReturn;
     }
+
+
+
 
     async GetQuestionnaireAnsweredStatus(careplanId: string, questionnaire: Questionnaire): Promise<LatestResponseEnum> {
         try {
@@ -97,6 +99,16 @@ export default class QuestionnaireResponseService extends BaseService implements
             return this.HandleError(error)
         }
     }
+
+
+    async GetQuestionnaireResponsesForMultipleCareplans(carePlanIds: string[], questionnaireIds: string[], page: number, pagesize: number = 5): Promise<QuestionnaireResponse[]> {
+        try {
+            this.ValidatePagination(page, pagesize);
+            return this.api.GetQuestionnaireResponsesForMultipleCareplans(carePlanIds, questionnaireIds, page, pagesize)
+        } catch (error){
+            return this.HandleError(error)
+        }
+    };
 
 }
 

@@ -61,60 +61,61 @@ export default class HomePage extends Component<{}, State> {
         const careplan = this.state.careplans;
         const jsxList = this.state.careplans?.flatMap(careplan => careplan.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)) ?? [];
 
+        const allQuestionnaires: Questionnaire[] = this.state.careplans?.flatMap(careplan => careplan.questionnaires) ?? [];
+        const careplans = this.state.careplans
         return (
             <>
                 <ErrorBoundary>
-                    <IsEmptyCard list={this.state.careplans} jsxWhenEmpty={"Ingen behandlingsplaner fundet"}>
-                        {this.state.careplans?.map(careplan => (
-                            <IsEmptyCard object={careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        <Typography className="headline">Spørgeskemaer til besvarelse</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <IsEmptyCard list={careplan.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
-                                            <ErrorBoundary>
-                                                <ScrollableRow cols={2} jsxList={jsxList} />
-                                            </ErrorBoundary>
-                                        </IsEmptyCard>
-                                    </Grid>
+                    <IsEmptyCard list={careplans} jsxWhenEmpty={"Ingen behandlingsplaner fundet"}>
 
-                                    <Grid item xs={12} mt={6}>
-                                        <Typography className="headline">Mine målinger</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <IsEmptyCard list={careplan.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
-                                            <IsEmptyCard list={careplan.questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplan"}>
 
-                                                <IsEmptyCard object={careplan.questionnaires.find(qu => qu.questions?.find(x => x.type === QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={""}>
-                                                    <ScrollableRow cols={3} jsxList={observarionQuestions.map((q) =>
-                                                        <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}>
-                                                            {q ? <MiniChartRow questionnaire={q.questionnaire} careplan={careplan} question={q.question!} /> : <></>}
-                                                        </IsEmptyCard>)} />
-                                                </IsEmptyCard>
-                                            </IsEmptyCard>
-                                        </IsEmptyCard>
-                                    </Grid>
-                                    <Grid item container xs={12} mt={6} alignItems="center">
-                                        <Grid item xs={10}>
-                                            <Typography className="headline">Mine tidligere besvarelser</Typography>
-                                        </Grid>
-                                        <Grid item xs={2} className="show-all-answered">
-                                            <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
-                                        </Grid>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography className="headline">Spørgeskemaer til besvarelse</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <IsEmptyCard list={allQuestionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
+                                    <ErrorBoundary>
+                                        <ScrollableRow cols={2} jsxList={jsxList} />
+                                    </ErrorBoundary>
+                                </IsEmptyCard>
+                            </Grid>
 
-                                        <IsEmptyCard object={careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
-                                            <Grid item mt={2} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
-                                                <ErrorBoundary>
-                                                    <QuestionnaireResponseTable careplan={careplan} />
-                                                </ErrorBoundary>
-                                            </Grid>
-                                        </IsEmptyCard>
-                                    </Grid>
+                            <Grid item xs={12} mt={6}>
+                                <Typography className="headline">Mine målinger</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <IsEmptyCard list={allQuestionnaires} jsxWhenEmpty={"Ingen spørgeskemaer fundet"}>
+                                    <IsEmptyCard object={(allQuestionnaires).find(qu => qu.questions?.find(x => x.type === QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={""}>
+                                        <ScrollableRow cols={3} jsxList={observarionQuestions.map((q) => {
+                                            const careplan: PatientCareplan = careplans?.find(careplan => careplan.questionnaires.find(questionnaire => q?.questionnaire.id == questionnaire.id))!
+                                            return (
+                                                <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}>
+                                                    {q ? <MiniChartRow questionnaire={q.questionnaire} careplan={careplan} question={q.question!} /> : <></>}
+                                                </IsEmptyCard>)
+                                        })} />                                            
+                                    </IsEmptyCard>
+                                </IsEmptyCard>
+                            </Grid>
+                            <Grid item container xs={12} mt={6} alignItems="center">
+                                <Grid item xs={10}>
+                                    <Typography className="headline">Mine tidligere besvarelser</Typography>
+                                </Grid>
+                                <Grid item xs={2} className="show-all-answered">
+                                    <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
                                 </Grid>
 
-                            </IsEmptyCard>
-                        ))}
+                                <IsEmptyCard object={careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
+                                    <Grid item mt={2} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
+                                        <ErrorBoundary>
+                                            <QuestionnaireResponseTable careplans={this.state.careplans!} />
+                                        </ErrorBoundary>
+                                    </Grid>
+                                </IsEmptyCard>
+                            </Grid>
+                        </Grid>
+
+
                     </IsEmptyCard>
                 </ErrorBoundary>
             </>

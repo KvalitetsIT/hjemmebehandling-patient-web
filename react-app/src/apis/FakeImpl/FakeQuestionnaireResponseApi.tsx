@@ -86,6 +86,17 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         this.questionnaireResponses.push(questionnaireResponse1)
         this.questionnaireResponses.push(questionnaireResponse2)
     }
+    async GetQuestionnaireResponsesForMultipleCareplans (carePlanIds: string[], questionnaireIds: string[], page: number, pagesize: number):  Promise<QuestionnaireResponse[]> {
+        await new Promise(f => setTimeout(f, 1000));
+        const fromElement = (page - 1) * pagesize;
+        const toElement = (page) * pagesize
+        
+        const responses = this.questionnaireResponses.filter(x => questionnaireIds.includes(x.questionnaireId)).slice(fromElement, toElement);
+        
+        console.log("responses", responses.length)
+        return responses;
+    }
+    
     async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage[]> {
         questionnaireResponse.id = "questionnaireResponse" + this.generateId() + "";
         this.questionnaireResponses.push(questionnaireResponse);

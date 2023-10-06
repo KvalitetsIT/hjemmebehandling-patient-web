@@ -59,39 +59,36 @@ export default class QuestionnaireResponseDetailsPage extends Component<Props, S
     }
 
     renderPage(): JSX.Element {
+
+        let careplan = this.state.careplans?.find((careplan) => careplan.questionnaires.flatMap(questionnaire => questionnaire.id).includes(this.props.match.params.questionnaireId))
+
         return (
 
-            <IsEmptyCard list={this.state.careplans} jsxWhenEmpty="Ingen behandlingsplaner fundet">
-                {
-                    this.state.careplans?.map(careplan => (
-                        <IsEmptyCard object={careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
-                            <IsEmptyCard object={this.state.questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet">
-                                <IsEmptyCard object={this.state.questionnaireResponse?.questions} jsxWhenEmpty="Ingen spørgsmål på besvarelse">
-                                    <Grid component={Box} spacing={3} container>
-                                        <Grid item xs={12}>
-                                            <Card>
-                                                <Box display="flex" p={2} alignItems="center" gap={2}>
-                                                    <Box display="flex" alignItems="center" justifyContent="center" borderRadius="50%" height="2rem" sx={{ backgroundColor: "rgb(153,0,51)", aspectRatio: "1 / 1" }}>
-                                                        <Typography color="white" fontSize="1.25rem">i</Typography>
-                                                    </Box>
-                                                    <Typography>Denne besvarelse er indsendt og kan derfor ikke rettes. Er der fejl i din besvarelse, skal du indsende en ny.</Typography>
-                                                </Box>
-                                            </Card>
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <ResponseStatusCard careplan={careplan} questionnaireResponse={this.state.questionnaireResponse!} />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <Typography className="headline">Besvarelse</Typography>
-                                            <QuestionAndAnswerTable questionAnswerMap={this.state.questionnaireResponse!.questions!} />
-                                        </Grid>
-                                    </Grid>
-                                </IsEmptyCard>
-                            </IsEmptyCard>
+                <IsEmptyCard object={careplan} jsxWhenEmpty="Ingen behandlingsplan fundet">
+                    <IsEmptyCard object={this.state.questionnaireResponse} jsxWhenEmpty="Ingen besvarelse fundet">
+                        <IsEmptyCard object={this.state.questionnaireResponse?.questions} jsxWhenEmpty="Ingen spørgsmål på besvarelse">
+                            <Grid component={Box} spacing={3} container>
+                                <Grid item xs={12}>
+                                    <Card>
+                                        <Box display="flex" p={2} alignItems="center" gap={2}>
+                                            <Box display="flex" alignItems="center" justifyContent="center" borderRadius="50%" height="2rem" sx={{ backgroundColor: "rgb(153,0,51)", aspectRatio: "1 / 1" }}>
+                                                <Typography color="white" fontSize="1.25rem">i</Typography>
+                                            </Box>
+                                            <Typography>Denne besvarelse er indsendt og kan derfor ikke rettes. Er der fejl i din besvarelse, skal du indsende en ny.</Typography>
+                                        </Box>
+                                    </Card>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <ResponseStatusCard careplan={careplan!} questionnaireResponse={this.state.questionnaireResponse!} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Typography className="headline">Besvarelse</Typography>
+                                    <QuestionAndAnswerTable questionAnswerMap={this.state.questionnaireResponse!.questions!} />
+                                </Grid>
+                            </Grid>
                         </IsEmptyCard>
-                    ))
-                }
-            </IsEmptyCard>
+                    </IsEmptyCard>
+                </IsEmptyCard>
         )
     }
 

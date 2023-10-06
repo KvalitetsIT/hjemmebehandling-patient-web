@@ -7,9 +7,12 @@ RUN ["java", "-jar", "/opt/openapi-generator/modules/openapi-generator-cli/targe
 # Build the application using the generated api
 FROM node:20.4.0-alpine as build
 WORKDIR /app
-COPY ./react-app /app
-COPY --from=api-generator /generator/generated ./src/generated 
+COPY ./react-app/package*.json ./
+ 
 RUN npm install
+
+COPY ./react-app /app
+COPY --from=api-generator /generator/generated ./src/generated
 RUN npm run build
 
 # Download and build our environment injector

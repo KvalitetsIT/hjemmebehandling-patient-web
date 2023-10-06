@@ -23,6 +23,20 @@ export default interface IQuestionnaireResponseService {
      */
     GetQuestionnaireResponses: (carePlanId: string, questionnaireIds: Array<string>, page: number, pagesize: number) => Promise<Array<QuestionnaireResponse>>;
 
+
+
+    /**
+     * Get questionnaireresponses based on paramaters
+     * @param careplanIds responses should be linked to these careplans
+     * @param questionnaireIds responses should be linked to theese questionnaires
+     * @param page the page number
+     * @param pagesize number of elements to retrieve
+     * @returns A list of matching questionnaireresponses
+     */
+    GetQuestionnaireResponsesForMultipleCareplans: (carePlanIds: string[], questionnaireIds: Array<string>, page: number, pagesize: number) => Promise<Array<QuestionnaireResponse>>;
+
+     
+
     /**
      * Get questionnaireresponse from id
      * @param questionnaireResponseId the id of the response
@@ -57,6 +71,8 @@ export default interface IQuestionnaireResponseService {
      * @returns the status 
      */
      GetQuestionnaireAnsweredStatus(careplanId: string, questionnaire: Questionnaire): Promise<LatestResponseEnum>
+
+
 }
 
 export class QuestionAnswerPair{

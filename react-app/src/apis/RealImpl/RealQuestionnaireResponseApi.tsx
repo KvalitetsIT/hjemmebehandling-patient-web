@@ -18,6 +18,23 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
         this.toExternal = new InternalToExternalMapper();
         this.questionnaireResponseApi = new QuestionnaireResponseApi(this.conf);
     }
+
+
+    async GetQuestionnaireResponsesForMultipleCareplans(carePlanIds: string[], questionnaireIds: string[], page: number, pagesize: number) : Promise<QuestionnaireResponse[]>{
+        try {
+            const request = {
+                carePlanIds: carePlanIds,
+                pageNumber: page,
+                questionnaireIds: questionnaireIds,
+                pageSize: pagesize
+            }
+            const responseList = await this.questionnaireResponseApi.getQuestionnaireResponsesForMultipleCarePlans(request)
+            return  responseList.map(response => this.toInternal.mapQuestionnaireResponseDto(response))
+        } catch (error) {
+            return await this.HandleError(error);
+        }
+    };
+
     async GetQuestionnaireResponses(carePlanId: string, questionnaireIds: string[], page: number, pagesize: number): Promise<QuestionnaireResponse[]> {
         try {
             const request = {

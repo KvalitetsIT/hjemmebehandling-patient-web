@@ -12,6 +12,7 @@ import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateH
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
 import ScrollableRow from "../../components/ScrollableRow";
+import { CarePlanApi } from "../../generated";
 
 interface State {
     loadingPage: boolean;
@@ -82,52 +83,54 @@ export default class AnsweredPage extends Component<{}, State>{
         return this.state.loadingPage ? <LoadingBackdropComponent /> : this.renderPage();
     }
 
-    renderPage(): JSX.Element {
-        return (
-            <IsEmptyCard list={this.state.careplans} jsxWhenEmpty="Ingen behandlingsplan fundet">
-                {this.state.careplans?.map(careplan => (
-                    <>
-                        <Grid container spacing={2}>
-                            <IsEmptyCard list={careplan?.questionnaires} jsxWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
-                                <Grid item xs={12} className="headline-wrapper">
-                                    <Typography className="headline">Spørgeskemaer til besvarelse i dag</Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Du har ikke flere spørgeskemaer der skal besvares">
-                                        <ScrollableRow cols={2.5} jsxList={this.state.answeredTodayList!.map(questionnaire =>
-                                            <QuestionnaireAnswerCard careplan={careplan} questionnaire={questionnaire} />
-                                        )}
-                                        />
-                                    </IsEmptyCard>
-                                </Grid>
 
-                                <Grid item xs={12} className="headline-wrapper">
-                                    <Typography className="headline">Andre spørgeskemaer til besvarelse</Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <IsEmptyCard list={this.state.answeredOtherdayList} jsxWhenEmpty="Ingen spørgeskemaer">
-                                        <ScrollableRow cols={2.5} jsxList={this.state.answeredOtherdayList!.map(questionnaire =>
-                                            <QuestionnaireAnswerCard careplan={careplan} questionnaire={questionnaire} />
-                                        )}
-                                        />
-                                    </IsEmptyCard>
-                                </Grid>
+    renderPage(): JSX.Element {
+
+        const careplans = this.state.careplans;
+        const allQuestionnaires = this.state.careplans?.flatMap(carePlan => carePlan.questionnaires);
+        
+        return (
+            <IsEmptyCard list={careplans} jsxWhenEmpty="Ingen behandlingsplan fundet">
+                <Grid container spacing={2}>
+                    <IsEmptyCard list={allQuestionnaires} jsxWhenEmpty="Ingen spørgeskemaer fundet på behandlingsplan">
+                        <Grid item xs={12} className="headline-wrapper">
+                            <Typography className="headline">Spørgeskemaer til besvarelse i dag</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <IsEmptyCard list={this.state.answeredTodayList} jsxWhenEmpty="Du har ikke flere spørgeskemaer der skal besvares">
+                                <ScrollableRow cols={2.5} jsxList={this.state.answeredTodayList!.map(questionnaire => {
+                                    const carePLanIncludingTheQuestionnaire = careplans?.find(careplan => careplan.questionnaires.find(q => q.id == questionnaire.id))
+                                    return (
+                                        <QuestionnaireAnswerCard careplan={carePLanIncludingTheQuestionnaire} questionnaire={questionnaire} />
+                                    )
+                                })}
+                                />
                             </IsEmptyCard>
                         </Grid>
 
-                        <Grid paddingTop={10} container spacing={2}>
-                            <Grid item xs={12} >
-                                <Typography className="headline">Dine tidligere besvarelser</Typography>
-                            </Grid>
-                            <Grid item mt={2} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
-                                <QuestionnaireResponseTable careplan={careplan!} />
-                            </Grid>
-                            
+                        <Grid item xs={12} className="headline-wrapper">
+                            <Typography className="headline">Andre spørgeskemaer til besvarelse</Typography>
                         </Grid>
-                    </>
+                        <Grid item xs={12}>
+                            <IsEmptyCard list={this.state.answeredOtherdayList} jsxWhenEmpty="Ingen spørgeskemaer">
+                                <ScrollableRow cols={2.5} jsxList={this.state.answeredOtherdayList!.map(questionnaire =>
+                                    <QuestionnaireAnswerCard careplan={careplans?.find(careplan => careplan.questionnaires.find(q => q.id == questionnaire.id))} questionnaire={questionnaire} />
+                                )}
+                                />
+                            </IsEmptyCard>
+                        </Grid>
+                    </IsEmptyCard>
+                </Grid>
 
+                <Grid paddingTop={10} container spacing={2}>
+                    <Grid item xs={12} >
+                        <Typography className="headline">Dine tidligere besvarelser</Typography>
+                    </Grid>
+                    <Grid item mt={2} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
+                        <QuestionnaireResponseTable careplans={careplans!} />
+                    </Grid>
 
-                ))}
+                </Grid>
             </IsEmptyCard>
         )
     }

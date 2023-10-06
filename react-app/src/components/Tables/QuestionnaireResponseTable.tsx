@@ -46,7 +46,7 @@ const Bar = styled('div')(() => ({
 }));
 
 interface Props {
-    careplan: PatientCareplan
+    careplans: PatientCareplan[]
 }
 interface State {
     questionnaireResponses: QuestionnaireResponse[]
@@ -56,7 +56,7 @@ interface State {
 }
 export default class QuestionnaireResponseTable extends Component<Props, State>{
     static contextType = ApiContext
-     
+
     questionnaireResponseService!: IQuestionnaireResponseService;
     dateHelper!: IDateHelper;
 
@@ -70,15 +70,30 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
         }
     }
 
+
+    async getQuestionnaireResponses(page: number): Promise<QuestionnaireResponse[]> {
+        let { careplans } = this.props;
+
+        const carePlanIds = careplans.map(careplan => careplan.id).filter((id: string | undefined): id is string => !!id )
+        const questionnaireIds = careplans.flatMap(careplan => careplan.questionnaires).map(x => x.id)
+
+        let questionnaireResponses: QuestionnaireResponse[] = await this.questionnaireResponseService.GetQuestionnaireResponsesForMultipleCareplans(
+            carePlanIds,
+            questionnaireIds,
+            page,
+            this.state.pagesize
+        )
+        return questionnaireResponses
+    }
+
+
     async populateData(page: number): Promise<void> {
         try {
             this.setState({ fetchingData: true })
-            const questionnaireResponses = await this.questionnaireResponseService.GetQuestionnaireResponses(
-                this.props.careplan!.id!,
-                this.props.careplan?.questionnaires?.map(x => x.id),
-                page,
-                this.state.pagesize
-            )
+
+            // The refactor for this is a little tricky since we are requesting the questionnaireResponses for every careplan
+            let questionnaireResponses: QuestionnaireResponse[] = await this.getQuestionnaireResponses(page);
+            console.log("populateData", questionnaireResponses)
             this.setState({ questionnaireResponses: questionnaireResponses, page: page });
         } catch (error) {
             this.setState(() => { throw error })
@@ -112,6 +127,9 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
         if (this.state.questionnaireResponses.length >= this.state.pagesize)
             hasMorePages = true;
 
+
+        const allQuestionnaires = this.props.careplans?.flatMap(careplan => careplan.questionnaires)
+
         return (
             <>
                 <IsEmptyCard jsxWhenEmpty="Ingen besvarelser fundet" list={this.state.questionnaireResponses}>
@@ -127,8 +145,9 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                             </TableHead>
                             <TableBody>
                                 {this.state.questionnaireResponses.map(questionnaireResponse => {
-                                    const questionnaire = this.props.careplan?.questionnaires?.find(x => x.id === questionnaireResponse.questionnaireId);
-                                    let questionnaireName = questionnaire?.name
+                                    const questionnaire = allQuestionnaires.find(x => x.id === questionnaireResponse.questionnaireId)!;
+                                    const careplan = this.props.careplans.find(x => x.questionnaires.find(q => q.id == questionnaire.id))!
+                                        let questionnaireName = questionnaire?.name
                                     if (!questionnaire) {
                                         questionnaireName = "Ukendt"
                                     }
@@ -138,7 +157,7 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                                                 <TableCell>
                                                     <Stack>
                                                         <Typography> {questionnaireName}</Typography>
-                                                        <Typography variant="caption">{this.props.careplan.organization?.name}</Typography>
+                                                        <Typography variant="caption">{careplan.organization?.name}</Typography>
                                                     </Stack>
                                                 </TableCell>
                                                 <TableCell>{this.dateHelper.DateToString(questionnaireResponse.answeredTime!)}</TableCell>
