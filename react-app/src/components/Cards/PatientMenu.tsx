@@ -1,41 +1,41 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Component } from 'react';
-import { Menu, MenuItem, Typography } from '@mui/material';
+import { Card, CardContent, ListItem, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
 import ApiContext from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';
 import { PatientCard } from './PatientCard';
 import { ErrorBoundary } from '@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary';
 import { ProfileIcon } from '../icons/Icons';
+import { LoadingSmallComponent } from '../Layout/LoadingSmallComponent';
 
 export interface State {
     expand: boolean
     ancherEl: any;
-    careplan?: PatientCareplan
+
 }
 
 export class PatientMenu extends Component<{}, State> {
     static displayName = PatientCard.name;
     static contextType = ApiContext
-     
-    careplanService!: ICareplanService;
+
 
     constructor(props: {}) {
         super(props);
         this.state = {
             expand: false,
             ancherEl: null,
-            careplan: undefined
+
         }
 
         this.handleClick = this.handleClick.bind(this);
         this.handleClose = this.handleClose.bind(this);
+
     }
 
     render(): JSX.Element {
-        const contents = this.renderCard();
-        return contents;
+        return this.renderCard();
     }
 
     handleClick(event: React.MouseEvent<HTMLButtonElement>): void {
@@ -50,10 +50,13 @@ export class PatientMenu extends Component<{}, State> {
         window.location.href = "/oauth2/sign_out";
     }
 
+
+
     renderCard(): JSX.Element {
         return (
             <>
                 <div className="user__context-wrapper">
+
                     <Button
                         className="profileButton"
                         id="basic-button"
@@ -67,6 +70,7 @@ export class PatientMenu extends Component<{}, State> {
                             <ProfileIcon></ProfileIcon>
                         </div>
                     </Button>
+
                     <Menu
                         anchorEl={this.state.ancherEl}
                         id="basic-menu"
@@ -77,14 +81,17 @@ export class PatientMenu extends Component<{}, State> {
                         }}
                     >
                         <ErrorBoundary>
-                            <PatientCard/>
+                            <PatientCard />
                         </ErrorBoundary>
-                        <MenuItem onClick={this.logout}>
-                                <Typography align="right" variant="body2">Log ud</Typography>
-                            
+
+                        <MenuItem sx={{ textAlign: "right" }} onClick={this.logout}>
+                            <ListItemText>
+                                <Typography fontWeight={"bold"} align={"right"} fontSize={"1em"} variant={"h6"}>Log ud</Typography>
+                            </ListItemText>
                         </MenuItem>
                     </Menu>
-                </div>
+
+                </div >
 
             </>
         )

@@ -29,10 +29,11 @@ export class PatientCard extends Component<{}, State> {
 
     render(): JSX.Element {
         this.initialiseServices();
-                
-        let patients: PatientDetail[] | undefined = this.state.careplans?.filter(careplan => careplan.patient !== undefined).map(careplan => careplan.patient as PatientDetail)
 
-        const contents = this.state.loading ? <Skeleton height="10em" width="12em" /> : this.renderCard(patients);
+
+        let careplans: PatientCareplan[] | undefined = this.state.careplans?.filter(careplan => careplan.patient !== undefined)
+
+        const contents = this.state.loading ? <Skeleton height="10em" width="12em" /> : this.renderCard(careplans);
         return contents;
     }
     initialiseServices(): void {
@@ -56,10 +57,16 @@ export class PatientCard extends Component<{}, State> {
     }
 
 
-    renderCard(patients: PatientDetail[] | undefined): JSX.Element {
-        
-        let patient = patients && patients[0] ; // This is done since the patient details is global across every careplan
+    renderCard(carePlans: PatientCareplan[] | undefined): JSX.Element {
 
+        const patients = carePlans && carePlans.map(careplan => (careplan.patient as PatientDetail))
+        const pairs = carePlans && carePlans.map(careplan => ({ patient: (careplan.patient as PatientDetail), carePlan: careplan }))
+
+        let pair = pairs && pairs[0];
+        let { patient, carePlan } = pair!
+
+
+        const hasContacts = patient.primaryContacts && patient.primaryContacts?.length > 0 
         return (
 
             <Card sx={{ borderRadius: 0 }} elevation={0}>
@@ -68,23 +75,29 @@ export class PatientCard extends Component<{}, State> {
                 </CardContent>
                 <Divider />
                 <CardContent>
-                    <Typography align="right" variant="body2">{patient?.firstname} {patient?.lastname}</Typography>
+                    <Typography align="right" fontWeight={"bold"} variant="body2">{patient?.firstname} {patient?.lastname}</Typography>
                     <Typography align="right" variant="body2">{patient?.cprToString()}</Typography>
                     <br />
-                    <Typography align="right" variant="body2">{patient?.address?.street}</Typography>
-                    <Typography align="right" variant="body2">{patient?.address?.zipCode} {patient?.address?.city}</Typography>
+                    <Typography align="right" variant="body2">{patient.contact?.address?.street}</Typography>
+                    <Typography align="right" variant="body2">{patient.contact?.address?.zipCode} {patient?.contact?.address?.city}</Typography>
                     <br />
-                    <Typography align="right" variant="body2">{patient?.primaryPhonenumberToString()}</Typography>
-                    <Typography align="right" variant="body2">{patient?.secondaryPhonenumberToString()}</Typography>
+                    <Typography align="right" variant="body2">{patient.contact?.primaryPhonenumberToString()}</Typography>
+                    <Typography align="right" variant="body2">{patient.contact?.secondaryPhonenumberToString()}</Typography>
                     <br />
-                    <Typography align="right" variant="body2">{(patient?.contact?.fullname !== "" ||
-                        patient?.contact?.affiliation !== "" ||
-                        patient?.contact?.primaryPhone !== "" ||
-                        patient?.contact?.secondaryPhone !== "") ? "Primær kontakt" : ""}</Typography>
-                    <Typography align="right" variant="body2">{patient?.contact?.fullname}</Typography>
-                    <Typography align="right" variant="body2">{patient?.contact?.affiliation}</Typography>
-                    <Typography align="right" variant="body2">{patient?.contact?.primaryPhonenumberToString()}</Typography>
-                    <Typography align="right" variant="body2">{patient?.contact?.secondaryPhonenumberToString()}</Typography>
+                    <Divider variant='fullWidth' />
+                    <br />
+                    <Typography align="right" fontWeight={"bold"} fontSize={"1em"} variant="h6">{hasContacts ? "Primær kontakt" : ""}</Typography>
+                    <br />
+                    <Typography align="right" variant="body2" fontWeight={"bold"}>{carePlan.organization?.name}</Typography>
+
+                    {patient.primaryContacts && patient.primaryContacts.map(contact => (
+                        <>
+                            <Typography align="right" variant="body2">{contact?.fullname + ", " + contact?.affiliation}</Typography>
+                            <Typography align="right" variant="body2">{contact?.contact?.primaryPhonenumberToString()}</Typography>
+                            <Typography align="right" variant="body2">{contact?.contact?.secondaryPhonenumberToString()}</Typography>
+                        </>
+                    ))}
+
                 </CardContent>
                 <Divider />
             </Card>
