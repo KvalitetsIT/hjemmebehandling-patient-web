@@ -466,40 +466,41 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return questionnaire
     }
 
-    mapPatientDto(patientDto: PatientDto): PatientDetail {
-        const patient = new PatientDetail();
-        patient.firstname = patientDto.givenName;
-        patient.lastname = patientDto.familyName;
-        patient.cpr = patientDto.cpr;
-        patient.contact = patientDto.patientContactDetails ? this.mapContactDetailsDto(patientDto.patientContactDetails) : undefined 
-        const primaryContacts = patientDto.primaryContacts ? this.mapPrimaryContactDtos(patientDto.primaryContacts) : []        
-        patient.primaryContacts = primaryContacts
+    mapPatientDto(dto: PatientDto): PatientDetail {
+        
+        const model = new PatientDetail();
+        model.firstname = dto.givenName;
+        model.lastname = dto.familyName;
+        model.cpr = dto.cpr;
+        model.contact = dto.patientContactDetails ? this.mapContactDetailsDto(dto.patientContactDetails) : undefined 
+        const primaryContacts = dto.primaryContacts ? this.mapPrimaryContactDtos(dto.primaryContacts) : []        
+        model.primaryContacts = primaryContacts
+        model.username = dto.customUserName
 
-        //toReturn.username = patientDto.customUserName
-        return patient;
+        return model;
     }
 
 
-    mapContactDetailsDto(details: ContactDetailsDto): ContactDetails {
-        const contactDetails = new ContactDetails();
+    mapContactDetailsDto(dto: ContactDetailsDto): ContactDetails {
+        const model = new ContactDetails();
 
         const address = new Address()
-        address.city = details.city
-        address.country = details.country
-        address.street = details.street
-        address.zipCode = details.postalCode
+        address.city = dto.city
+        address.country = dto.country
+        address.street = dto.street
+        address.zipCode = dto.postalCode
 
-        contactDetails.address = address
+        model.address = this.mapAddressDto(dto)
         
-        contactDetails.primaryPhone  = details?.primaryPhone
-        contactDetails.secondaryPhone = details?.secondaryPhone
+        model.primaryPhone  = dto?.primaryPhone
+        model.secondaryPhone = dto?.secondaryPhone
 
-        return contactDetails
+        return model
     }
 
 
-    mapPrimaryContactDtos(contacts: PrimaryContactDto[]): PrimaryContact[] {
-        return contacts.map(contact => {
+    mapPrimaryContactDtos(dtos: PrimaryContactDto[]): PrimaryContact[] {
+        return dtos.map(contact => {
             const primaryContact = new PrimaryContact() 
             primaryContact.fullname = contact.name ?? ''
             primaryContact.affiliation = contact.affiliation ?? ''
@@ -512,27 +513,16 @@ export default class ExternalToInternalMapper extends BaseMapper {
             return primaryContact
         })
     }
-/*
-    mapContactDetails(contacts: ContactDetailsDto): Contact {
-        return contacts.map(contact => {
-            const primaryContact = new PrimaryContact() 
-            primaryContact.fullname = contact.name ?? ''
-            primaryContact.affiliation = contact.affiliation ?? ''
-            primaryContact.primaryPhone = contact.contactDetails?.primaryPhone ?? ''
-            primaryContact.secondaryPhone = contact.contactDetails?.secondaryPhone ?? ''
-            return primaryContact
-        })
-    }
-*/
-    mapAddress(contactDetails: ContactDetailsDto): Address {
-        const address = new Address();
 
-        address.city = contactDetails?.city;
-        address.country = contactDetails?.country;
-        address.zipCode = contactDetails?.postalCode;
-        address.street = contactDetails?.street;
+    mapAddressDto(dto: ContactDetailsDto): Address {
+        const model = new Address();
 
-        return address;
+        model.city = dto.city
+        model.country = dto.country
+        model.street = dto.street
+        model.zipCode = dto.postalCode
+
+        return model;
     }
 
   
