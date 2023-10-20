@@ -94,7 +94,7 @@ export class PatientCard extends Component<{}, State> {
         let folded: { contacts: PrimaryContact[]; departments: SimpleOrganization[] }[] = [];
 
         
-        pairs?.forEach(({ patient }) => {
+        pairs?.map(({ patient }) => {
             
             if (!(folded.map(p => p.contacts).filter(p => this.deepEqual(p, patient.primaryContacts)).length > 0)) {
                 let departments = pairs.filter(({ patient: p }) => this.deepEqual(p.primaryContacts, patient.primaryContacts)).map((p) => p.carePlan.organization)
@@ -170,8 +170,7 @@ export class PatientCard extends Component<{}, State> {
                 suffix = isLast ? '' : (isSecondLast ? ' og ' : ', ')
 
                 return n + suffix
-            }
-            )
+            })
             .forEach(str => text = text + str)
         return text
     }
