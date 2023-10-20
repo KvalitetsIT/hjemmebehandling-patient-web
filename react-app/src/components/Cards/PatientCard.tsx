@@ -8,6 +8,9 @@ import ApiContext, { IApiContext } from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';
 import { PatientDetail } from '@kvalitetsit/hjemmebehandling/Models/PatientDetail';
 import { ContactDetails } from '@kvalitetsit/hjemmebehandling/Models/Contact';
+import { type } from 'os';
+import { PrimaryContact } from '@kvalitetsit/hjemmebehandling/Models/PrimaryContact';
+import SimpleOrganization from '@kvalitetsit/hjemmebehandling/Models/SimpleOrganization';
 
 export interface State {
     loading: boolean;
@@ -63,12 +66,14 @@ export class PatientCard extends Component<{}, State> {
         const patients = carePlans && carePlans.map(careplan => (careplan.patient as PatientDetail))
         const pairs = carePlans && carePlans.map(careplan => ({ patient: (careplan.patient as PatientDetail), carePlan: careplan }))
 
+
+
+
         let patient = (pairs && pairs[0].patient)! // This is done sine the patient is the same for every careplan (Hopefully)
 
         const hasContacts = (patients?.flatMap(patient => patient.primaryContacts ?? []))!.length > 0
 
         const ContactDetails = (props: { contactDetails?: ContactDetails }) => {
-
             const { contactDetails } = props
             if (contactDetails) {
                 return (
@@ -85,6 +90,24 @@ export class PatientCard extends Component<{}, State> {
         }
 
 
+
+        let folded: { contacts: PrimaryContact[]; departments: SimpleOrganization[] }[] = [];
+
+        
+        pairs?.forEach(({ patient }) => {
+            
+            if (!(folded.map(p => p.contacts).filter(p => this.deepEqual(p, patient.primaryContacts)).length > 0)) {
+                let departments = pairs.filter(({ patient: p }) => this.deepEqual(p.primaryContacts, patient.primaryContacts)).map((p) => p.carePlan.organization)
+
+                let contacts = patient.primaryContacts
+                let pair: { contacts: PrimaryContact[]; departments: SimpleOrganization[] } = {
+                    contacts: contacts!,
+                    departments: departments.filter((item): item is SimpleOrganization => !!item)
+                }
+
+                folded.push(pair)
+            }
+        })
 
         return (
 
@@ -104,14 +127,21 @@ export class PatientCard extends Component<{}, State> {
                     {
                         hasContacts && <>
                             <Typography align="right" fontWeight={"bold"} fontSize={"1em"} variant="h6">{"Primær kontakt"}</Typography>
-                            <br />
-                            <Typography align="right" variant="body2" fontWeight={"bold"}>{carePlan.organization?.name}</Typography>
 
-                            {patient.primaryContacts && patient.primaryContacts.map(contact => (
+
+                            {folded?.map(({ contacts, departments }) => (
                                 <>
-                                    <Typography align="right" variant="body2">{contact?.fullname + ", " + contact?.affiliation}</Typography>
-                                    <Typography align="right" variant="body2">{contact?.contact?.primaryPhonenumberToString()}</Typography>
-                                    <Typography align="right" variant="body2">{contact?.contact?.secondaryPhonenumberToString()}</Typography>
+                                    <br />
+                                    <Typography align="right" variant="body2" fontWeight={"bold"}>{
+                                        this.listNames(departments.map((department) => department.name).filter((item): item is string => !!item))
+                                    }</Typography>
+
+                                    {contacts && contacts.map(primaryContact => (
+                                        <>
+                                            <Typography align="right" variant="body2">{primaryContact?.fullname + ", " + primaryContact?.affiliation}</Typography>
+                                            <ContactDetails contactDetails={primaryContact.contact} />
+                                        </>
+                                    ))}
                                 </>
                             ))}
                         </>
@@ -122,4 +152,54 @@ export class PatientCard extends Component<{}, State> {
             </Card>
         )
     }
+
+
+    private listNames(names: string[]): string {
+        let text: string = ""
+        names
+            .map((n, i) => {
+
+                let size = names.length
+
+                let isLast = i == size - 1;
+
+                let isSecondLast = i == size - 2;
+
+                let suffix = ""
+
+                suffix = isLast ? '' : (isSecondLast ? ' og ' : ', ')
+
+                return n + suffix
+            }
+            )
+            .forEach(str => text = text + str)
+        return text
+    }
+
+    private deepEqual(obj1: any, obj2: any): boolean {
+        if (obj1 === obj2) {
+          return true;
+        }
+      
+        if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+          return false;
+        }
+      
+        const keys1 = Object.keys(obj1);
+        const keys2 = Object.keys(obj2);
+      
+        if (keys1.length !== keys2.length) {
+          return false;
+        }
+      
+        for (const key of keys1) {
+          if (!keys2.includes(key) || !this.deepEqual(obj1[key], obj2[key])) {
+            return false;
+          }
+        }
+      
+        return true;
+      }
+      
+
 }
