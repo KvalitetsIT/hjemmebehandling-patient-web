@@ -1,7 +1,7 @@
 
 import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
-import { Contact } from "@kvalitetsit/hjemmebehandling/Models/Contact";
+import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import { DayEnum, Frequency } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
@@ -14,11 +14,12 @@ import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
 import ICareplanApi from "../interfaces/ICareplanApi";
 import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
 import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
+import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
 
 export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
     timeToWait: number = 1000;
 
-    async GetAllMeasurementTypes(organizationId: string) : Promise<MeasurementType[]> {
+    async GetAllMeasurementTypes(organizationId: string): Promise<MeasurementType[]> {
         console.debug("GetAllMeasurementTypes for org:", organizationId);
         try {
             await new Promise(f => setTimeout(f, this.timeToWait));
@@ -47,9 +48,9 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         try {
             await new Promise(f => setTimeout(f, this.timeToWait));
 
-           
+
             const careplans = [
-                this.createFakeCareplan_1(), 
+                this.createFakeCareplan_1(),
                 this.createFakeCareplan_2()
             ]
 
@@ -70,19 +71,27 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         patient.firstname = "Anders"
         patient.lastname = "Madsen"
         patient.cpr = "1212120382"
-        patient.primaryPhone = "+4520304050"
-        patient.secondaryPhone = "+4520304051"
+
+
+        const contactDetails = new ContactDetails();
+        contactDetails.primaryPhone = "+4520304050"
+        contactDetails.secondaryPhone = "+4520304051"
+
+
         const address = new Address();
         address.city = "Aarhus N"
         address.country = "Danmark"
         address.street = "Olof Palmes Allé 34"
         address.zipCode = "8200"
-        patient.address = address;
-        const contact = new Contact();
-        contact.affiliation = "Kone"
-        contact.fullname = "Gitte Madsen"
-        contact.primaryPhone = "+4530405060"
-        patient.contact = contact;
+        contactDetails.address = address;
+
+        patient.contact = contactDetails
+
+        const primaryContact = new PrimaryContact();
+        primaryContact.affiliation = "Kone"
+        primaryContact.fullname = "Gitte Madsen"
+        if (primaryContact.contact) primaryContact.contact.primaryPhone = "+4530405060"
+        patient.primaryContacts = [primaryContact];
         careplan.patient = patient;
 
         const questionnaire = new Questionnaire();
@@ -199,19 +208,27 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         patient.firstname = "Anders"
         patient.lastname = "Madsen"
         patient.cpr = "1212120382"
-        patient.primaryPhone = "+4520304050"
-        patient.secondaryPhone = "+4520304050"
+
+
+        const contactDetails = new ContactDetails()
+        contactDetails.primaryPhone = "+4520304050"
+        contactDetails.secondaryPhone = "+4520304050"
+
         const address = new Address();
         address.city = "Aarhus N"
         address.country = "Danmark"
         address.street = "Olof Palmes Allé 34"
         address.zipCode = "8200"
-        patient.address = address;
-        const contact = new Contact();
-        contact.affiliation = "Kone"
-        contact.fullname = "Gitte Madsen"
-        contact.primaryPhone = "+4530405060"
-        patient.contact = contact;
+        contactDetails.address = address;
+
+        patient.contact = contactDetails
+
+
+        const primaryContact = new PrimaryContact();
+        primaryContact.affiliation = "Kone"
+        primaryContact.fullname = "Gitte Madsen"
+        if (primaryContact.contact) primaryContact.contact.primaryPhone = "+4530405060"
+        patient.primaryContacts = [primaryContact];
         careplan.patient = patient;
 
         const questionnaire = new Questionnaire();

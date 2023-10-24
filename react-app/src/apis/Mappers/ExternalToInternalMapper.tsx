@@ -2,7 +2,7 @@
 import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
 import { Answer, NumberAnswer, StringAnswer, BooleanAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
-import { Contact } from "@kvalitetsit/hjemmebehandling/Models/Contact";
+import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import DetailedOrganization, { PhoneHour } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
 import { DayEnum, Frequency, FrequencyEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
@@ -15,7 +15,7 @@ import SimpleDepartment from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganiz
 import { Task } from "@kvalitetsit/hjemmebehandling/Models/Task";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { User } from "@kvalitetsit/hjemmebehandling/Models/User";
-import { AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, PrimaryContactDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
@@ -23,6 +23,7 @@ import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
 import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
 import { ThresholdNumber } from "@kvalitetsit/hjemmebehandling/Models/ThresholdNumber";
+import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
 
 
 /**
@@ -465,64 +466,64 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return questionnaire
     }
 
-    mapContactDetailsDto(patientDto: PatientDto): Contact {
+    mapPatientDto(dto: PatientDto): PatientDetail {
+        
+        const model = new PatientDetail();
+        model.firstname = dto.givenName;
+        model.lastname = dto.familyName;
+        model.cpr = dto.cpr;
+        model.contact = dto.patientContactDetails ? this.mapContactDetailsDto(dto.patientContactDetails) : undefined 
+        const primaryContacts = dto.primaryContacts ? this.mapPrimaryContactDtos(dto.primaryContacts) : []        
+        model.primaryContacts = primaryContacts
+        model.username = dto.customUserName
 
-        const contact = new Contact();
-        contact.primaryPhone = patientDto.patientContactDetails?.primaryPhone;
-        contact.secondaryPhone = patientDto.patientContactDetails?.primaryPhone;
-
-        return contact;
+        return model;
     }
 
 
-    mapPatientDto(patientDto: PatientDto): PatientDetail {
-        let address: Address = {}
-        if (patientDto.patientContactDetails) {
-            address = this.mapAddress(patientDto.patientContactDetails)
-        }
+    mapContactDetailsDto(dto: ContactDetailsDto): ContactDetails {
+        const model = new ContactDetails();
 
-        const contactDetails = this.mapContactDetails(patientDto)
+        const address = new Address()
+        address.city = dto.city
+        address.country = dto.country
+        address.street = dto.street
+        address.zipCode = dto.postalCode
 
-        const toReturn = new PatientDetail();
-        toReturn.firstname = patientDto.givenName;
-        toReturn.lastname = patientDto.familyName;
-        toReturn.cpr = patientDto.cpr;
-        toReturn.primaryPhone = patientDto.patientContactDetails?.primaryPhone
-        toReturn.secondaryPhone = patientDto.patientContactDetails?.secondaryPhone
-        toReturn.address = address
-        toReturn.contact = contactDetails
-        //toReturn.username = patientDto.customUserName
-        return toReturn;
+        model.address = this.mapAddressDto(dto)
+        
+        model.primaryPhone  = dto?.primaryPhone
+        model.secondaryPhone = dto?.secondaryPhone
+
+        return model
     }
 
-    mapContactDetails(patientDto: PatientDto): Contact {
-        const toReturn = new Contact();
 
-        toReturn.fullname = patientDto?.primaryRelativeName ?? ''
-        toReturn.affiliation = patientDto?.primaryRelativeAffiliation ?? ''
-        toReturn.primaryPhone = patientDto?.primaryRelativeContactDetails?.primaryPhone ?? ''
-        toReturn.secondaryPhone = patientDto?.primaryRelativeContactDetails?.secondaryPhone ?? ''
-        return toReturn;
+    mapPrimaryContactDtos(dtos: PrimaryContactDto[]): PrimaryContact[] {
+        return dtos.map(contact => {
+            const primaryContact = new PrimaryContact() 
+            primaryContact.fullname = contact.name ?? ''
+            primaryContact.affiliation = contact.affiliation ?? ''
 
+            const contactDetails = new ContactDetails();
+            
+            contactDetails.primaryPhone =  contact.contactDetails?.primaryPhone ?? ''
+            contactDetails.secondaryPhone = contact.contactDetails?.secondaryPhone ?? ''
+            
+            return primaryContact
+        })
     }
 
-    mapAddress(contactDetails: ContactDetailsDto): Address {
-        const address = new Address();
+    mapAddressDto(dto: ContactDetailsDto): Address {
+        const model = new Address();
 
-        address.city = contactDetails?.city;
-        address.country = contactDetails?.country;
-        address.zipCode = contactDetails?.postalCode;
-        address.street = contactDetails?.street;
+        model.city = dto.city
+        model.country = dto.country
+        model.street = dto.street
+        model.zipCode = dto.postalCode
 
-        return address;
+        return model;
     }
 
-    mapPatientContactDetails(patientContactDetails: ContactDetailsDto | undefined): Address {
-        const address = new Address();
-        address.city = patientContactDetails?.city;
-        address.country = patientContactDetails?.country;
-        address.zipCode = patientContactDetails?.postalCode;
-        address.street = patientContactDetails?.street;
-        return address;
-    }
+  
 }
