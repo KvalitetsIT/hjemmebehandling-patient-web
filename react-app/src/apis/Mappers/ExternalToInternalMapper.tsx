@@ -509,7 +509,8 @@ export default class ExternalToInternalMapper extends BaseMapper {
             
             contactDetails.primaryPhone =  contact.contactDetails?.primaryPhone ?? ''
             contactDetails.secondaryPhone = contact.contactDetails?.secondaryPhone ?? ''
-            
+            //if (contact.contactDetails) primaryContact.contact = this.mapContactDetailsDto(contact.contactDetails)
+
             return primaryContact
         })
     }

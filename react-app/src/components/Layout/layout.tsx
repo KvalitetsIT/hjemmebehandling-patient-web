@@ -40,7 +40,7 @@ export class Layout extends Component<{}, State> {
 
     //Sikker på du ønsker at forlade siden?
     window.onbeforeunload = function () {
-      return "Du er på vej væk fra KoMo-systemet, ønsker du at fortsætte?"; //Det er ikke alle browsere der faktisk viser denne tekst
+      return "Du er på vej væk fra KOMO-systemet, ønsker du at fortsætte?"; //Det er ikke alle browsere der faktisk viser denne tekst
     };
     window.addEventListener(CreateToastEvent.eventName, (event: Event) => {
       const data = (event as CustomEvent).detail as CreateToastEventData;
