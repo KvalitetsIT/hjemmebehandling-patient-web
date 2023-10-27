@@ -9,7 +9,7 @@ import React from 'react';
 
 import ValidationService from '../services/ValidationService';
 import { CollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/CollectionHelper';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { PaletteColorOptions, ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 import FakeQuestionnaireResponseApi from '../apis/FakeImpl/FakeQuestionnaireResponseApi';
@@ -100,7 +100,6 @@ const yellow = '#FFD78C'
 
 const red = '#EE6969'
 
-
 const THEME = createTheme({
   typography: {
     "fontFamily": "verdana, sans-serif"
@@ -108,6 +107,10 @@ const THEME = createTheme({
   palette: {
     background: {
       default: mainBackground,
+    },
+    primary: {
+      main: regionMidtRed,
+      contrastText: 'white'
     }
   },
   components: {
@@ -191,7 +194,6 @@ const THEME = createTheme({
         {
           props: { className: "question" },
           style: {
-            fontWeight: "bold",
             letterSpacing: 'initial'
           }
         }

@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
 import React, { Component } from "react";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, IconButton, Typography } from "@mui/material";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
 import ICareplanService from "../../../services/interfaces/ICareplanService";
 import ApiContext, { IApiContext } from "../../_context";
@@ -14,8 +14,9 @@ import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnair
 import LinearProgress from '@mui/material/LinearProgress';
 import QuestionPresenterCard from "../../../components/Cards/QuestionPresenterCard";
 import QuestionAndAnswerTable from "../../../components/Tables/QuestionAndAnswerTable";
-import { Prompt, Redirect } from "react-router-dom";
+import { Prompt, Redirect, Link  } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 import { CallToActionError } from "../../../components/Errors/CallToActionError";
@@ -25,7 +26,7 @@ import { CreateToastEvent, CreateToastEventData } from "@kvalitetsit/hjemmebehan
 import IValueSetService from "../../../services/interfaces/IValueSetService";
 import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
-import { error } from "console";
+import { Container } from "./answear.styles";
 
 interface Props {
     match: { params: { questionnaireId: string } };
@@ -51,6 +52,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
     constructor(props: Props) {
         super(props);
+
         const newQuestionnaireResponse = new QuestionnaireResponse();
         this.state = {
             submitted: false,
@@ -78,10 +80,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                 return questionnaireIds.includes(id)
             }
         ) as PatientCareplan
-
-
         return careplan
-
     }
 
     async componentDidMount(): Promise<void> {
@@ -155,22 +154,26 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
         if (showReview)
             return (
-                <>
+                <Container>
                     {prompt}
                     {this.renderReview(questionnaire)}
-                </>
+                </Container>
             )
 
         return (
-            <>
+            <Container>
                 {prompt}
                 {this.renderQuestion(questionnaire)}
-            </>
+            </Container>
         )
 
     }
 
     GoToPreviousPage(): void {
+        if (this.state.indexJourney.length === 1) {
+
+            return;
+        }
         const goToPage = this.GetLastElement(this.state.indexJourney) - 1
         this.GoToPage(goToPage)
     }
@@ -198,16 +201,31 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
                     <Grid component={Box} textAlign="left" item xs={12} >
                         <LinearProgress variant="determinate" value={this.GetPercentageDone(questionnaire)} />
-                        <Button size="small" disabled={this.GetLastElement(this.state.indexJourney) === 0} onClick={() => this.GoToPreviousPage()} sx={{ 'text-transform': 'none' }}>
-                            <NavigateBeforeIcon />
-                            <Typography fontSize={10}>
-                                Forrige
-                            </Typography>
-                        </Button>
+                        <Grid container direction="row" justifyContent="space-between" alignItems="center" mt={2} >
+                            {this.GetLastElement(this.state.indexJourney) === 0 ? 
+                                <Link to="/">
+                                    <Button size="small" sx={{ 'text-transform': 'none' }}>
+                                        <NavigateBeforeIcon />
+                                        <Typography fontSize={16}>Tilbage</Typography>
+                                    </Button>
+                                </Link>
+                                : 
+                                <Button size="small" onClick={() => this.GoToPreviousPage()} sx={{ 'text-transform': 'none' }}>
+                                    <NavigateBeforeIcon />
+                                    <Typography fontSize={16}>Forrige</Typography>
+                                </Button>
+                            }
+                            <Typography color="primary" textTransform="capitalize" fontSize={16}>{questionnaire.name}</Typography>
+                            <Link to="/">
+                                <IconButton color="primary" aria-label="Luk">
+                                    <CloseIcon />
+                                </IconButton>
+                            </Link>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} >
+                    {/* <Grid item xs={12} >
                         <Typography variant="caption">{this.GetPercentageDone(questionnaire!).toFixed(0)}% færdig</Typography>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </>
         )
@@ -248,7 +266,6 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             return <></>
         }
 
-        console.log("this.state.measurementTypes", this.state.measurementTypes)
         const thresholds = new ThresholdCollection();
         if (question!.type === QuestionTypeEnum.OBSERVATION) {
             const measurementType = this.state.measurementTypes.find(m => m.code === question?.measurementType?.code);
@@ -258,15 +275,14 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             }
         }
 
-        console.log("thresholds", thresholds)
         return (
             <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                 <IsEmptyCard list={questions} jsxWhenEmpty="Ingen spørgsmål blev fundet i spørgeskemaet">
                     <IsEmptyCard object={question} jsxWhenEmpty="Intet spørgsmål fundet">
                         {this.renderProgressbar(questionnaire!)}
-                        <Grid component={Box} spacing={4} container textAlign="center">
+                        <Grid component={Box} spacing={4} container textAlign="center" mt={4}>
                             <Grid item xs={12} >
-                                <QuestionPresenterCard key={question?.Id} /*questionnaire={questionnaire!}*/ question={question!} thresholds={thresholds} answer={this.state.questionnaireResponse.questions?.get(question!)} setQuestionAnswer={this.setAnswerToQuestion} />
+                                <QuestionPresenterCard key={question?.Id} /*questionnaire={questionnaire!}*/ question={question!} thresholds={thresholds} answer={this.state.questionnaireResponse.questions?.get(question!)} setQuestionAnswer={this.setAnswerToQuestion} progress={parseInt(this.GetPercentageDone(questionnaire!).toFixed(0))} />
                             </Grid>
                         </Grid>
 
