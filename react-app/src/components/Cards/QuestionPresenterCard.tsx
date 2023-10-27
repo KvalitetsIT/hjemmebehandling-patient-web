@@ -58,16 +58,16 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         this.initializeServices();
         return (
             <>
-                <Grid container spacing={2} justifyContent="center" >
+                <Grid container spacing={1} justifyContent="center" >
                     <Grid item xs={12} >
-                        <Typography className="question">
-                            <Typography display="inline" color="primary">{this.props.progress}% færdig</Typography>
-                            <Typography display="inline" fontWeight="bold" color="primary"> | </Typography>
+                        <Typography className="question" fontSize={18} color="#4A4848">
+                            <Typography display="inline" color="primary" fontSize={18}>{this.props.progress}% færdig</Typography>
+                            <Typography display="inline" color="primary" fontWeight="bold" fontSize={18}> | </Typography>
                             {this.props.question.question}
                         </Typography>
                     </Grid>
-                    <Grid item xs={8} minHeight={75}>
-                        <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
+                    <Grid item xs={8}>
+                        <Typography variant="subtitle2" color="#4A4848">{this.props.question.helperText}</Typography>
                     </Grid>
                     <Grid item xs={12} >
                         <Box sx={{ height:60 }}>
@@ -163,6 +163,12 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     }
 
     getBooleanInput(): JSX.Element {
+        return (
+            <Grid spacing={2}>
+                <Button variant="contained" sx={{minWidth: 150}}>Ja</Button>
+                <Button variant="contained" sx={{minWidth: 150}}>Nej</Button>
+            </Grid>
+        );
         return (
             <>
                 {[true, false].map(option => {
