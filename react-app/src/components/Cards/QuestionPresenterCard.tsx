@@ -76,13 +76,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                     </Grid>
 
                     <Grid item xs={12}>
-
-                        <Button
-                            disabled={this.buttonShouldBeDisabled()}
-                            onClick={() => this.answerQuestion()}
-                            variant="contained">
-                            Næste
-                        </Button>
+                        {this.renderNextButton(this.props.question)}
                     </Grid>
                 </Grid>
             </>
@@ -132,6 +126,22 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         return nextIsDisabled;
     }
 
+    renderNextButton(question: Question): JSX.Element | undefined {
+        const questionType = question.type;
+        switch (questionType) {
+            case QuestionTypeEnum.CHOICE:
+            case QuestionTypeEnum.BOOLEAN:
+                return
+        }
+        return (
+            <Button
+                disabled={this.buttonShouldBeDisabled()}
+                onClick={() => this.answerQuestion()}
+                variant="contained">
+                Næste
+            </Button>
+        )
+    }
     renderQuestionInput(question: Question): JSX.Element {
         const questionType = question.type;
         switch (questionType) {
@@ -163,10 +173,14 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     }
 
     getBooleanInput(): JSX.Element {
+        const handleClick = (value: boolean) => {
+            this.setState({ tempAnswer: value.toString() })
+            this.answerQuestion();
+        }
         return (
             <Grid spacing={2}>
-                <Button variant="contained" sx={{minWidth: 150}}>Ja</Button>
-                <Button variant="contained" sx={{minWidth: 150}}>Nej</Button>
+                <Button variant="contained" sx={{minWidth: 150}} onClick={() => handleClick(true)}>Ja</Button>
+                <Button variant="contained" sx={{minWidth: 150}} onClick={() => handleClick(false)}>Nej</Button>
             </Grid>
         );
         return (
@@ -193,7 +207,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             <TextFieldValidation
                 id="questionInput"
                 onValidation={(uid, errors) => this.onValidation(uid, errors)}
-                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr,this.props.thresholds)}
+                validate={(value) => this.validationService.ValidateQuestionInput(value, this.props.thresholds)}
                 required={true}
                 label="Svar"
                 type="number"
