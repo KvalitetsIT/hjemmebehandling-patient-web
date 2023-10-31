@@ -31,14 +31,8 @@ export default class ContactPage extends Component<{}, State> {
         //TODO : Get department info from some place
         this.setState({ loading: true })
 
-        let departments: Department[] = [];
-        const careplans = await this.careplanService.GetActiveCareplans();
-
-        for (const careplan of careplans) {
-            const department = await this.organizationService.getOrganizationDetails(careplan.organization!.id!);
-            departments.push(department);
-        }
-
+        let departments: Department[] = await this.organizationService.getOrganizations();
+        
         this.setState({ departments: departments })
         this.setState({ loading: false })
     }

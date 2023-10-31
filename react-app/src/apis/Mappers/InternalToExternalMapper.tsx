@@ -12,6 +12,7 @@ import { AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, 
 import FhirUtils, { Qualifier } from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
+import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
 
 
 /**
@@ -195,11 +196,17 @@ export default class InternalToExternalMapper extends BaseMapper {
         const contactDetails: ContactDetailsDto = {}
 
         if (patient.contact) {
-            contactDetails.street = patient.contact.address?.street
-            contactDetails.postalCode = patient.contact?.address?.zipCode
-            contactDetails.city = patient.contact?.address?.city
-            contactDetails.primaryPhone = patient.contact?.primaryPhone
-            contactDetails.secondaryPhone = patient.contact?.secondaryPhone
+
+            contactDetails.address = {
+                street: patient.contact.address?.street,
+                postalCode: patient.contact?.address?.zipCode,
+                city: patient.contact?.address?.city
+            }
+
+            contactDetails.phone = {
+                primary: patient.contact?.primaryPhone,
+                secondary: patient.contact?.secondaryPhone
+            }
         }
 
         return {
@@ -218,15 +225,19 @@ export default class InternalToExternalMapper extends BaseMapper {
         }
     }
 
-    mapContactDetails(details: ContactDetails) : ContactDetailsDto {
+    mapContactDetails(details: ContactDetails): ContactDetailsDto {
 
-        const dto : ContactDetailsDto = {
-            secondaryPhone: details.secondaryPhone,
-            primaryPhone: details.primaryPhone,
-            street: details.address?.street,
-            country: details.address?.country,
-            city: details.address?.city,
-            postalCode: details.address?.zipCode
+        const dto: ContactDetailsDto = {
+            phone: {
+                primary: details.primaryPhone,
+                secondary: details.secondaryPhone,
+            },
+            address: {
+                street: details.address?.street,
+                country: details.address?.country,
+                city: details.address?.city,
+                postalCode: details.address?.zipCode
+            }
         }
 
         return dto

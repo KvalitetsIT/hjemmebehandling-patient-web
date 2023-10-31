@@ -15,7 +15,7 @@ import SimpleDepartment from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganiz
 import { Task } from "@kvalitetsit/hjemmebehandling/Models/Task";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { User } from "@kvalitetsit/hjemmebehandling/Models/User";
-import { AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, PrimaryContactDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AddressDto, AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, PrimaryContactDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
@@ -72,14 +72,10 @@ export default class ExternalToInternalMapper extends BaseMapper {
         organization.id = response.id
         organization.name = response.name
 
-        const address = new Address()
-        address.street = response.street
-        address.zipCode = response.postalCode
-        address.city = response.city
-        address.country = response.country
-        organization.address = address
+        
+        organization.address = response.contactDetails?.address && this.mapAddressDto(response.contactDetails?.address)
 
-        organization.phoneNumber = response.phone
+        organization.phoneNumber = response.contactDetails?.phone?.primary
 
         organization.phoneHours = response?.phoneHours?.map(ph => this.mapPhoneHourDto(ph)) ?? [] //response.phoneHours.map(ph)
 
@@ -361,12 +357,12 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
     mapPersonContactFromExternalToInternal(externalPersonContact: ContactDetailsDto | undefined): PersonContact {
         const internalPersonContact = new PersonContact();
-        internalPersonContact.city = externalPersonContact?.city;
-        internalPersonContact.country = externalPersonContact?.country;
-        internalPersonContact.postalCode = externalPersonContact?.postalCode;
-        internalPersonContact.primaryPhone = externalPersonContact?.primaryPhone;
-        internalPersonContact.secondaryPhone = externalPersonContact?.secondaryPhone;
-        internalPersonContact.street = externalPersonContact?.street;
+        internalPersonContact.city = externalPersonContact?.address?.city;
+        internalPersonContact.country = externalPersonContact?.address?.country;
+        internalPersonContact.postalCode = externalPersonContact?.address?.postalCode;
+        internalPersonContact.street = externalPersonContact?.address?.street;
+        internalPersonContact.primaryPhone = externalPersonContact?.phone?.primary;
+        internalPersonContact.secondaryPhone = externalPersonContact?.phone?.secondary;
 
         return internalPersonContact;
     }
@@ -484,16 +480,10 @@ export default class ExternalToInternalMapper extends BaseMapper {
     mapContactDetailsDto(dto: ContactDetailsDto): ContactDetails {
         const model = new ContactDetails();
 
-        const address = new Address()
-        address.city = dto.city
-        address.country = dto.country
-        address.street = dto.street
-        address.zipCode = dto.postalCode
-
-        model.address = this.mapAddressDto(dto)
+        model.address = dto.address && this.mapAddressDto(dto.address)
         
-        model.primaryPhone  = dto?.primaryPhone
-        model.secondaryPhone = dto?.secondaryPhone
+        model.primaryPhone  = dto.phone?.primary
+        model.secondaryPhone = dto.phone?.secondary
 
         return model
     }
@@ -507,15 +497,15 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
             const contactDetails = new ContactDetails();
             
-            contactDetails.primaryPhone =  contact.contactDetails?.primaryPhone ?? ''
-            contactDetails.secondaryPhone = contact.contactDetails?.secondaryPhone ?? ''
+            contactDetails.primaryPhone =  contact.contactDetails?.phone?.primary ?? ''
+            contactDetails.secondaryPhone = contact.contactDetails?.phone?.secondary ?? ''
             //if (contact.contactDetails) primaryContact.contact = this.mapContactDetailsDto(contact.contactDetails)
 
             return primaryContact
         })
     }
 
-    mapAddressDto(dto: ContactDetailsDto): Address {
+    mapAddressDto(dto: AddressDto): Address {
         const model = new Address();
 
         model.city = dto.city
