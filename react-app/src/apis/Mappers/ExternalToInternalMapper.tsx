@@ -468,7 +468,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         model.firstname = dto.givenName;
         model.lastname = dto.familyName;
         model.cpr = dto.cpr;
-        model.contact = dto.patientContactDetails ? this.mapContactDetailsDto(dto.patientContactDetails) : undefined 
+        model.contact = dto.contactsDetails ? this.mapContactDetailsDto(dto.contactsDetails) : undefined 
         const primaryContacts = dto.primaryContacts ? this.mapPrimaryContactDtos(dto.primaryContacts) : []        
         model.primaryContacts = primaryContacts
         model.username = dto.customUserName
