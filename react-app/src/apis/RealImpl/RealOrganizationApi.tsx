@@ -22,7 +22,7 @@ export default class RealOrganizationApi extends BaseApi implements IOrganizatio
     async getOrganizations(): Promise<DetailedOrganization[]> {
         try {  
             const response = await this.organizationApi.getOrganizations();
-            return response.map(organization => this.toInternal.mapOrganization(organization))
+            return response.map(organization => this.toInternal.mapOrganizationDto(organization))
         } catch (error) {
             return await this.HandleError(error);
         }
@@ -38,7 +38,7 @@ export default class RealOrganizationApi extends BaseApi implements IOrganizatio
                 id: plainId
             }
             const response = await this.organizationApi.getOrganization(request);
-            return this.toInternal.mapOrganization(response)
+            return this.toInternal.mapOrganizationDto(response)
         } catch (error) {
             return await this.HandleError(error);
         }

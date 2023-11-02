@@ -30,7 +30,7 @@ import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryCont
  * This class maps from the external models (used in bff-api) to the internal models (used in frontend)
  */
 export default class ExternalToInternalMapper extends BaseMapper {
-    
+
     mapMeasurementType(measurementType: MeasurementTypeDto): MeasurementType {
 
         const toReturn = new MeasurementType();
@@ -44,7 +44,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return toReturn;
     }
 
-    mapThresholdNumber(thresholdDto : ThresholdDto): ThresholdNumber {
+    mapThresholdNumber(thresholdDto: ThresholdDto): ThresholdNumber {
         const number = new ThresholdNumber();
         number.from = thresholdDto.valueQuantityLow;
         number.to = thresholdDto.valueQuantityHigh;
@@ -66,18 +66,19 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
     }
 
-    mapOrganization(response: OrganizationDto): DetailedOrganization {
+    mapOrganizationDto(response: OrganizationDto): DetailedOrganization {
         const organization = new DetailedOrganization()
 
         organization.id = response.id
         organization.name = response.name
 
-        
         organization.address = response.contactDetails?.address && this.mapAddressDto(response.contactDetails?.address)
 
         organization.phoneNumber = response.contactDetails?.phone?.primary
 
         organization.phoneHours = response?.phoneHours?.map(ph => this.mapPhoneHourDto(ph)) ?? [] //response.phoneHours.map(ph)
+
+        organization.html = response.blob
 
         return organization
     }
@@ -164,7 +165,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
 
         for (const thresholdDto of thresholdDtos) {
-            let threshold = thresholds.find(x => x.questionId===thresholdDto.questionId);
+            let threshold = thresholds.find(x => x.questionId === thresholdDto.questionId);
             if (threshold === undefined) {
                 threshold = new ThresholdCollection();
                 threshold.questionId = thresholdDto.questionId!;
@@ -210,7 +211,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.helperText = questionDto.helperText;
         question.abbreviation = questionDto.abbreviation
 
-        if (questionDto.enableWhens!==undefined) {
+        if (questionDto.enableWhens !== undefined) {
             question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])
         }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {
@@ -219,7 +220,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Choice) {
             question.options = questionDto.options
         }
-        if (questionDto.measurementType!==undefined) {
+        if (questionDto.measurementType !== undefined) {
             question.measurementType = this.mapMeasurementType(questionDto.measurementType);
         }
 
@@ -324,7 +325,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         const internalUser = new User();
         //internalUser.autorisationsids = user.autorisationsids;
         //internalUser.email = user.email;
-        internalUser.entitlements = user.entitlements?.map(e => this.mapSingleEntitlement(e)).filter(e => e!==undefined);
+        internalUser.entitlements = user.entitlements?.map(e => this.mapSingleEntitlement(e)).filter(e => e !== undefined);
         internalUser.firstName = user.firstName;
         internalUser.fullName = user.fullName;
         internalUser.lastName = user.lastName;
@@ -432,15 +433,14 @@ export default class ExternalToInternalMapper extends BaseMapper {
         } else {
             response.category = CategoryEnum.BLUE;
         }
-        response.patient = this.mapPatientDto(questionnaireResponseDto.patient!);
+        if( questionnaireResponseDto.patient == undefined) throw new Error("Missing patient")
+        response.patient = this.mapPatientDto(questionnaireResponseDto.patient);
         response.questionnaireId = FhirUtils.unqualifyId(questionnaireResponseDto.questionnaireId!)
 
         return response;
     }
     mapFrequencyDto(frequencyDto: FrequencyDto): Frequency {
-
         const frequency = new Frequency();
-
         frequency.repeated = FrequencyEnum.WEEKLY
         frequency.days = this.mapWeekdayDto(frequencyDto.weekdays!)
         frequency.deadline = frequencyDto.timeOfDay!
@@ -450,27 +450,26 @@ export default class ExternalToInternalMapper extends BaseMapper {
     }
 
     mapQuestionnaireDto(wrapper: QuestionnaireWrapperDto): Questionnaire {
-
         const questionnaire = new Questionnaire()
-
-        questionnaire.id = FhirUtils.unqualifyId(wrapper.questionnaire!.id!)
-        questionnaire.name = wrapper.questionnaire!.title!
-        questionnaire.frequency = this.mapFrequencyDto(wrapper.frequency!)
-        questionnaire.thresholds = this.mapThresholdDtos(wrapper.thresholds!)
-        questionnaire.questions = wrapper.questionnaire!.questions!.map(q => this.mapQuestionDto(q))
+        if( wrapper.questionnaire?.id == undefined ) throw new Error("Expected an id, but got 'undefind'")
+        questionnaire.id = wrapper.questionnaire?.id && FhirUtils.unqualifyId(wrapper.questionnaire.id)
+        questionnaire.name = wrapper.questionnaire?.title
+        questionnaire.frequency = wrapper.frequency && this.mapFrequencyDto(wrapper.frequency)
+        questionnaire.thresholds = wrapper.thresholds && this.mapThresholdDtos(wrapper.thresholds)
+        questionnaire.questions = wrapper.questionnaire?.questions && wrapper.questionnaire.questions.map(q => this.mapQuestionDto(q))
 
         return questionnaire
     }
 
     mapPatientDto(dto: PatientDto): PatientDetail {
-        
+
         const model = new PatientDetail();
         model.firstname = dto.givenName;
         model.lastname = dto.familyName;
         model.cpr = dto.cpr;
-        model.contact = dto.contactsDetails ? this.mapContactDetailsDto(dto.contactsDetails) : undefined 
-        const primaryContacts = dto.primaryContacts ? this.mapPrimaryContactDtos(dto.primaryContacts) : []        
-        model.primaryContacts = primaryContacts
+        model.contact = dto.contactsDetails ? this.mapContactDetailsDto(dto.contactsDetails) : undefined
+        const primaryContacts = dto.primaryContacts ? this.mapPrimaryContactDtos(dto.primaryContacts) : []
+        model.primaryContact = primaryContacts
         model.username = dto.customUserName
 
         return model;
@@ -479,35 +478,32 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
     mapContactDetailsDto(dto: ContactDetailsDto): ContactDetails {
         const model = new ContactDetails();
-
         model.address = dto.address && this.mapAddressDto(dto.address)
-        
-        model.primaryPhone  = dto.phone?.primary
+        model.primaryPhone = dto.phone?.primary
         model.secondaryPhone = dto.phone?.secondary
-
+        console.log("DTO: " , dto)
+        console.log("model: " , model)
+        
         return model
     }
 
 
-    mapPrimaryContactDtos(dtos: PrimaryContactDto[]): PrimaryContact[] {
-        return dtos.map(contact => {
-            const primaryContact = new PrimaryContact() 
-            primaryContact.fullname = contact.name ?? ''
-            primaryContact.affiliation = contact.affiliation ?? ''
-
-            const contactDetails = new ContactDetails();
-            
-            contactDetails.primaryPhone =  contact.contactDetails?.phone?.primary ?? ''
-            contactDetails.secondaryPhone = contact.contactDetails?.phone?.secondary ?? ''
-            //if (contact.contactDetails) primaryContact.contact = this.mapContactDetailsDto(contact.contactDetails)
-
-            return primaryContact
-        })
+    mapPrimaryContactDtos(contacts: PrimaryContactDto[]): PrimaryContact[] {
+        return contacts.map(contact => this.mapPrimaryContactDto(contact))
     }
 
-    mapAddressDto(dto: AddressDto): Address {
-        const model = new Address();
 
+    mapPrimaryContactDto(contact: PrimaryContactDto): PrimaryContact {
+        const primaryContact = new PrimaryContact()
+        primaryContact.fullname = contact.name ?? ''
+        primaryContact.affiliation = contact.affiliation ?? ''
+        primaryContact.contact = contact.contactDetails &&  this.mapContactDetailsDto(contact.contactDetails)
+        primaryContact.organisation = contact.organization
+        return primaryContact
+    }
+
+    mapAddressDto(dto: AddressDto ): Address {
+        const model = new Address();
         model.city = dto.city
         model.country = dto.country
         model.street = dto.street
@@ -515,6 +511,4 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
         return model;
     }
-
-  
 }

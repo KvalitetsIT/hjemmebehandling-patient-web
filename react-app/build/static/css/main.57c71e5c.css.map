@@ -1,1 +1,0 @@
-{"version":3,"file":"static/css/main.57c71e5c.css","mappings":"AAAA,EACE,aAAc,CACd,oBACF,CAEA,EACE,qBACF,CAEA,uBACE,mBACF","sources":["styles/globals.css"],"sourcesContent":["a {\n  color: inherit;\n  text-decoration: none;\n}\n\n* {\n  box-sizing: border-box;\n}\n\n.call-hospital-wrapper {\n  justify-content: end;\n}\n"],"names":[],"sourceRoot":""}

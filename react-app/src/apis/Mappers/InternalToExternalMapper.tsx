@@ -214,7 +214,7 @@ export default class InternalToExternalMapper extends BaseMapper {
             familyName: patient.lastname,
             cpr: patient.cpr,
             contactsDetails: contactDetails,
-            primaryContacts: patient.primaryContacts?.map(contact => this.mapPrimaryContact(contact)) ?? []
+            primaryContacts: (patient.primaryContact as PrimaryContact[]).map(contact => this.mapPrimaryContact(contact)) ?? []
         }
     }
     mapPrimaryContact(contact: PrimaryContact): PrimaryContactDto {
