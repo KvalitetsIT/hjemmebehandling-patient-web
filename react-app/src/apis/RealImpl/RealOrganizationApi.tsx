@@ -19,6 +19,16 @@ export default class RealOrganizationApi extends BaseApi implements IOrganizatio
         this.toExternal = new InternalToExternalMapper();
         this.organizationApi = new OrganizationApi(this.conf);
     }
+    async getOrganizations(): Promise<DetailedOrganization[]> {
+        try {  
+            const response = await this.organizationApi.getOrganizations();
+            return response.map(organization => this.toInternal.mapOrganizationDto(organization))
+        } catch (error) {
+            return await this.HandleError(error);
+        }
+
+
+    }
 
     async getOrganizationDetails(orgId: string): Promise<DetailedOrganization> {
         try {
@@ -28,7 +38,7 @@ export default class RealOrganizationApi extends BaseApi implements IOrganizatio
                 id: plainId
             }
             const response = await this.organizationApi.getOrganization(request);
-            return this.toInternal.mapOrganization(response)
+            return this.toInternal.mapOrganizationDto(response)
         } catch (error) {
             return await this.HandleError(error);
         }

@@ -20,8 +20,12 @@ import OrganizationService from '../services/OrganizationService';
 import FakeOrganizationApi from '../apis/FakeImpl/FakeOrganizationApi';
 import IValueSetService from '../services/interfaces/IValueSetService';
 import ValueSetService from '../services/ValueSetService';
+import PatientService from '../services/PatientService';
+import FakePatientApi from '../apis/FakeImpl/FakePatientApi';
+import IPatientService from '../services/interfaces/IPatientService';
 
 export interface IApiContext {
+    patientService: IPatientService;
     questionnaireResponseService : IQuestionnaireResponseService,
     careplanService : ICareplanService,
     valueSetService : IValueSetService,
@@ -33,6 +37,7 @@ export interface IApiContext {
 
 const ApiContext = createContext<IApiContext>(
     {
+        patientService : new PatientService(new FakePatientApi()),
         questionnaireResponseService : new QuestionnaireResponseService(new FakeQuestionnaireResponseApi(),new DanishDateHelper()),
         careplanService : new CareplanService(new FakeCareplanApi()),
         valueSetService : new ValueSetService(new FakeCareplanApi()),

@@ -2,7 +2,7 @@
 import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
 import { Answer, NumberAnswer, StringAnswer, BooleanAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
-import { Contact } from "@kvalitetsit/hjemmebehandling/Models/Contact";
+import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import DetailedOrganization, { PhoneHour } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
 import { DayEnum, Frequency, FrequencyEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
@@ -15,7 +15,7 @@ import SimpleDepartment from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganiz
 import { Task } from "@kvalitetsit/hjemmebehandling/Models/Task";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { User } from "@kvalitetsit/hjemmebehandling/Models/User";
-import { AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AddressDto, AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, PrimaryContactDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
@@ -23,13 +23,14 @@ import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
 import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
 import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
 import { ThresholdNumber } from "@kvalitetsit/hjemmebehandling/Models/ThresholdNumber";
+import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
 
 
 /**
  * This class maps from the external models (used in bff-api) to the internal models (used in frontend)
  */
 export default class ExternalToInternalMapper extends BaseMapper {
-    
+
     mapMeasurementType(measurementType: MeasurementTypeDto): MeasurementType {
 
         const toReturn = new MeasurementType();
@@ -43,7 +44,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return toReturn;
     }
 
-    mapThresholdNumber(thresholdDto : ThresholdDto): ThresholdNumber {
+    mapThresholdNumber(thresholdDto: ThresholdDto): ThresholdNumber {
         const number = new ThresholdNumber();
         number.from = thresholdDto.valueQuantityLow;
         number.to = thresholdDto.valueQuantityHigh;
@@ -65,22 +66,19 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
     }
 
-    mapOrganization(response: OrganizationDto): DetailedOrganization {
+    mapOrganizationDto(response: OrganizationDto): DetailedOrganization {
         const organization = new DetailedOrganization()
 
         organization.id = response.id
         organization.name = response.name
 
-        const address = new Address()
-        address.street = response.street
-        address.zipCode = response.postalCode
-        address.city = response.city
-        address.country = response.country
-        organization.address = address
+        organization.address = response.contactDetails?.address && this.mapAddressDto(response.contactDetails?.address)
 
-        organization.phoneNumber = response.phone
+        organization.phoneNumber = response.contactDetails?.phone?.primary
 
         organization.phoneHours = response?.phoneHours?.map(ph => this.mapPhoneHourDto(ph)) ?? [] //response.phoneHours.map(ph)
+
+        organization.html = response.blob
 
         return organization
     }
@@ -167,7 +165,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
 
         for (const thresholdDto of thresholdDtos) {
-            let threshold = thresholds.find(x => x.questionId===thresholdDto.questionId);
+            let threshold = thresholds.find(x => x.questionId === thresholdDto.questionId);
             if (threshold === undefined) {
                 threshold = new ThresholdCollection();
                 threshold.questionId = thresholdDto.questionId!;
@@ -213,7 +211,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.helperText = questionDto.helperText;
         question.abbreviation = questionDto.abbreviation
 
-        if (questionDto.enableWhens!==undefined) {
+        if (questionDto.enableWhens !== undefined) {
             question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])
         }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {
@@ -222,7 +220,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Choice) {
             question.options = questionDto.options
         }
-        if (questionDto.measurementType!==undefined) {
+        if (questionDto.measurementType !== undefined) {
             question.measurementType = this.mapMeasurementType(questionDto.measurementType);
         }
 
@@ -327,7 +325,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         const internalUser = new User();
         //internalUser.autorisationsids = user.autorisationsids;
         //internalUser.email = user.email;
-        internalUser.entitlements = user.entitlements?.map(e => this.mapSingleEntitlement(e)).filter(e => e!==undefined);
+        internalUser.entitlements = user.entitlements?.map(e => this.mapSingleEntitlement(e)).filter(e => e !== undefined);
         internalUser.firstName = user.firstName;
         internalUser.fullName = user.fullName;
         internalUser.lastName = user.lastName;
@@ -360,12 +358,12 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
     mapPersonContactFromExternalToInternal(externalPersonContact: ContactDetailsDto | undefined): PersonContact {
         const internalPersonContact = new PersonContact();
-        internalPersonContact.city = externalPersonContact?.city;
-        internalPersonContact.country = externalPersonContact?.country;
-        internalPersonContact.postalCode = externalPersonContact?.postalCode;
-        internalPersonContact.primaryPhone = externalPersonContact?.primaryPhone;
-        internalPersonContact.secondaryPhone = externalPersonContact?.secondaryPhone;
-        internalPersonContact.street = externalPersonContact?.street;
+        internalPersonContact.city = externalPersonContact?.address?.city;
+        internalPersonContact.country = externalPersonContact?.address?.country;
+        internalPersonContact.postalCode = externalPersonContact?.address?.postalCode;
+        internalPersonContact.street = externalPersonContact?.address?.street;
+        internalPersonContact.primaryPhone = externalPersonContact?.phone?.primary;
+        internalPersonContact.secondaryPhone = externalPersonContact?.phone?.secondary;
 
         return internalPersonContact;
     }
@@ -435,15 +433,14 @@ export default class ExternalToInternalMapper extends BaseMapper {
         } else {
             response.category = CategoryEnum.BLUE;
         }
-        response.patient = this.mapPatientDto(questionnaireResponseDto.patient!);
+        if( questionnaireResponseDto.patient == undefined) throw new Error("Missing patient")
+        response.patient = this.mapPatientDto(questionnaireResponseDto.patient);
         response.questionnaireId = FhirUtils.unqualifyId(questionnaireResponseDto.questionnaireId!)
 
         return response;
     }
     mapFrequencyDto(frequencyDto: FrequencyDto): Frequency {
-
         const frequency = new Frequency();
-
         frequency.repeated = FrequencyEnum.WEEKLY
         frequency.days = this.mapWeekdayDto(frequencyDto.weekdays!)
         frequency.deadline = frequencyDto.timeOfDay!
@@ -453,76 +450,65 @@ export default class ExternalToInternalMapper extends BaseMapper {
     }
 
     mapQuestionnaireDto(wrapper: QuestionnaireWrapperDto): Questionnaire {
-
         const questionnaire = new Questionnaire()
-
-        questionnaire.id = FhirUtils.unqualifyId(wrapper.questionnaire!.id!)
-        questionnaire.name = wrapper.questionnaire!.title!
-        questionnaire.frequency = this.mapFrequencyDto(wrapper.frequency!)
-        questionnaire.thresholds = this.mapThresholdDtos(wrapper.thresholds!)
-        questionnaire.questions = wrapper.questionnaire!.questions!.map(q => this.mapQuestionDto(q))
+        if( wrapper.questionnaire?.id == undefined ) throw new Error("Expected an id, but got 'undefind'")
+        questionnaire.id = wrapper.questionnaire?.id && FhirUtils.unqualifyId(wrapper.questionnaire.id)
+        questionnaire.name = wrapper.questionnaire?.title
+        questionnaire.frequency = wrapper.frequency && this.mapFrequencyDto(wrapper.frequency)
+        questionnaire.thresholds = wrapper.thresholds && this.mapThresholdDtos(wrapper.thresholds)
+        questionnaire.questions = wrapper.questionnaire?.questions && wrapper.questionnaire.questions.map(q => this.mapQuestionDto(q))
 
         return questionnaire
     }
 
-    mapContactDetailsDto(patientDto: PatientDto): Contact {
+    mapPatientDto(dto: PatientDto): PatientDetail {
 
-        const contact = new Contact();
-        contact.primaryPhone = patientDto.patientContactDetails?.primaryPhone;
-        contact.secondaryPhone = patientDto.patientContactDetails?.primaryPhone;
+        const model = new PatientDetail();
+        model.firstname = dto.givenName;
+        model.lastname = dto.familyName;
+        model.cpr = dto.cpr;
+        model.contact = dto.contactsDetails ? this.mapContactDetailsDto(dto.contactsDetails) : undefined
+        const primaryContacts = dto.primaryContacts ? this.mapPrimaryContactDtos(dto.primaryContacts) : []
+        model.primaryContact = primaryContacts
+        model.username = dto.customUserName
 
-        return contact;
+        return model;
     }
 
 
-    mapPatientDto(patientDto: PatientDto): PatientDetail {
-        let address: Address = {}
-        if (patientDto.patientContactDetails) {
-            address = this.mapAddress(patientDto.patientContactDetails)
-        }
-
-        const contactDetails = this.mapContactDetails(patientDto)
-
-        const toReturn = new PatientDetail();
-        toReturn.firstname = patientDto.givenName;
-        toReturn.lastname = patientDto.familyName;
-        toReturn.cpr = patientDto.cpr;
-        toReturn.primaryPhone = patientDto.patientContactDetails?.primaryPhone
-        toReturn.secondaryPhone = patientDto.patientContactDetails?.secondaryPhone
-        toReturn.address = address
-        toReturn.contact = contactDetails
-        //toReturn.username = patientDto.customUserName
-        return toReturn;
+    mapContactDetailsDto(dto: ContactDetailsDto): ContactDetails {
+        const model = new ContactDetails();
+        model.address = dto.address && this.mapAddressDto(dto.address)
+        model.primaryPhone = dto.phone?.primary
+        model.secondaryPhone = dto.phone?.secondary
+        console.log("DTO: " , dto)
+        console.log("model: " , model)
+        
+        return model
     }
 
-    mapContactDetails(patientDto: PatientDto): Contact {
-        const toReturn = new Contact();
 
-        toReturn.fullname = patientDto?.primaryRelativeName ?? ''
-        toReturn.affiliation = patientDto?.primaryRelativeAffiliation ?? ''
-        toReturn.primaryPhone = patientDto?.primaryRelativeContactDetails?.primaryPhone ?? ''
-        toReturn.secondaryPhone = patientDto?.primaryRelativeContactDetails?.secondaryPhone ?? ''
-        return toReturn;
-
+    mapPrimaryContactDtos(contacts: PrimaryContactDto[]): PrimaryContact[] {
+        return contacts.map(contact => this.mapPrimaryContactDto(contact))
     }
 
-    mapAddress(contactDetails: ContactDetailsDto): Address {
-        const address = new Address();
 
-        address.city = contactDetails?.city;
-        address.country = contactDetails?.country;
-        address.zipCode = contactDetails?.postalCode;
-        address.street = contactDetails?.street;
-
-        return address;
+    mapPrimaryContactDto(contact: PrimaryContactDto): PrimaryContact {
+        const primaryContact = new PrimaryContact()
+        primaryContact.fullname = contact.name ?? ''
+        primaryContact.affiliation = contact.affiliation ?? ''
+        primaryContact.contact = contact.contactDetails &&  this.mapContactDetailsDto(contact.contactDetails)
+        primaryContact.organisation = contact.organization
+        return primaryContact
     }
 
-    mapPatientContactDetails(patientContactDetails: ContactDetailsDto | undefined): Address {
-        const address = new Address();
-        address.city = patientContactDetails?.city;
-        address.country = patientContactDetails?.country;
-        address.zipCode = patientContactDetails?.postalCode;
-        address.street = patientContactDetails?.street;
-        return address;
+    mapAddressDto(dto: AddressDto ): Address {
+        const model = new Address();
+        model.city = dto.city
+        model.country = dto.country
+        model.street = dto.street
+        model.zipCode = dto.postalCode
+
+        return model;
     }
 }

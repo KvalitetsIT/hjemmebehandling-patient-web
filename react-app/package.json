@@ -7,7 +7,7 @@
     "@casl/ability": "^6.5.0",
     "@emotion/react": "^11.10.1",
     "@emotion/styled": "^11.10.0",
-    "@kvalitetsit/hjemmebehandling": "1.4.111",
+    "@kvalitetsit/hjemmebehandling": "1.4.123",
     "@mockoon/cli": "^2.1.0",
     "@mui/base": "5.0.0-beta.1",
     "@mui/icons-material": "^5.13.7",
@@ -20,6 +20,7 @@
     "chartjs-plugin-annotation": "^3.0.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.7",
+    "dompurify": "^3.0.6",
     "formik": "^2.2.9",
     "http-status-codes": "^2.2.0",
     "i18next": "^21.8.9",
@@ -39,17 +40,18 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "typescript": "^4.9.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/dompurify": "^3.0.4",
     "@types/jest": "^29.5.5",
     "@types/node": "^20.6.2",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
     "@types/react-router-dom": "^5.3.3",
-    "@types/uuid": "^8.3.4"
+    "@types/uuid": "^8.3.4",
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "stopapi": "mockoon-cli stop",

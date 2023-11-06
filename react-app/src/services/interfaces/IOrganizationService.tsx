@@ -7,6 +7,13 @@ import Department from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganizatio
  * - should only use domain-models from @kvalitetsit/hjemmebehandling/Models
  */
 export default interface IOrganizationService {
+    
+    /**
+     * Get all organizations associated with the current context
+     * @returns the requested organisations
+     */
+    
+    getOrganizations(): Promise<Department[]>;
     /**
      * Get organization based on id
      * @param orgId the id of the organization

@@ -10,6 +10,14 @@ export default class OrganizationService extends BaseService implements IOrganiz
         super()
         this.api = api;
     }
+    async getOrganizations(): Promise<Department[]> {
+        try{
+            return await this.api.getOrganizations();
+        }catch(error){
+            return await this.HandleError(error);
+        }
+    }
+
     async getOrganizationDetails(orgId: string) : Promise<Department>{
         try{
 

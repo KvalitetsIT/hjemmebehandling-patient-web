@@ -1,6 +1,6 @@
 import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
-import { Contact } from "@kvalitetsit/hjemmebehandling/Models/Contact";
+import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import { DayEnum, Frequency } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
 import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
@@ -8,9 +8,11 @@ import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinit
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import { AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
+import { AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, PrimaryContactDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
 import FhirUtils, { Qualifier } from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
+import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
+import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
 
 
 /**
@@ -165,14 +167,6 @@ export default class InternalToExternalMapper extends BaseMapper {
 
     }
 
-    mapContactDetails(contactDetails: Contact): ContactDetailsDto {
-
-        return {
-            primaryPhone: contactDetails.primaryPhone,
-            secondaryPhone: contactDetails.secondaryPhone,
-        }
-
-    }
 
     mapQuestionnaire(questionnaire: Questionnaire): QuestionnaireWrapperDto {
 
@@ -197,18 +191,21 @@ export default class InternalToExternalMapper extends BaseMapper {
     }
 
     mapPatient(patient: PatientDetail): PatientDto {
-        const contactDetails: ContactDetailsDto = {}
-        contactDetails.street = patient.address?.street
-        contactDetails.postalCode = patient.address?.zipCode
-        contactDetails.city = patient.address?.city
-        contactDetails.primaryPhone = patient.primaryPhone
-        contactDetails.secondaryPhone = patient.secondaryPhone
 
-        let primaryRelativeContactDetails: ContactDetailsDto = {}
+
+        const contactDetails: ContactDetailsDto = {}
+
         if (patient.contact) {
-            primaryRelativeContactDetails = {
-                primaryPhone: patient?.contact.primaryPhone,
-                secondaryPhone: patient?.contact.secondaryPhone
+
+            contactDetails.address = {
+                street: patient.contact.address?.street,
+                postalCode: patient.contact?.address?.zipCode,
+                city: patient.contact?.address?.city
+            }
+
+            contactDetails.phone = {
+                primary: patient.contact?.primaryPhone,
+                secondary: patient.contact?.secondaryPhone
             }
         }
 
@@ -216,10 +213,34 @@ export default class InternalToExternalMapper extends BaseMapper {
             givenName: patient.firstname,
             familyName: patient.lastname,
             cpr: patient.cpr,
-            patientContactDetails: contactDetails,
-            //primaryRelativeName: patient ? patient?.contact.fullname : "",
-            //primaryRelativeAffiliation: patient?.contact.affiliation,
-            primaryRelativeContactDetails: primaryRelativeContactDetails
+            contactsDetails: contactDetails,
+            primaryContacts: (patient.primaryContact as PrimaryContact[]).map(contact => this.mapPrimaryContact(contact)) ?? []
         }
     }
+    mapPrimaryContact(contact: PrimaryContact): PrimaryContactDto {
+        return {
+            affiliation: contact.affiliation,
+            name: contact.fullname,
+            contactDetails: contact.contact ? this.mapContactDetails(contact.contact) : undefined
+        }
+    }
+
+    mapContactDetails(details: ContactDetails): ContactDetailsDto {
+
+        const dto: ContactDetailsDto = {
+            phone: {
+                primary: details.primaryPhone,
+                secondary: details.secondaryPhone,
+            },
+            address: {
+                street: details.address?.street,
+                country: details.address?.country,
+                city: details.address?.city,
+                postalCode: details.address?.zipCode
+            }
+        }
+
+        return dto
+    }
+
 }
