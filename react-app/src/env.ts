@@ -1,4 +1,5 @@
-interface Env {    
+interface Env {
+    REACT_APP_MOCK_PATIENT_SERVICE: string    
     REACT_APP_BFF_BASE_URL: string
     REACT_APP_NODE_ENV : string
 
