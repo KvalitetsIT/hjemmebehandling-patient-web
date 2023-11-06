@@ -169,7 +169,7 @@ export class ObservationCard extends Component<Props, State> {
                         }
                     }
                     
-                    const dateToString = (date: Date) => this.dateHelper.DateToString(date);
+                    const dateToString = (date: Date) => this.dateHelper.DateToString(date, { showDate: true, showTime: true, showMonth: true, showYear: false });
                     const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
                     
                     const subheader = question.abbreviation ?? question.question ?? "";
