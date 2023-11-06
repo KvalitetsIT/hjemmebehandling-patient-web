@@ -30,6 +30,11 @@ import RealValueSetApi from '../apis/RealImpl/RealValueSetApi';
 import IValueSetApi from '../apis/interfaces/IValueSetApi';
 
 import getEnvironment from '../env';
+import PatientService from '../services/PatientService';
+import { PatientApi } from '../generated';
+import IPatientApi from '../apis/interfaces/iPatientApi';
+import RealPatientApi from '../apis/RealImpl/RealPatientApi';
+import FakePatientApi from '../apis/FakeImpl/FakePatientApi';
 
 function MyApp(): JSX.Element {
 
@@ -38,8 +43,9 @@ function MyApp(): JSX.Element {
   let careplanApi: ICareplanApi = new RealCareplanApi();
   let valueSetApi: IValueSetApi = new RealValueSetApi();
   let organizationApi: IOrganizationApi = new RealOrganizationApi();
+  let patientApi: IPatientApi = new RealPatientApi();
 
-  
+
   if (getEnvironment().REACT_APP_NODE_ENV === 'development') {
     if (getEnvironment().REACT_APP_MOCK_QUESTIONNAIRE_RESPONSE_SERVICE === "true") {
       questionnaireResponseApi = new FakeQuestionnaireResponseApi();
@@ -53,6 +59,10 @@ function MyApp(): JSX.Element {
     if (getEnvironment().REACT_APP_MOCK_ORGANIZATION_SERVICE === "true") {
       organizationApi = new FakeOrganizationApi();
     }
+    if (getEnvironment().REACT_APP_MOCK_PATIENT_SERVICE === "true") {
+      patientApi = new FakePatientApi();
+    }
+
   }
 
   const dateHelper = new DanishDateHelper();
@@ -69,6 +79,7 @@ function MyApp(): JSX.Element {
               careplanService: new CareplanService(careplanApi),
               valueSetService: new ValueSetService(valueSetApi),
               organizationService: new OrganizationService(organizationApi),
+              patientService: new PatientService(patientApi),
 
               //Helpers
               validationService: new ValidationService(),
@@ -78,7 +89,6 @@ function MyApp(): JSX.Element {
           >
             <CssBaseline />
             {typeof window === 'undefined' ? null :
-
               <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)" showReloadButton={true}>
                 <Layout />
               </ErrorBoundary>

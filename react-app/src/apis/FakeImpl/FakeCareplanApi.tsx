@@ -91,7 +91,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         primaryContact.affiliation = "Kone"
         primaryContact.fullname = "Gitte Madsen"
         if (primaryContact.contact) primaryContact.contact.primaryPhone = "+4530405060"
-        patient.primaryContacts = [primaryContact];
+        patient.primaryContact = [primaryContact];
         careplan.patient = patient;
 
         const questionnaire = new Questionnaire();
@@ -228,7 +228,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         primaryContact.affiliation = "Kone"
         primaryContact.fullname = "Gitte Madsen"
         if (primaryContact.contact) primaryContact.contact.primaryPhone = "+4530405060"
-        patient.primaryContacts = [primaryContact];
+        patient.primaryContact = [primaryContact];
         careplan.patient = patient;
 
         const questionnaire = new Questionnaire();

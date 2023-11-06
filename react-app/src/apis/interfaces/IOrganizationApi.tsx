@@ -5,6 +5,7 @@ import DetailedOrganization from "@kvalitetsit/hjemmebehandling/Models/DetailedO
  * This layer is the only layer that should know of both generated classes and internal classes
  */
 export default interface IOrganizationApi {
+    getOrganizations():  Promise<DetailedOrganization[]>;
 
     /**
      * Retrieves an organization

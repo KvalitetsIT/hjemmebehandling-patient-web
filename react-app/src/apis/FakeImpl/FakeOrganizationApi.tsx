@@ -5,8 +5,12 @@ import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
 import IOrganizationApi from "../interfaces/IOrganizationApi";
 
 export default class FakeCareplanApi extends BaseApi implements IOrganizationApi{
+    
+    async getOrganizations(): Promise<Department[]> {
+        return [await this.getOrganizationDetails("1234"), await this.getOrganizationDetails("4321")]
+    }
+
     async getOrganizationDetails(orgId: string) : Promise<Department>{
-        console.log(orgId);
         const department = new Department();
         department.name = "Infektionssygdomme"
         department.phoneNumber = "83749382"
