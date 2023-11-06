@@ -106,7 +106,7 @@ export default class HomePage extends Component<{}, State> {
                                 </Grid>
 
                                 <IsEmptyCard object={careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
-                                    <Grid item mt={2} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
+                                    <Grid item mt={0} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
                                         <ErrorBoundary>
                                             <QuestionnaireResponseTable careplans={this.state.careplans!} />
                                         </ErrorBoundary>

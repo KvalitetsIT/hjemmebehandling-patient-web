@@ -137,10 +137,10 @@ export default class QuestionnaireResponseTable extends Component<Props, State>{
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell width="25%">Spørgeskema</TableCell>
-                                    <TableCell width="25%">Besvarelsesdato</TableCell>
-                                    <TableCell width="20%">Status</TableCell>
-                                    <TableCell width="30%"></TableCell>
+                                    <TableCell width="25%" sx={{padding: 0}}>Spørgeskema</TableCell>
+                                    <TableCell width="25%" sx={{padding: 0}}>Besvarelsesdato</TableCell>
+                                    <TableCell width="20%" sx={{padding: 0}}>Status</TableCell>
+                                    <TableCell width="30%" sx={{padding: 0}}></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
