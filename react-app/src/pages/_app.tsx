@@ -31,7 +31,6 @@ import IValueSetApi from '../apis/interfaces/IValueSetApi';
 
 import getEnvironment from '../env';
 import PatientService from '../services/PatientService';
-import { PatientApi } from '../generated';
 import IPatientApi from '../apis/interfaces/iPatientApi';
 import RealPatientApi from '../apis/RealImpl/RealPatientApi';
 import FakePatientApi from '../apis/FakeImpl/FakePatientApi';
