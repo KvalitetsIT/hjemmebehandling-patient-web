@@ -12,7 +12,6 @@ import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateH
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
 import ScrollableRow from "../../components/ScrollableRow";
-import { CarePlanApi } from "../../generated";
 
 interface State {
     loadingPage: boolean;
@@ -122,11 +121,11 @@ export default class AnsweredPage extends Component<{}, State>{
                     </IsEmptyCard>
                 </Grid>
 
-                <Grid paddingTop={10} container spacing={2}>
+                <Grid paddingTop={10} container spacing={0}>
                     <Grid item xs={12} >
                         <Typography className="headline">Dine tidligere besvarelser</Typography>
                     </Grid>
-                    <Grid item mt={2} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
+                    <Grid item mt={0} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
                         <QuestionnaireResponseTable careplans={careplans!} />
                     </Grid>
 

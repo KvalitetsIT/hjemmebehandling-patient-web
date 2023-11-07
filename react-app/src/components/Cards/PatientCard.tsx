@@ -11,76 +11,84 @@ import { ContactDetails } from '@kvalitetsit/hjemmebehandling/Models/Contact';
 import { type } from 'os';
 import { PrimaryContact } from '@kvalitetsit/hjemmebehandling/Models/PrimaryContact';
 import SimpleOrganization from '@kvalitetsit/hjemmebehandling/Models/SimpleOrganization';
+import IPatientService from '../../services/interfaces/IPatientService';
+import IOrganizationApi from '../../apis/interfaces/IOrganizationApi';
+import IOrganizationService from '../../services/interfaces/IOrganizationService';
 
 export interface State {
     loading: boolean;
-    careplans?: PatientCareplan[]
+    patient?: PatientDetail
+    departments?: SimpleOrganization[]
 }
+
+
+
 
 export class PatientCard extends Component<{}, State> {
     static displayName = PatientCard.name;
     static contextType = ApiContext
 
-    careplanService!: ICareplanService;
+    patientService!: IPatientService;
+    organisationService!: IOrganizationService;
 
     constructor(props: {}) {
         super(props);
         this.state = {
             loading: true,
-            careplans: undefined
+            patient: undefined
         }
     }
 
     render(): JSX.Element {
         this.initialiseServices();
 
-
-        let careplans: PatientCareplan[] | undefined = this.state.careplans?.filter(careplan => careplan.patient !== undefined)
-
-        const contents = this.state.loading ? <Skeleton height="10em" width="12em" /> : this.renderCard(careplans);
+        const contents = this.state.loading ? <Skeleton height="10em" width="12em" /> : this.renderCard();
         return contents;
     }
     initialiseServices(): void {
         const api = this.context as IApiContext
-        this.careplanService = api.careplanService;
+
+        this.organisationService = api.organizationService;
+        this.patientService = api.patientService;
     }
 
     async componentDidMount(): Promise<void> {
         try {
             this.setState({ loading: true })
-            await this.PopulateCareplan();
+            await this.PopulateData();
             this.setState({ loading: false })
         } catch (error) {
             this.setState(() => { throw error });
         }
     }
 
-    async PopulateCareplan(): Promise<void> {
-        const activeCareplans = await this.careplanService.GetActiveCareplans();
-        this.setState({ careplans: activeCareplans })
+    async PopulateData(): Promise<void> {
+        const patient = await this.patientService.getPatient();
+        const organisations = await this.organisationService.getOrganizations();
+        this.setState({ patient: patient })
     }
 
 
-    renderCard(carePlans: PatientCareplan[] | undefined): JSX.Element {
-
-        const patients = carePlans && carePlans.map(careplan => (careplan.patient as PatientDetail))
-        const pairs = carePlans && carePlans.map(careplan => ({ patient: (careplan.patient as PatientDetail), carePlan: careplan }))
-
-
-
-
-        let patient = (pairs && pairs[0].patient)! // This is done sine the patient is the same for every careplan (Hopefully)
-
-        const hasContacts = (patients?.flatMap(patient => patient.primaryContacts ?? []))!.length > 0
+    renderCard(): JSX.Element {
+        const hasContacts = this.state.patient?.contact && (this.state.patient?.primaryContact as PrimaryContact[]).length > 0
 
         const ContactDetails = (props: { contactDetails?: ContactDetails }) => {
+
             const { contactDetails } = props
+
             if (contactDetails) {
+
                 return (
                     <>
-                        <Typography align="right" variant="body2">{contactDetails.address?.street}</Typography>
-                        <Typography align="right" variant="body2">{contactDetails.address?.zipCode} {contactDetails.address?.city}</Typography>
-                        <br />
+                        {
+                            (contactDetails.address?.street || contactDetails.address?.zipCode || contactDetails.address?.city) && (
+                                <>
+                                    <Typography align="right" variant="body2">{contactDetails.address?.street}</Typography>
+                                    <Typography align="right" variant="body2">{contactDetails.address?.zipCode} {contactDetails.address?.city}</Typography>
+                                    <br />
+                                </>
+                            )
+                        }
                         <Typography align="right" variant="body2">{contactDetails.primaryPhonenumberToString()}</Typography>
                         <Typography align="right" variant="body2">{contactDetails.secondaryPhonenumberToString()}</Typography>
                     </>
@@ -89,25 +97,7 @@ export class PatientCard extends Component<{}, State> {
             return <></>
         }
 
-
-
-        let folded: { contacts: PrimaryContact[]; departments: SimpleOrganization[] }[] = [];
-
-        
-        pairs?.map(({ patient }) => {
-            
-            if (!(folded.map(p => p.contacts).filter(p => this.deepEqual(p, patient.primaryContacts)).length > 0)) {
-                let departments = pairs.filter(({ patient: p }) => this.deepEqual(p.primaryContacts, patient.primaryContacts)).map((p) => p.carePlan.organization)
-
-                let contacts = patient.primaryContacts
-                let pair: { contacts: PrimaryContact[]; departments: SimpleOrganization[] } = {
-                    contacts: contacts!,
-                    departments: departments.filter((item): item is SimpleOrganization => !!item)
-                }
-
-                folded.push(pair)
-            }
-        })
+        const patient = this.state.patient
 
         return (
 
@@ -120,30 +110,24 @@ export class PatientCard extends Component<{}, State> {
                     <Typography align="right" fontWeight={"bold"} variant="body2">{patient?.firstname} {patient?.lastname}</Typography>
                     <Typography align="right" variant="body2">{patient?.cprToString()}</Typography>
                     <br />
-                    <ContactDetails contactDetails={patient.contact} />
+                    <ContactDetails contactDetails={patient?.contact} />
                     <br />
                     <Divider variant='fullWidth' />
                     <br />
                     {
                         hasContacts && <>
                             <Typography align="right" fontWeight={"bold"} fontSize={"1em"} variant="h6">{"Primær kontakt"}</Typography>
-
-
-                            {folded?.map(({ contacts, departments }) => (
-                                <>
-                                    <br />
-                                    <Typography align="right" variant="body2" fontWeight={"bold"}>{
-                                        this.listNames(departments.map((department) => department.name).filter((item): item is string => !!item))
-                                    }</Typography>
-
-                                    {contacts && contacts.map(primaryContact => (
-                                        <>
-                                            <Typography align="right" variant="body2">{primaryContact?.fullname + ", " + primaryContact?.affiliation}</Typography>
-                                            <ContactDetails contactDetails={primaryContact.contact} />
-                                        </>
-                                    ))}
-                                </>
-                            ))}
+                            {patient?.contact && (patient?.primaryContact as PrimaryContact[]).map(primaryContact => {
+                                console.log("primaryContact", primaryContact)
+                                return (
+                                    <>
+                                        <Typography align="right" variant="body2" fontWeight={"bold"}>{primaryContact.organisation}</Typography>
+                                        <Typography align="right" variant="body2">{primaryContact?.fullname + ", " + primaryContact?.affiliation}</Typography>
+                                        <ContactDetails contactDetails={primaryContact.contact} />
+                                        <br />
+                                    </>
+                                )
+                            })}
                         </>
                     }
 
@@ -177,28 +161,28 @@ export class PatientCard extends Component<{}, State> {
 
     private deepEqual(obj1: any, obj2: any): boolean {
         if (obj1 === obj2) {
-          return true;
+            return true;
         }
-      
+
         if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
-          return false;
+            return false;
         }
-      
+
         const keys1 = Object.keys(obj1);
         const keys2 = Object.keys(obj2);
-      
+
         if (keys1.length !== keys2.length) {
-          return false;
-        }
-      
-        for (const key of keys1) {
-          if (!keys2.includes(key) || !this.deepEqual(obj1[key], obj2[key])) {
             return false;
-          }
         }
-      
+
+        for (const key of keys1) {
+            if (!keys2.includes(key) || !this.deepEqual(obj1[key], obj2[key])) {
+                return false;
+            }
+        }
+
         return true;
-      }
-      
+    }
+
 
 }
