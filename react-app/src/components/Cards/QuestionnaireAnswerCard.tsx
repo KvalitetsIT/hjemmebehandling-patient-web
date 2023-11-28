@@ -87,7 +87,7 @@ export default class QuestionnaireAnswerCard extends Component<Props, State>{
                 <Divider />
                 <CardContent>
                     <Typography variant="subtitle2">
-                        Infektionssygdomme har sendt dig dette spørgeskema
+                        {this.props.careplan?.organization?.name} har sendt dig dette spørgeskema
                     </Typography>
                     {questionnaire.frequency?.days.find(day => day === today) ?
                         <Typography variant="caption">Besvares i dag, senest kl. {questionnaire?.frequency?.deadline}</Typography> :

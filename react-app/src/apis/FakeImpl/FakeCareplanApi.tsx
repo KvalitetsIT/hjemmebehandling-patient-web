@@ -191,7 +191,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
 
         careplan.organization = new SimpleOrganization();
         careplan.organization.id = "someOrgId"
-        careplan.organization.name = "AndersTestAfdeling"
+        careplan.organization.name = "Infektionssygdomme"
 
 
         return careplan
@@ -328,7 +328,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
 
         careplan.organization = new SimpleOrganization();
         careplan.organization.id = "someOrgId"
-        careplan.organization.name = "AndersTestAfdeling"
+        careplan.organization.name = "Lungesygdomme"
 
 
         return careplan
