@@ -26,6 +26,7 @@ import IValueSetService from "../../../services/interfaces/IValueSetService";
 import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { error } from "console";
+import DOMPurify from "dompurify";
 
 interface Props {
     match: { params: { questionnaireId: string } };
@@ -296,7 +297,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                             <QuestionAndAnswerTable lastRowJsx={(questionId) => this.createLastColoumn(questionId, questionnaire!)} questionAnswerMap={this.state.questionnaireResponse.questions!} />
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography>Hvis der er noget, du er i tvivl om, eller du har praktiske problemer, kan du <b>altid</b> kontakte Infektionsklinikken på tlf. 78 45 28 64 på hverdage kl. 8.00 – 15.00. Uden for dette tidspunkt kan du kontakte Sengeafsnittet på tlf. 24 77 78 80.</Typography>
+                            { questionnaire?.staticReviewSummaryHtml ? <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(questionnaire?.staticReviewSummaryHtml) }} /> : <Typography></Typography> }
                         </Grid>
                         <Grid item xs={12}>
                             <Button onClick={() => this.submitQuestionnaireResponse()} variant="contained">Send</Button>

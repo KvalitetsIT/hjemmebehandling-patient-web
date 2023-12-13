@@ -457,6 +457,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         questionnaire.frequency = wrapper.frequency && this.mapFrequencyDto(wrapper.frequency)
         questionnaire.thresholds = wrapper.thresholds && this.mapThresholdDtos(wrapper.thresholds)
         questionnaire.questions = wrapper.questionnaire?.questions && wrapper.questionnaire.questions.map(q => this.mapQuestionDto(q))
+        questionnaire.staticReviewSummaryHtml = wrapper.questionnaire?.blob
 
         return questionnaire
     }

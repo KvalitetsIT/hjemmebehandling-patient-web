@@ -95,13 +95,14 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         careplan.patient = patient;
 
         const questionnaire = new Questionnaire();
-        questionnaire.id = "q1"
+        questionnaire.id = "infektionsmedicinsk-q1"
         questionnaire.name = "infektionsmedicinsk-questionnaire-1"
         questionnaire.frequency = new Frequency();
         questionnaire.frequency.days = [DayEnum.Friday, DayEnum.Monday, DayEnum.Tuesday, DayEnum.Wednesday]
         questionnaire.frequency.deadline = "11:00"
 
         questionnaire.thresholds = [];
+        questionnaire.staticReviewSummaryHtml = "Hvis der er noget, du er i tvivl om, eller du har praktiske problemer, kan du <b>altid</b> kontakte Infektionsklinikken på tlf. 78 45 28 64 på hverdage kl. 8.00 – 15.00. Uden for dette tidspunkt kan du kontakte Sengeafsnittet på tlf. 24 77 78 80."
 
 
         questionnaire.questions = [];
@@ -159,13 +160,14 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
 
 
         const questionnaire2 = new Questionnaire();
-        questionnaire2.id = "q2"
+        questionnaire2.id = "infektionsmedicinsk-q2"
         questionnaire2.name = "infektionsmedicinsk-questionnaire-2"
         questionnaire2.frequency = new Frequency();
         questionnaire2.frequency.days = [DayEnum.Thursday]
         questionnaire2.frequency.deadline = "11:00"
 
         questionnaire2.questions = [];
+        //questionnaire2.staticReviewSummaryHtml = ""
 
         const questionb1 = new Question();
         questionb1.Id = "madDrivers"
@@ -232,13 +234,14 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         careplan.patient = patient;
 
         const questionnaire = new Questionnaire();
-        questionnaire.id = "q1"
+        questionnaire.id = "lungesygdomme-q1"
         questionnaire.name = "lungesygdomme-questionnaire-1"
         questionnaire.frequency = new Frequency();
         questionnaire.frequency.days = [DayEnum.Friday, DayEnum.Monday, DayEnum.Tuesday, DayEnum.Wednesday]
         questionnaire.frequency.deadline = "11:00"
 
         questionnaire.thresholds = [];
+        questionnaire.staticReviewSummaryHtml = "Hvis der er noget, du er i tvivl om, eller du har praktiske problemer, kan du <b>altid</b> kontakte Lungeklinikken på tlf. 78 45 28 64 på hverdage kl. 8.00 – 15.00. Uden for dette tidspunkt kan du kontakte Sengeafsnittet på tlf. 24 77 78 80."
 
 
         questionnaire.questions = [];
@@ -296,13 +299,14 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
 
 
         const questionnaire2 = new Questionnaire();
-        questionnaire2.id = "q2"
+        questionnaire2.id = "lungesygdomme-q2"
         questionnaire2.name = "lungesygdomme-questionnaire-2"
         questionnaire2.frequency = new Frequency();
         questionnaire2.frequency.days = [DayEnum.Thursday]
         questionnaire2.frequency.deadline = "11:00"
 
         questionnaire2.questions = [];
+        //questionnaire2.staticReviewSummaryHtml = ""
 
         const questionb1 = new Question();
         questionb1.Id = "madDrivers"
@@ -329,6 +333,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         careplan.organization = new SimpleOrganization();
         careplan.organization.id = "someOrgId"
         careplan.organization.name = "Lungesygdomme"
+        //careplan.organization.
 
 
         return careplan
