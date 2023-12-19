@@ -76,7 +76,7 @@ export class PatientMenu extends Component<{}, State> {
                         id="basic-menu"
                         open={this.state.ancherEl}
                         onClose={this.handleClose}
-                        marginThreshold={80}
+                        marginThreshold={10}
                         MenuListProps={{
                             'aria-labelledby': 'basic-button',
                         }}

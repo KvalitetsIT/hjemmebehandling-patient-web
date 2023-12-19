@@ -14,11 +14,13 @@ import SimpleOrganization from '@kvalitetsit/hjemmebehandling/Models/SimpleOrgan
 import IPatientService from '../../services/interfaces/IPatientService';
 import IOrganizationApi from '../../apis/interfaces/IOrganizationApi';
 import IOrganizationService from '../../services/interfaces/IOrganizationService';
+import { OrganizationDto } from '../../generated';
+import DetailedOrganization from '@kvalitetsit/hjemmebehandling/Models/DetailedOrganization';
 
 export interface State {
     loading: boolean;
     patient?: PatientDetail
-    departments?: SimpleOrganization[]
+    organizations?: Map<String, DetailedOrganization>
 }
 
 
@@ -35,7 +37,8 @@ export class PatientCard extends Component<{}, State> {
         super(props);
         this.state = {
             loading: true,
-            patient: undefined
+            patient: undefined,
+            organizations: new Map()
         }
     }
 
@@ -64,8 +67,11 @@ export class PatientCard extends Component<{}, State> {
 
     async PopulateData(): Promise<void> {
         const patient = await this.patientService.getPatient();
-        const organisations = await this.organisationService.getOrganizations();
-        this.setState({ patient: patient })
+        const organizations: Map<string, DetailedOrganization> = new Map();
+        
+        (await this.organisationService.getOrganizations()).forEach(o => organizations.set(o.id!, o));
+        
+        this.setState({ patient: patient , organizations: organizations})
     }
 
 
@@ -118,10 +124,18 @@ export class PatientCard extends Component<{}, State> {
                         hasContacts && <>
                             <Typography align="right" fontWeight={"bold"} fontSize={"1em"} variant="h6">{"Primær kontakt"}</Typography>
                             {patient?.contact && (patient?.primaryContact as PrimaryContact[]).map(primaryContact => {
-                                console.log("primaryContact", primaryContact)
+                                
+                                console.log("organizations:")
+                                this.state.organizations?.forEach(x => console.log("\t"+x))
+                                
+
+                                const organizationName = this.state.organizations?.get(primaryContact?.organisation!)?.name;
+                                console.log("organizationName", organizationName)
+
+
                                 return (
                                     <>
-                                        <Typography align="right" variant="body2" fontWeight={"bold"}>{primaryContact.organisation}</Typography>
+                                        <Typography align="right" variant="body2" fontWeight={"bold"}>{organizationName+""}</Typography>
                                         <Typography align="right" variant="body2">{primaryContact?.fullname + ", " + primaryContact?.affiliation}</Typography>
                                         <ContactDetails contactDetails={primaryContact.contact} />
                                         <br />
