@@ -37,11 +37,13 @@ export default class InternalToExternalMapper extends BaseMapper {
 
             const answerType = this.mapAnswerType(answer)
             let value = ''
+            
             if (answerType === AnswerDtoAnswerTypeEnum.Quantity) {
                 value = answer.ToString()
-            }
-            if (answerType === AnswerDtoAnswerTypeEnum.Boolean) {
+            } else if (answerType === AnswerDtoAnswerTypeEnum.Boolean) {
                 value = answer.ToString() === 'Ja' ? 'true' : 'false'
+            } else {
+                value = answer.ToString()
             }
 
             const qapair: QuestionAnswerPairDto = {

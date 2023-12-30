@@ -154,6 +154,16 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         question3.question = "Har du fået den ordinerede antibiotika det sidste døgn?"
         question3.type = QuestionTypeEnum.BOOLEAN
 
+
+        const question4 = new Question();
+        question4.Id = "choice"
+        question4.type = QuestionTypeEnum.CHOICE
+        question4.helperText = "Vælg en af de følgende valgmuligheder"
+        question4.question = "Hvor mange måltider får du dagligt?"
+        question4.options = ["1", "2",  "3"]
+
+
+        questionnaire.questions[3] = question4;
         questionnaire.questions[0] = question3;
         questionnaire.questions[2] = question2;
         questionnaire.questions[1] = question1;

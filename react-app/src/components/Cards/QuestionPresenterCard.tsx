@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Typography, Button, Box } from '@mui/material';
+import { Grid, Typography, Button, Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import ApiContext, { IApiContext } from "../../pages/_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper"
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
@@ -22,7 +22,7 @@ interface State {
 }
 export default class QuestionPresenterCard extends Component<Props, State>{
     static contextType = ApiContext
-     
+
     dateHelper!: IDateHelper;
     validationService!: IValidationService;
 
@@ -53,7 +53,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     }
 
     render(): JSX.Element {
-        
+
         this.initializeServices();
         return (
             <>
@@ -65,7 +65,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
                     </Grid>
                     <Grid item xs={12} >
-                        <Box sx={{ height:60 }}>
+                        <Box sx={{ minHeight: 60 }}>
                             {this.renderQuestionInput(this.props.question)}
                         </Box>
                     </Grid>
@@ -145,14 +145,20 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     getChoiceInput(): JSX.Element {
         return (
             <>
-                {this.props.question.options?.map(option => {
-                    let variant: "contained" | "text" = "text"
-                    if (this.state.tempAnswer.toLowerCase() === option.toLowerCase())
-                        variant = "contained"
-                    return (
-                        <Button variant={variant} onClick={() => this.setState({ tempAnswer: option })}>{option}</Button>
-                    )
-                })}
+                <FormControl>
+                    <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        name="radio-buttons-group"
+                        onChange={x => {
+                            this.setState({
+                                tempAnswer: x.target.value
+                            })
+                        }}>
+                        {this.props.question.options?.map(option => { return (<FormControlLabel value={option} control={<Radio />} label={option} />) })}
+                    </RadioGroup>
+                </FormControl>
+
+
             </>
         )
     }
@@ -170,7 +176,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         variant = "contained"
 
                     return (
-                        <Button sx={{pt: 2, pb: 2}} variant={variant} onClick={() => this.setState({ tempAnswer: optionAsString })}>{option ? "Ja" : "Nej"}</Button>
+                        <Button sx={{ pt: 2, pb: 2 }} variant={variant} onClick={() => this.setState({ tempAnswer: optionAsString })}>{option ? "Ja" : "Nej"}</Button>
                     )
                 })}
             </>
@@ -182,7 +188,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             <TextFieldValidation
                 id="questionInput"
                 onValidation={(uid, errors) => this.onValidation(uid, errors)}
-                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr,this.props.thresholds)}
+                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, this.props.thresholds)}
                 required={true}
                 label="Svar"
                 type="number"

@@ -114,7 +114,7 @@ const red = '#EE6969'
 const THEME = createTheme({
   typography: {
     "fontFamily": "verdana, sans-serif",
- htmlFontSize: 15,
+    htmlFontSize: 15,
   },
   palette: {
     background: {
@@ -143,7 +143,7 @@ const THEME = createTheme({
         {
           props: { variant: "body1" },
           style: {
-            fontSize: '1rem', 
+            fontSize: '1rem',
             letterSpacing: 'initial'
 
           }
@@ -151,7 +151,7 @@ const THEME = createTheme({
         {
           props: { variant: "subtitle1" },
           style: {
-         
+
             fontWeight: 'bold',
             lineHeight: 'initial',
             letterSpacing: 'initial'
@@ -197,7 +197,7 @@ const THEME = createTheme({
           props: { className: "headline" },
           style: {
             fontWeight: "bold",
-            fontSize: "1.2rem", 
+            fontSize: "1.2rem",
             letterSpacing: 'initial'
           }
         },
@@ -250,7 +250,7 @@ const THEME = createTheme({
         },
         subheader: {
           color: regionMidtRed,
-          fontSize: '1.1rem', 
+          fontSize: '1.1rem',
           textOverflow: 'ellipsis',
           overflow: 'hidden',
           whiteSpace: 'nowrap',
@@ -390,6 +390,16 @@ const THEME = createTheme({
           }
         }
       ]
+    },
+    MuiRadio: {
+      styleOverrides: {
+        root:{
+          "&.Mui-checked": {
+            color: regionMidtRed
+          }
+        },
+      }
+
     },
     MuiSvgIcon: {
       variants: [
