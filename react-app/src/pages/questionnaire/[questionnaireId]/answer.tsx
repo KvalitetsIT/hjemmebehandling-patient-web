@@ -94,7 +94,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             const questionnaire = careplan.questionnaires.find(x => x.id === this.props.match.params.questionnaireId);
 
             let measurementTypes: MeasurementType[] = [];
-            if (questionnaire?.questions!.find(q => q.type === QuestionTypeEnum.OBSERVATION)) {
+            if (questionnaire?.questions!.find(q => q.type === QuestionTypeEnum.OBSERVATION || (q.type === QuestionTypeEnum.GROUP && (q as Question).subQuestions?.map(sq => sq.type === QuestionTypeEnum.OBSERVATION)))) {
                 measurementTypes = await this.valueSetService.GetAllMeasurementTypes(careplan.organization!.id!);
             }
 
@@ -249,7 +249,6 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             return <></>
         }
 
-        console.log("this.state.measurementTypes", this.state.measurementTypes)
         const thresholds = new ThresholdCollection();
         if (question!.type === QuestionTypeEnum.OBSERVATION) {
             const measurementType = this.state.measurementTypes.find(m => m.code === question?.measurementType?.code);
@@ -258,8 +257,17 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                 thresholds.thresholdNumbers = [measurementType.threshold]
             }
         }
+        else if (question!.type === QuestionTypeEnum.GROUP && question?.subQuestions?.find(sq => sq.type === QuestionTypeEnum.OBSERVATION)) {
+            question.subQuestions.map(q => {
+                const measurementType = this.state.measurementTypes.find(m => m.code === q?.measurementType?.code);
 
-        console.log("thresholds", thresholds)
+                if (measurementType && measurementType.threshold) {
+                    thresholds.thresholdNumbers?.push(measurementType.threshold)
+                }
+            })
+
+        }
+
         return (
             <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                 <IsEmptyCard list={questions} jsxWhenEmpty="Ingen spørgsmål blev fundet i spørgeskemaet">

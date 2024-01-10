@@ -19,6 +19,32 @@ import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryCont
 export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
     timeToWait: number = 1000;
 
+    measurementTypeTemperatur: MeasurementType = new MeasurementType(); 
+    measurementTypeSystolisk: MeasurementType = new MeasurementType();
+    measurementTypeDiastolisk: MeasurementType = new MeasurementType();
+    measurementTypePuls: MeasurementType = new MeasurementType();
+
+    constructor() {
+        super();
+    
+        this.measurementTypeTemperatur.displayName = "Temp"
+        this.measurementTypeTemperatur.code = "Temp"
+        this.measurementTypeTemperatur.system = "system"
+
+        this.measurementTypeSystolisk.displayName = "SYS"
+        this.measurementTypeSystolisk.code = "SYS"
+        this.measurementTypeSystolisk.system = "system"
+
+        this.measurementTypeDiastolisk.displayName = "DIA"
+        this.measurementTypeDiastolisk.code = "DIA"
+        this.measurementTypeDiastolisk.system = "system"
+
+        this.measurementTypePuls.displayName = "PUL"
+        this.measurementTypePuls.code = "PUL"
+        this.measurementTypePuls.system = "system"
+        
+    }
+
     async GetAllMeasurementTypes(organizationId: string): Promise<MeasurementType[]> {
         console.debug("GetAllMeasurementTypes for org:", organizationId);
         try {
@@ -37,7 +63,15 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
 
             measurementType.threshold = threshold;
 
-            return [measurementType];
+            const thresholdSimple = new ThresholdNumber();
+            thresholdSimple.category = CategoryEnum.GREEN;
+            thresholdSimple.from = 0;
+            thresholdSimple.to = 10;
+
+            this.measurementTypeSystolisk.threshold = thresholdSimple;
+            this.measurementTypeTemperatur.threshold = thresholdSimple;
+
+            return [measurementType, this.measurementTypeSystolisk, this.measurementTypeTemperatur];
 
         } catch (error) {
             return await this.HandleError(error);
@@ -119,8 +153,9 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         enableWhen.answer = false;
         question1.enableWhen = enableWhen;
 
-        question1.question = "Indtast din morgen temperatur?"
+        question1.question = "Indtast din morgen temperatur? x"
         question1.type = QuestionTypeEnum.OBSERVATION
+        question1.measurementType = this.measurementTypeTemperatur
 
         const question2 = new Question();
         question2.helperText = "when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
@@ -189,7 +224,42 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         questionnaire2.questions[2] = question3;
 
 
-        careplan.questionnaires = [questionnaire, questionnaire2]
+        const questionnaire3 = new Questionnaire();
+        questionnaire3.id = "infektionsmedicinsk-q3"
+        questionnaire3.name = "gruppe-måling"
+        questionnaire3.frequency = new Frequency();
+        questionnaire3.frequency.days = [DayEnum.Thursday]
+        questionnaire3.frequency.deadline = "11:00"
+
+        questionnaire3.questions = [];
+        //questionnaire2.staticReviewSummaryHtml = ""
+
+        const questionBlodtryk = new Question();
+        questionBlodtryk.Id = "blodtryk"
+        questionBlodtryk.question = "Intast blodtryk?"
+        questionBlodtryk.helperText = "SYS er det øverste tal på blodtryksapparatet, DIA er det mellemste tal og PUL er det nederste."
+        questionBlodtryk.type = QuestionTypeEnum.GROUP
+
+        const questionBlodtrykSys = new Question();
+        questionBlodtrykSys.Id = "blodtryk_sys"
+        questionBlodtrykSys.question = "sys?"
+        questionBlodtrykSys.type = QuestionTypeEnum.OBSERVATION
+        questionBlodtrykSys.measurementType = this.measurementTypeSystolisk;
+        const questionBlodtrykDia = new Question();
+        questionBlodtrykDia.Id = "blodtryk_dia"
+        questionBlodtrykDia.question = "dia?"
+        questionBlodtrykDia.type = QuestionTypeEnum.OBSERVATION
+        questionBlodtrykDia.measurementType = this.measurementTypeDiastolisk
+        const questionBlodtrykPul = new Question();
+        questionBlodtrykPul.Id = "blodtryk_pul"
+        questionBlodtrykPul.question = "pul?"
+        questionBlodtrykPul.type = QuestionTypeEnum.OBSERVATION
+        questionBlodtrykPul.measurementType = this.measurementTypePuls
+        
+        questionBlodtryk.subQuestions = [questionBlodtrykSys, questionBlodtrykDia, questionBlodtrykPul]
+        questionnaire3.questions[0] = questionBlodtryk;
+
+        careplan.questionnaires = [questionnaire3, questionnaire, questionnaire2]
 
         careplan.organization = new SimpleOrganization();
         careplan.organization.id = "someOrgId"

@@ -1,6 +1,6 @@
 
 import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
-import { Answer, NumberAnswer, StringAnswer, BooleanAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, NumberAnswer, StringAnswer, BooleanAnswer, GroupAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
 import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import DetailedOrganization, { PhoneHour } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
@@ -223,6 +223,9 @@ export default class ExternalToInternalMapper extends BaseMapper {
         if (questionDto.measurementType !== undefined) {
             question.measurementType = this.mapMeasurementType(questionDto.measurementType);
         }
+        if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Group) {
+            question.subQuestions = questionDto.subQuestions?.map(q => this.mapQuestionDto(q))
+        }
 
         return question;
     }
@@ -247,6 +250,8 @@ export default class ExternalToInternalMapper extends BaseMapper {
                 return QuestionTypeEnum.OBSERVATION
             case QuestionDtoQuestionTypeEnum.String:
                 return QuestionTypeEnum.STRING
+            case QuestionDtoQuestionTypeEnum.Group:
+                return QuestionTypeEnum.GROUP
             default:
                 throw new Error('Could not map question type ' + type);
         }
@@ -377,6 +382,8 @@ export default class ExternalToInternalMapper extends BaseMapper {
                 return this.mapNumberedAnswer(answerDto);
             case AnswerDtoAnswerTypeEnum.Boolean:
                 return this.mapBooleanAnswer(answerDto);
+            case AnswerDtoAnswerTypeEnum.Group:
+                return this.mapGroupAnswer(answerDto);
             default:
                 return this.mapStringAnswer(answerDto); //Treat as string as default
         }
@@ -384,20 +391,34 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
     }
 
+    mapGroupAnswer(answerDto: AnswerDto): GroupAnswer {
+        const toReturn = new GroupAnswer();
+        toReturn.questionId = answerDto.linkId!;
+        toReturn.subAnswers = [];
+
+        answerDto.subAnswers!.map(sa => {
+            toReturn.subAnswers.push(this.mapAnswerDto(sa))
+        })
+
+        return toReturn;
+    }
     mapStringAnswer(answerDto: AnswerDto): StringAnswer {
         const toReturn = new StringAnswer();
+        toReturn.questionId = answerDto.linkId!;
         toReturn.answer = answerDto.value!
         return toReturn;
     }
 
     mapNumberedAnswer(answerDto: AnswerDto): NumberAnswer {
         const toReturn = new NumberAnswer();
+        toReturn.questionId = answerDto.linkId!;
         toReturn.answer = Number.parseFloat(answerDto.value!)
         return toReturn;
     }
 
     mapBooleanAnswer(answerDto: AnswerDto): BooleanAnswer {
         const toReturn = new BooleanAnswer();
+        toReturn.questionId = answerDto.linkId!;
         const answerValue = answerDto.value?.toLowerCase()
 
         const isTrueOrFalse = answerValue === "true" || answerValue === "false"

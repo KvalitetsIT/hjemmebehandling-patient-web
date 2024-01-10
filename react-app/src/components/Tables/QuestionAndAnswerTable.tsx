@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Card, TableContainer, TableHead, TableBody, TableRow, TableCell, Table } from '@mui/material';
-import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question"
-import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer"
+import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question"
+import { Answer, GroupAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer"
 import ApiContext from "../../pages/_context";
 
 interface Props {
@@ -26,6 +26,15 @@ export default class QuestionAndAnswerTable extends Component<Props, {}>{
         const array: { q: Question, a: Answer }[] = [];
         parentQuestions.forEach(question => {
             array.push({ q: question, a: this.props.questionAnswerMap.get(question)! })
+
+            if (question.type === QuestionTypeEnum.GROUP) {
+                question.subQuestions?.map(subQuestion => {
+                    const answer = this.props.questionAnswerMap.get(question)! as GroupAnswer;
+                    const subAnswer = answer.subAnswers.find(a => a.questionId === subQuestion.Id)
+                    array.push({ q: subQuestion, a: subAnswer! })
+                })
+            }
+            
 
             childQuestions.filter(q => q instanceof Question && q.enableWhen?.questionId === question.Id).forEach(question => {
                 array.push({ q: question, a: this.props.questionAnswerMap.get(question)! })
