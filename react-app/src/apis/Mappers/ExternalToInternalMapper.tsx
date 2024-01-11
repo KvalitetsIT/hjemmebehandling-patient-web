@@ -53,17 +53,10 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return number;
     }
 
-    mapCallToActionMessage(response: CallToActionDTO): CallToActionMessage[] {
-
-        if (!response.callToActions)
-            return []
-
-        return response.callToActions?.map(message => {
-            const toReturn = new CallToActionMessage();
-            toReturn.message = message;
-            return toReturn;
-        });
-
+    mapCallToActionMessage(response: CallToActionDTO): CallToActionMessage {
+        const toReturn = new CallToActionMessage();
+        toReturn.message = response.callToAction;
+        return toReturn;
     }
 
     mapOrganizationDto(response: OrganizationDto): DetailedOrganization {

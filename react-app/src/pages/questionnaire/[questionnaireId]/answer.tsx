@@ -38,7 +38,7 @@ interface State {
     loadingPage: boolean;
     careplan: PatientCareplan | undefined;
     indexJourney: number[];
-    callToActions: CallToActionMessage[];
+    callToAction?: CallToActionMessage;
     questionnaireResponse: QuestionnaireResponse; //The new response
     measurementTypes: MeasurementType[];
 }
@@ -59,7 +59,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             indexJourney: props.startQuestionIndex ? [props.startQuestionIndex] : [0],
             questionnaireResponse: newQuestionnaireResponse,
             careplan: undefined,
-            callToActions: [],
+            callToAction: undefined,
             measurementTypes: []
         }
         this.setAnswerToQuestion = this.setAnswerToQuestion.bind(this)
@@ -312,8 +312,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                         </Grid>
                     </Grid>
                 </IsEmptyCard>
-                {this.state.callToActions.length > 0 ?
-                    <DialogError iconAtStart={<ErrorIcon />} error={new CallToActionError(this.state.callToActions, () => this.setState({ submitted: true }))} /> :
+                {this.state.callToAction ?
+                    <DialogError iconAtStart={<ErrorIcon />} error={new CallToActionError(this.state.callToAction, () => this.setState({ submitted: true }))} /> :
                     <></>
                 }
             </>
@@ -359,12 +359,12 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             const questionnaireResponse = this.state.questionnaireResponse;
             questionnaireResponse.answeredTime = new Date();
             questionnaireResponse.status = QuestionnaireResponseStatus.NotProcessed
-            const response = await this.questionnaireResponseService.SubmitQuestionnaireResponse(questionnaireResponse) ?? []
+            const response = await this.questionnaireResponseService.SubmitQuestionnaireResponse(questionnaireResponse);
             let submitted = true;
-            if (response.length > 0)
+            if (response.message)
                 submitted = false;
 
-            this.setState({ loadingPage: false, submitted: submitted, callToActions: response })
+            this.setState({ loadingPage: false, submitted: submitted, callToAction: response })
         } catch (error) {
             this.setState(() => { throw error })
         }
