@@ -62,7 +62,7 @@ export default class RealQuestionnaireResponseApi extends BaseApi implements IQu
         }
     }
 
-    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage[]> {
+    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage> {
         try {
             const request = {
                 questionnaireResponseDto: this.toExternal.MapQuestionnaireResponse(questionnaireResponse)

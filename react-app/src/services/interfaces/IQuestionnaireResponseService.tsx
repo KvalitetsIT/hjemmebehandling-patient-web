@@ -49,7 +49,7 @@ export default interface IQuestionnaireResponseService {
      * @param questionnaireResponse the response to submit
      * @returns void
      */
-    SubmitQuestionnaireResponse: (questionnaireResponse: QuestionnaireResponse) => Promise<CallToActionMessage[]>;
+    SubmitQuestionnaireResponse: (questionnaireResponse: QuestionnaireResponse) => Promise<CallToActionMessage>;
 
     /**
      * From a map containing questionToAnswer to a tuple with question and answer

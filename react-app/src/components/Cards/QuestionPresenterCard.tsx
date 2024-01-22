@@ -5,7 +5,7 @@ import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateH
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import IValidationService from "../../services/interfaces/IValidationService";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
-import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, BooleanAnswer, GroupAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 
@@ -17,7 +17,7 @@ interface Props {
 }
 
 interface State {
-    tempAnswer: string;
+    tempAnswer: Answer;
     errorArray: InvalidInputModel[];
 }
 export default class QuestionPresenterCard extends Component<Props, State>{
@@ -29,22 +29,49 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     constructor(props: Props) {
         super(props);
 
-        let initialAnswer = "";
-        if (props.answer instanceof NumberAnswer) {
-            initialAnswer = props.answer.answer + "";
+        let answer;
+        if (this.props.answer) {
+            answer = this.props.answer;
         }
-        if (props.answer instanceof StringAnswer) {
-            initialAnswer = props.answer.answer + ""
-        }
-
-        if (props.answer instanceof BooleanAnswer) {
-            initialAnswer = props.answer.answer + ""
+        else {
+            answer = this.createInitialAnswer(this.props.question);
         }
 
         this.state = {
-            tempAnswer: initialAnswer,
+            tempAnswer: answer!,
             errorArray: []
         }
+
+        this.updateAnswer = this.updateAnswer.bind(this);
+    }
+
+    createInitialAnswer(question: Question): Answer {
+        let answer : Answer;
+        switch (question.type) {
+            case QuestionTypeEnum.OBSERVATION:
+                answer = new NumberAnswer();
+                break;
+            case QuestionTypeEnum.INTEGER:
+                answer = new NumberAnswer();
+                break;
+            case QuestionTypeEnum.CHOICE:
+                answer = new StringAnswer();
+                break;
+            case QuestionTypeEnum.BOOLEAN:
+                answer = new BooleanAnswer();
+                break;
+            case QuestionTypeEnum.GROUP:
+                const groupAnswer = new GroupAnswer();
+                groupAnswer.subAnswers = [];
+                question.subQuestions!.map(subQuestion => {
+                    const subAnswer = this.createInitialAnswer(subQuestion);
+                    groupAnswer.subAnswers.push(subAnswer)
+                });
+                answer = groupAnswer
+                break;
+        }
+        answer!.questionId = question.Id!;
+        return answer!;
     }
 
     initializeServices(): void {
@@ -65,7 +92,11 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
                     </Grid>
                     <Grid item xs={12} >
+<<<<<<< HEAD
                         <Box sx={{ minHeight: 60 }}>
+=======
+                        <Box sx={{ minHeight:60 }}>
+>>>>>>> d303f6a766a9aefe871be28af24923a1726f0162
                             {this.renderQuestionInput(this.props.question)}
                         </Box>
                     </Grid>
@@ -74,7 +105,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
 
                         <Button
                             disabled={this.buttonShouldBeDisabled()}
-                            onClick={() => this.answerQuestion()}
+                            onClick={() => this.props.setQuestionAnswer(this.props.question, this.state.tempAnswer)}
                             variant="contained">
                             Næste
                         </Button>
@@ -84,44 +115,30 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         )
     }
 
-    answerQuestion(): void {
-        const answer: Answer = this.createAnswer(this.props.question, this.state.tempAnswer);
-        this.props.setQuestionAnswer(this.props.question, answer);
-    }
-
-    createAnswer(question: Question, answerString: string): Answer {
-        let answer: Answer = new StringAnswer();
-        switch (question.type) {
-            case QuestionTypeEnum.OBSERVATION:
-                const observationAnswer = new NumberAnswer();
-                observationAnswer.answer = parseFloat(answerString);
-                answer = observationAnswer;
-                break;
-            case QuestionTypeEnum.INTEGER:
-                const integerAnswer = new NumberAnswer();
-                integerAnswer.answer = answerString as unknown as number;
-                answer = integerAnswer;
-                break;
-            case QuestionTypeEnum.CHOICE:
-                const choiceAnswer = new StringAnswer();
-                choiceAnswer.answer = answerString as unknown as string;
-                answer = choiceAnswer;
-                break;
-            case QuestionTypeEnum.BOOLEAN:
-                const booleanAnswer = new BooleanAnswer();
-                booleanAnswer.answer = answerString.toLowerCase() === "true"
-                answer = booleanAnswer;
-                break;
-        }
-        return answer;
-    }
-
-
     buttonShouldBeDisabled(): boolean {
         const answer = this.state.tempAnswer
         let nextIsDisabled = false;
         nextIsDisabled ||= !answer
-        nextIsDisabled ||= answer === ""
+        
+        let emptyAnswer = true;
+        if (this.state.tempAnswer instanceof GroupAnswer) {
+            const empty = this.state.tempAnswer.subAnswers.find(sa => !(sa.AnswerAsString()));
+            if (!empty) {
+                console.log("disabling buttoin?", empty)
+                emptyAnswer = false
+            }
+        }
+        else if (this.state.tempAnswer instanceof BooleanAnswer) {
+            emptyAnswer = this.state.tempAnswer.answer == undefined;
+        }
+        else {
+            const empty = this.state.tempAnswer.AnswerAsString();
+            if (empty) {
+                console.log("disabling buttoin?", empty)  
+                emptyAnswer = false
+            }
+        }
+        nextIsDisabled ||= emptyAnswer!;
         nextIsDisabled ||= this.state.errorArray.length !== 0
 
         return nextIsDisabled;
@@ -138,13 +155,50 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                 return this.getChoiceInput();
             case QuestionTypeEnum.BOOLEAN:
                 return this.getBooleanInput();
+            case QuestionTypeEnum.GROUP:
+                return this.getGroupInput();
         }
         return (<>Spørgsmålstype ikke genkendt</>)
+    }
+
+    getGroupInput(): JSX.Element {
+        return (
+            <Grid container columnSpacing={2} justifyContent="center" direction={"column"}>
+                <Grid item xs={12}  >
+                {this.props.question.subQuestions?.map((subQuestion, index) => {
+                    const answer = this.state.tempAnswer as GroupAnswer;
+                    const subAnswer = answer.subAnswers.find(a => a.questionId === subQuestion.Id)
+                    console.log("blaaahh", subQuestion, answer, subAnswer)
+                    console.log("")
+                    return (
+                        <Grid container columnSpacing={2} justifyContent="center" direction={"row"}>
+                            <Grid item >
+                            <TextFieldValidation
+                                id={"questionInput_"+index}
+                                onValidation={(uid, errors) => this.onValidation(uid, errors)}
+                                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr,this.props.thresholds)}
+                                required={true}
+                                label="Svar"
+                                type="number"
+                                value={subAnswer?.AnswerAsString()}
+                                onChange={input => this.updateAnswer(subQuestion.Id!, input.target.value)}
+                                uniqueId={index} />
+                            </Grid>
+                            <Grid item>
+                            <Typography>{subQuestion.question}</Typography>
+                            </Grid>
+                            </Grid>
+                    )
+                })}
+                </Grid>
+            </Grid>
+        )
     }
 
     getChoiceInput(): JSX.Element {
         return (
             <>
+<<<<<<< HEAD
                 <FormControl>
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
@@ -159,6 +213,16 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                 </FormControl>
 
 
+=======
+                {this.props.question.options?.map(option => {
+                    let variant: "contained" | "text" = "text"
+                    if (this.state.tempAnswer.AnswerAsString()?.toLowerCase() === option.toLowerCase())
+                        variant = "contained"
+                    return (
+                        <Button variant={variant} onClick={() => this.updateAnswer(this.state.tempAnswer.questionId, option)}>{option}</Button>
+                    )
+                })}
+>>>>>>> d303f6a766a9aefe871be28af24923a1726f0162
             </>
         )
     }
@@ -170,13 +234,17 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                     let variant: "contained" | "text" = "text"
 
                     const optionAsString = option.toString()
-                    const tempAnswer = this.state.tempAnswer
+                    const tempAnswer = this.state.tempAnswer as BooleanAnswer
 
-                    if (optionAsString === tempAnswer)
+                    if (option === tempAnswer.answer)
                         variant = "contained"
 
                     return (
+<<<<<<< HEAD
                         <Button sx={{ pt: 2, pb: 2 }} variant={variant} onClick={() => this.setState({ tempAnswer: optionAsString })}>{option ? "Ja" : "Nej"}</Button>
+=======
+                        <Button sx={{pt: 2, pb: 2}} variant={variant} onClick={() => this.updateAnswer(this.state.tempAnswer.questionId, optionAsString)}>{option ? "Ja" : "Nej"}</Button>
+>>>>>>> d303f6a766a9aefe871be28af24923a1726f0162
                     )
                 })}
             </>
@@ -192,10 +260,49 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                 required={true}
                 label="Svar"
                 type="number"
-                value={this.state.tempAnswer}
-                onChange={input => this.setState({ tempAnswer: input.target.value })}
+                value={this.state.tempAnswer.AnswerAsString()}
+                onChange={input => this.updateAnswer(this.state.tempAnswer.questionId, input.target.value)}
                 uniqueId={0} />
         )
+    }
+
+    updateAnswer(questionId: string, answerValue: string): void {
+        console.log("ugf")
+        let answer : Answer;
+
+        if (this.state.tempAnswer instanceof NumberAnswer) {
+            const tmpAnswer = this.state.tempAnswer as NumberAnswer;
+            tmpAnswer.answer = parseFloat(answerValue);
+            answer = tmpAnswer;
+        }
+        else if (this.state.tempAnswer instanceof StringAnswer) {
+            const tmpAnswer = this.state.tempAnswer as StringAnswer;
+            tmpAnswer.answer = answerValue;
+            answer = tmpAnswer;
+        }
+        else if (this.state.tempAnswer instanceof BooleanAnswer) {
+            console.log("ugf", answerValue)
+            const tmpAnswer = this.state.tempAnswer as BooleanAnswer;
+            tmpAnswer.answer = answerValue.toLowerCase() === "true";
+            answer = tmpAnswer;
+        }
+        else if (this.state.tempAnswer instanceof GroupAnswer) {
+            const tmpAnswer = this.state.tempAnswer as GroupAnswer;
+            const subAnswer = tmpAnswer.subAnswers.find(a => a.questionId === questionId);
+            console.log("updateAnswer: group", tmpAnswer, subAnswer)
+            if (subAnswer instanceof NumberAnswer) {
+                subAnswer.answer = parseFloat(answerValue);
+            }
+            else if (subAnswer instanceof StringAnswer) {
+                subAnswer.answer = answerValue;
+            }
+            else if (subAnswer instanceof BooleanAnswer) {
+                subAnswer.answer = answerValue.toLowerCase() === "true";
+            }
+            answer = tmpAnswer;
+        }
+        
+        this.setState({ tempAnswer: answer! });
     }
 
     onValidation(from: number, invalid: InvalidInputModel[]): void {

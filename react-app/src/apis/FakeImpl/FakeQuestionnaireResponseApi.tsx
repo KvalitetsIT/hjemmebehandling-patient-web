@@ -97,13 +97,13 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         return responses;
     }
     
-    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage[]> {
+    async SubmitQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse): Promise<CallToActionMessage> {
         questionnaireResponse.id = "questionnaireResponse" + this.generateId() + "";
         this.questionnaireResponses.push(questionnaireResponse);
 
         const toReturn = new CallToActionMessage();
         toReturn.message = "Call the hospital man - U ill as fuu"
-        return [toReturn];
+        return toReturn;
     }
 
     async GetQuestionnaireResponse(questionnaireResponseId: string): Promise<QuestionnaireResponse> {

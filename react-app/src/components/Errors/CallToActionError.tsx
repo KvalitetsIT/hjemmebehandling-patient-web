@@ -4,10 +4,10 @@ import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallTo
 export class CallToActionError extends BaseServiceError {
     message: string;
     onClose: () => void;
-    constructor(callToActions: CallToActionMessage[], onClose: () => void) {
+    constructor(callToAction: CallToActionMessage, onClose: () => void) {
         super();
         this.onClose = onClose
-        this.message = callToActions.map(x => x.message).join("\n")
+        this.message = callToAction.message!
     }
 
     displayMessage(): string {

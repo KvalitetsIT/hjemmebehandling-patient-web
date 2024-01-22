@@ -1,4 +1,4 @@
-import { Answer, BooleanAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, BooleanAnswer, GroupAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
 import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import { DayEnum, Frequency } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
@@ -8,7 +8,7 @@ import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinit
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import { AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, PrimaryContactDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
+import { AnswerDto, AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, PrimaryContactDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
 import FhirUtils, { Qualifier } from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
@@ -36,6 +36,7 @@ export default class InternalToExternalMapper extends BaseMapper {
         questions?.forEach((answer, question) => {
 
             const answerType = this.mapAnswerType(answer)
+<<<<<<< HEAD
             let value = ''
             
             if (answerType === AnswerDtoAnswerTypeEnum.Quantity) {
@@ -46,11 +47,28 @@ export default class InternalToExternalMapper extends BaseMapper {
                 value = answer.ToString()
             }
 
+=======
+            const value = this.mapAnswerValue(answer)
+            
+            let subAnswers: AnswerDto[] = [];
+            if (answer instanceof GroupAnswer) {
+                answer.subAnswers?.map(sa => {
+                    subAnswers.push({
+                        linkId: sa.questionId,
+                        answerType: this.mapAnswerType(sa),
+                        value: this.mapAnswerValue(sa)
+                    })
+                })
+            }
+            
+            
+>>>>>>> d303f6a766a9aefe871be28af24923a1726f0162
             const qapair: QuestionAnswerPairDto = {
                 answer: {
                     linkId: question.Id,
-                    answerType: answerType,
-                    value: value
+                    answerType: this.mapAnswerType(answer),
+                    value: this.mapAnswerValue(answer),
+                    subAnswers: subAnswers
                 }
             }
 
@@ -89,7 +107,22 @@ export default class InternalToExternalMapper extends BaseMapper {
         if (answer instanceof BooleanAnswer)
             return AnswerDtoAnswerTypeEnum.Boolean
 
+        if (answer instanceof GroupAnswer)
+            return AnswerDtoAnswerTypeEnum.Group
+
         throw new Error('Could not map answer')
+    }
+
+    mapAnswerValue(answer: Answer): string {
+        let value = '';
+        if (answer instanceof NumberAnswer) {
+            value = answer.ToString();
+        }
+        else if (answer instanceof BooleanAnswer) {
+            value = answer.ToString() === 'Ja' ? 'true' : 'false'
+        }
+
+        return value;
     }
 
     mapCategory(category: CategoryEnum): QuestionnaireResponseDtoTriagingCategoryEnum | undefined {

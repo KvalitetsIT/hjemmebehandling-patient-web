@@ -38,7 +38,7 @@ interface State {
     loadingPage: boolean;
     careplan: PatientCareplan | undefined;
     indexJourney: number[];
-    callToActions: CallToActionMessage[];
+    callToAction?: CallToActionMessage;
     questionnaireResponse: QuestionnaireResponse; //The new response
     measurementTypes: MeasurementType[];
 }
@@ -59,7 +59,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             indexJourney: props.startQuestionIndex ? [props.startQuestionIndex] : [0],
             questionnaireResponse: newQuestionnaireResponse,
             careplan: undefined,
-            callToActions: [],
+            callToAction: undefined,
             measurementTypes: []
         }
         this.setAnswerToQuestion = this.setAnswerToQuestion.bind(this)
@@ -94,7 +94,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             const questionnaire = careplan.questionnaires.find(x => x.id === this.props.match.params.questionnaireId);
 
             let measurementTypes: MeasurementType[] = [];
-            if (questionnaire?.questions!.find(q => q.type === QuestionTypeEnum.OBSERVATION)) {
+            if (questionnaire?.questions!.find(q => q.type === QuestionTypeEnum.OBSERVATION || (q.type === QuestionTypeEnum.GROUP && (q as Question).subQuestions?.map(sq => sq.type === QuestionTypeEnum.OBSERVATION)))) {
                 measurementTypes = await this.valueSetService.GetAllMeasurementTypes(careplan.organization!.id!);
             }
 
@@ -249,7 +249,6 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             return <></>
         }
 
-        console.log("this.state.measurementTypes", this.state.measurementTypes)
         const thresholds = new ThresholdCollection();
         if (question!.type === QuestionTypeEnum.OBSERVATION) {
             const measurementType = this.state.measurementTypes.find(m => m.code === question?.measurementType?.code);
@@ -258,8 +257,17 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                 thresholds.thresholdNumbers = [measurementType.threshold]
             }
         }
+        else if (question!.type === QuestionTypeEnum.GROUP && question?.subQuestions?.find(sq => sq.type === QuestionTypeEnum.OBSERVATION)) {
+            question.subQuestions.map(q => {
+                const measurementType = this.state.measurementTypes.find(m => m.code === q?.measurementType?.code);
 
-        console.log("thresholds", thresholds)
+                if (measurementType && measurementType.threshold) {
+                    thresholds.thresholdNumbers?.push(measurementType.threshold)
+                }
+            })
+
+        }
+
         return (
             <IsEmptyCard object={questionnaire} jsxWhenEmpty="Intet spørgeskema blev fundet">
                 <IsEmptyCard list={questions} jsxWhenEmpty="Ingen spørgsmål blev fundet i spørgeskemaet">
@@ -304,8 +312,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                         </Grid>
                     </Grid>
                 </IsEmptyCard>
-                {this.state.callToActions.length > 0 ?
-                    <DialogError iconAtStart={<ErrorIcon />} error={new CallToActionError(this.state.callToActions, () => this.setState({ submitted: true }))} /> :
+                {this.state.callToAction ?
+                    <DialogError iconAtStart={<ErrorIcon />} error={new CallToActionError(this.state.callToAction, () => this.setState({ submitted: true }))} /> :
                     <></>
                 }
             </>
@@ -351,12 +359,12 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             const questionnaireResponse = this.state.questionnaireResponse;
             questionnaireResponse.answeredTime = new Date();
             questionnaireResponse.status = QuestionnaireResponseStatus.NotProcessed
-            const response = await this.questionnaireResponseService.SubmitQuestionnaireResponse(questionnaireResponse) ?? []
+            const response = await this.questionnaireResponseService.SubmitQuestionnaireResponse(questionnaireResponse);
             let submitted = true;
-            if (response.length > 0)
+            if (response.message)
                 submitted = false;
 
-            this.setState({ loadingPage: false, submitted: submitted, callToActions: response })
+            this.setState({ loadingPage: false, submitted: submitted, callToAction: response })
         } catch (error) {
             this.setState(() => { throw error })
         }
