@@ -14,6 +14,7 @@ import { CheckmarkIcon } from '../icons/Icons';
 import { Toast } from '@kvalitetsit/hjemmebehandling/Errorhandling/Toast';
 import AboutPage from '../../pages/about';
 import { Box } from '@mui/material';
+import { Guide, KvikGuide } from '../../pages/guide';
 
 export interface State {
   drawerIsOpen: boolean,
@@ -69,6 +70,9 @@ export class Layout extends Component<{}, State> {
                       <Route path="/measurements" render={(props) => <ObservationPage {...props} />} />
                       <Route path="/contact" render={(props) => <ContactPage {...props} />} />
                       <Route path="/about"><AboutPage /></Route>
+                      <Route path="/kvikguide"><KvikGuide /></Route>
+                      <Route path="/guide"><Guide /></Route>
+
                       <Route path="/" render={(props) => <HomePage {...props} />} />
                     </Switch>
                   </ErrorBoundary>
