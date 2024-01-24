@@ -57,7 +57,7 @@ export default interface IQuestionnaireResponseService {
      * @param questionId the question to search for
      * @returns a question/answer-tuple 
      */
-    GetQuestionAnswerFromMap: (questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string) => QuestionAnswerPair | undefined;
+    GetQuestionAnswerFromMap: (questionToAnswerMap: Map<Question, Answer<any>> | undefined, questionId: string) => QuestionAnswerPair | undefined;
     
 
     /**
@@ -77,8 +77,8 @@ export default interface IQuestionnaireResponseService {
 
 export class QuestionAnswerPair{
     question : Question
-    answer : Answer
-    constructor(question : Question, answer : Answer){
+    answer : Answer<any>
+    constructor(question : Question, answer : Answer<any>){
         this.question = question;
         this.answer = answer;
     }

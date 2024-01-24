@@ -366,7 +366,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return internalPersonContact;
     }
 
-    mapAnswerDto(answerDto: AnswerDto): Answer {
+    mapAnswerDto(answerDto: AnswerDto): Answer<any> {
 
         switch (answerDto.answerType) {
             case AnswerDtoAnswerTypeEnum.Integer:
@@ -385,33 +385,37 @@ export default class ExternalToInternalMapper extends BaseMapper {
     }
 
     mapGroupAnswer(answerDto: AnswerDto): GroupAnswer {
-        const toReturn = new GroupAnswer();
-        toReturn.questionId = answerDto.linkId!;
-        toReturn.subAnswers = [];
+        if (!answerDto.linkId) throw new Error("Id is missing")
+
+        const toReturn = new GroupAnswer(answerDto.linkId);
+        toReturn.answer = [];
 
         answerDto.subAnswers!.map(sa => {
-            toReturn.subAnswers.push(this.mapAnswerDto(sa))
+            toReturn.answer?.push(this.mapAnswerDto(sa))
         })
 
         return toReturn;
     }
     mapStringAnswer(answerDto: AnswerDto): StringAnswer {
-        const toReturn = new StringAnswer();
-        toReturn.questionId = answerDto.linkId!;
+        if (!answerDto.linkId) throw new Error("Id is missing")
+
+        const toReturn = new StringAnswer(answerDto.linkId);
         toReturn.answer = answerDto.value!
         return toReturn;
     }
 
     mapNumberedAnswer(answerDto: AnswerDto): NumberAnswer {
-        const toReturn = new NumberAnswer();
-        toReturn.questionId = answerDto.linkId!;
+        if (!answerDto.linkId) throw new Error("Id is missing")
+
+        const toReturn = new NumberAnswer(answerDto.linkId);
         toReturn.answer = Number.parseFloat(answerDto.value!)
         return toReturn;
     }
 
     mapBooleanAnswer(answerDto: AnswerDto): BooleanAnswer {
-        const toReturn = new BooleanAnswer();
-        toReturn.questionId = answerDto.linkId!;
+        if (!answerDto.linkId) throw new Error("Id is missing")
+
+        const toReturn = new BooleanAnswer(answerDto.linkId);
         const answerValue = answerDto.value?.toLowerCase()
 
         const isTrueOrFalse = answerValue === "true" || answerValue === "false"
@@ -427,7 +431,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         const response = new QuestionnaireResponse();
         //const response = this.getQuestionnaireResponse();
         response.id = FhirUtils.unqualifyId(questionnaireResponseDto.id!);
-        response.questions = new Map<Question, Answer>();
+        response.questions = new Map<Question, Answer<any>>();
 
         for (const pair of questionnaireResponseDto.questionAnswerPairs!) {
             const question = this.mapQuestionDto(pair.question!);
@@ -447,7 +451,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         } else {
             response.category = CategoryEnum.BLUE;
         }
-        if( questionnaireResponseDto.patient == undefined) throw new Error("Missing patient")
+        if (questionnaireResponseDto.patient == undefined) throw new Error("Missing patient")
         response.patient = this.mapPatientDto(questionnaireResponseDto.patient);
         response.questionnaireId = FhirUtils.unqualifyId(questionnaireResponseDto.questionnaireId!)
 
@@ -465,7 +469,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
 
     mapQuestionnaireDto(wrapper: QuestionnaireWrapperDto): Questionnaire {
         const questionnaire = new Questionnaire()
-        if( wrapper.questionnaire?.id == undefined ) throw new Error("Expected an id, but got 'undefind'")
+        if (wrapper.questionnaire?.id == undefined) throw new Error("Expected an id, but got 'undefind'")
         questionnaire.id = wrapper.questionnaire?.id && FhirUtils.unqualifyId(wrapper.questionnaire.id)
         questionnaire.name = wrapper.questionnaire?.title
         questionnaire.frequency = wrapper.frequency && this.mapFrequencyDto(wrapper.frequency)
@@ -496,9 +500,9 @@ export default class ExternalToInternalMapper extends BaseMapper {
         model.address = dto.address && this.mapAddressDto(dto.address)
         model.primaryPhone = dto.phone?.primary
         model.secondaryPhone = dto.phone?.secondary
-        console.log("DTO: " , dto)
-        console.log("model: " , model)
-        
+        console.log("DTO: ", dto)
+        console.log("model: ", model)
+
         return model
     }
 
@@ -512,12 +516,12 @@ export default class ExternalToInternalMapper extends BaseMapper {
         const primaryContact = new PrimaryContact()
         primaryContact.fullname = contact.name ?? ''
         primaryContact.affiliation = contact.affiliation ?? ''
-        primaryContact.contact = contact.contactDetails &&  this.mapContactDetailsDto(contact.contactDetails)
+        primaryContact.contact = contact.contactDetails && this.mapContactDetailsDto(contact.contactDetails)
         primaryContact.organisation = contact.organization
         return primaryContact
     }
 
-    mapAddressDto(dto: AddressDto ): Address {
+    mapAddressDto(dto: AddressDto): Address {
         const model = new Address();
         model.city = dto.city
         model.country = dto.country

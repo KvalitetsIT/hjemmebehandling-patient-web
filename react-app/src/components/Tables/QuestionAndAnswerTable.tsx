@@ -5,7 +5,7 @@ import { Answer, GroupAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer
 import ApiContext from "../../pages/_context";
 
 interface Props {
-    questionAnswerMap: Map<Question, Answer>;
+    questionAnswerMap: Map<Question, Answer<any>>;
     lastRowJsx? : (questionId : string) => JSX.Element;
 }
 
@@ -23,14 +23,14 @@ export default class QuestionAndAnswerTable extends Component<Props, {}>{
             }
         });
 
-        const array: { q: Question, a: Answer }[] = [];
+        const array: { q: Question, a: Answer<any> }[] = [];
         parentQuestions.forEach(question => {
             array.push({ q: question, a: this.props.questionAnswerMap.get(question)! })
 
             if (question.type === QuestionTypeEnum.GROUP) {
                 question.subQuestions?.map(subQuestion => {
                     const answer = this.props.questionAnswerMap.get(question)! as GroupAnswer;
-                    const subAnswer = answer.subAnswers.find(a => a.questionId === subQuestion.Id)
+                    const subAnswer = answer.answer?.find(a => a.questionId === subQuestion.Id)
                     array.push({ q: subQuestion, a: subAnswer! })
                 })
             }

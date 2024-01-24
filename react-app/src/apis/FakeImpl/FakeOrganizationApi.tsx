@@ -14,7 +14,7 @@ export default class FakeCareplanApi extends BaseApi implements IOrganizationApi
         const department = new Department();
         department.name = "Infektionssygdomme"
         department.phoneNumber = "83749382"
-
+        department.id = "Organisation/infektionsmedicinsk"
         const address = new Address();
         address.city = "Aarhus N"
         address.country = "Danmark"

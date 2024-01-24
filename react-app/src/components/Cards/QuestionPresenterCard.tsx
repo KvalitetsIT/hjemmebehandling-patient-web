@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Typography, Button, Box } from '@mui/material';
+import { Grid, Typography, Button, Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import ApiContext, { IApiContext } from "../../pages/_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper"
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
@@ -12,17 +12,17 @@ import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/Thresh
 interface Props {
     question: Question;
     thresholds: ThresholdCollection;
-    answer?: Answer;
-    setQuestionAnswer: (question: Question, answer: Answer) => void;
+    answer?: Answer<any>;
+    setQuestionAnswer: (question: Question, answer: Answer<any>) => void;
 }
 
 interface State {
-    tempAnswer: Answer;
+    tempAnswer: Answer<any>;
     errorArray: InvalidInputModel[];
 }
 export default class QuestionPresenterCard extends Component<Props, State>{
     static contextType = ApiContext
-     
+
     dateHelper!: IDateHelper;
     validationService!: IValidationService;
 
@@ -45,33 +45,31 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         this.updateAnswer = this.updateAnswer.bind(this);
     }
 
-    createInitialAnswer(question: Question): Answer {
-        let answer : Answer;
+    createInitialAnswer(question: Question): Answer<any> {
+
+        if (!question.Id) throw new Error("Question.id is missing / undefined")
+
         switch (question.type) {
             case QuestionTypeEnum.OBSERVATION:
-                answer = new NumberAnswer();
-                break;
+                return new NumberAnswer(question.Id);
+
             case QuestionTypeEnum.INTEGER:
-                answer = new NumberAnswer();
-                break;
+                return new NumberAnswer(question.Id);
+
             case QuestionTypeEnum.CHOICE:
-                answer = new StringAnswer();
-                break;
+                return new StringAnswer(question.Id);
+
             case QuestionTypeEnum.BOOLEAN:
-                answer = new BooleanAnswer();
-                break;
+                return new BooleanAnswer(question.Id);
+
             case QuestionTypeEnum.GROUP:
-                const groupAnswer = new GroupAnswer();
-                groupAnswer.subAnswers = [];
-                question.subQuestions!.map(subQuestion => {
-                    const subAnswer = this.createInitialAnswer(subQuestion);
-                    groupAnswer.subAnswers.push(subAnswer)
-                });
-                answer = groupAnswer
-                break;
+                const groupAnswer = new GroupAnswer(question.Id);
+                groupAnswer.answer = question.subQuestions ? question.subQuestions.map(subQuestion =>  this.createInitialAnswer(subQuestion)) : []
+                return groupAnswer
+
+            default:
+                return new StringAnswer(question.Id)
         }
-        answer!.questionId = question.Id!;
-        return answer!;
     }
 
     initializeServices(): void {
@@ -80,7 +78,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     }
 
     render(): JSX.Element {
-        
+
         this.initializeServices();
         return (
             <>
@@ -92,7 +90,8 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         <Typography variant="subtitle2">{this.props.question.helperText}</Typography>
                     </Grid>
                     <Grid item xs={12} >
-                        <Box sx={{ minHeight:60 }}>
+                        <Box sx={{ minHeight: 60 }}>
+
                             {this.renderQuestionInput(this.props.question)}
                         </Box>
                     </Grid>
@@ -115,10 +114,10 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         const answer = this.state.tempAnswer
         let nextIsDisabled = false;
         nextIsDisabled ||= !answer
-        
+
         let emptyAnswer = true;
         if (this.state.tempAnswer instanceof GroupAnswer) {
-            const empty = this.state.tempAnswer.subAnswers.find(sa => !(sa.AnswerAsString()));
+            const empty = this.state.tempAnswer.answer?.find(sa => !(sa.AnswerAsString()));
             if (!empty) {
                 console.log("disabling buttoin?", empty)
                 emptyAnswer = false
@@ -130,7 +129,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         else {
             const empty = this.state.tempAnswer.AnswerAsString();
             if (empty) {
-                console.log("disabling buttoin?", empty)  
+                console.log("disabling buttoin?", empty)
                 emptyAnswer = false
             }
         }
@@ -161,31 +160,31 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         return (
             <Grid container columnSpacing={2} justifyContent="center" direction={"column"}>
                 <Grid item xs={12}  >
-                {this.props.question.subQuestions?.map((subQuestion, index) => {
-                    const answer = this.state.tempAnswer as GroupAnswer;
-                    const subAnswer = answer.subAnswers.find(a => a.questionId === subQuestion.Id)
-                    console.log("blaaahh", subQuestion, answer, subAnswer)
-                    console.log("")
-                    return (
-                        <Grid container columnSpacing={2} justifyContent="center" direction={"row"}>
-                            <Grid item >
-                            <TextFieldValidation
-                                id={"questionInput_"+index}
-                                onValidation={(uid, errors) => this.onValidation(uid, errors)}
-                                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr,this.props.thresholds)}
-                                required={true}
-                                label="Svar"
-                                type="number"
-                                value={subAnswer?.AnswerAsString()}
-                                onChange={input => this.updateAnswer(subQuestion.Id!, input.target.value)}
-                                uniqueId={index} />
+                    {this.props.question.subQuestions?.map((subQuestion, index) => {
+                        const answer = this.state.tempAnswer as GroupAnswer;
+                        const subAnswer = answer.answer?.find(a => a.questionId === subQuestion.Id)
+                        console.log("blaaahh", subQuestion, answer, subAnswer)
+                        console.log("")
+                        return (
+                            <Grid container columnSpacing={2} justifyContent="center" direction={"row"}>
+                                <Grid item >
+                                    <TextFieldValidation
+                                        id={"questionInput_" + index}
+                                        onValidation={(uid, errors) => this.onValidation(uid, errors)}
+                                        validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, this.props.thresholds)}
+                                        required={true}
+                                        label="Svar"
+                                        type="number"
+                                        value={subAnswer?.AnswerAsString()}
+                                        onChange={input => this.updateAnswer(subQuestion.Id!, input.target.value)}
+                                        uniqueId={index} />
+                                </Grid>
+                                <Grid item>
+                                    <Typography>{subQuestion.question}</Typography>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                            <Typography>{subQuestion.question}</Typography>
-                            </Grid>
-                            </Grid>
-                    )
-                })}
+                        )
+                    })}
                 </Grid>
             </Grid>
         )
@@ -194,14 +193,16 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     getChoiceInput(): JSX.Element {
         return (
             <>
-                {this.props.question.options?.map(option => {
-                    let variant: "contained" | "text" = "text"
-                    if (this.state.tempAnswer.AnswerAsString()?.toLowerCase() === option.toLowerCase())
-                        variant = "contained"
-                    return (
-                        <Button variant={variant} onClick={() => this.updateAnswer(this.state.tempAnswer.questionId, option)}>{option}</Button>
-                    )
-                })}
+                <FormControl>
+                    <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        name="radio-buttons-group"
+                        onChange={x => this.updateAnswer(this.state.tempAnswer.questionId ,x.target.value)}>
+                        {this.props.question.options?.map(option => { return (<FormControlLabel value={option} control={<Radio />} label={option} />) })}
+                    </RadioGroup>
+                </FormControl>
+
+
             </>
         )
     }
@@ -219,7 +220,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         variant = "contained"
 
                     return (
-                        <Button sx={{pt: 2, pb: 2}} variant={variant} onClick={() => this.updateAnswer(this.state.tempAnswer.questionId, optionAsString)}>{option ? "Ja" : "Nej"}</Button>
+                        <Button sx={{ pt: 2, pb: 2 }} variant={variant} onClick={() => this.updateAnswer(this.state.tempAnswer.questionId, optionAsString)}>{option ? "Ja" : "Nej"}</Button>
                     )
                 })}
             </>
@@ -231,7 +232,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             <TextFieldValidation
                 id="questionInput"
                 onValidation={(uid, errors) => this.onValidation(uid, errors)}
-                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr,this.props.thresholds)}
+                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, this.props.thresholds)}
                 required={true}
                 label="Svar"
                 type="number"
@@ -242,8 +243,8 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     }
 
     updateAnswer(questionId: string, answerValue: string): void {
-        console.log("ugf")
-        let answer : Answer;
+
+        let answer: Answer<any>;
 
         if (this.state.tempAnswer instanceof NumberAnswer) {
             const tmpAnswer = this.state.tempAnswer as NumberAnswer;
@@ -263,7 +264,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         }
         else if (this.state.tempAnswer instanceof GroupAnswer) {
             const tmpAnswer = this.state.tempAnswer as GroupAnswer;
-            const subAnswer = tmpAnswer.subAnswers.find(a => a.questionId === questionId);
+            const subAnswer = tmpAnswer.answer?.find(a => a.questionId === questionId);
             console.log("updateAnswer: group", tmpAnswer, subAnswer)
             if (subAnswer instanceof NumberAnswer) {
                 subAnswer.answer = parseFloat(answerValue);
@@ -276,7 +277,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             }
             answer = tmpAnswer;
         }
-        
+
         this.setState({ tempAnswer: answer! });
     }
 

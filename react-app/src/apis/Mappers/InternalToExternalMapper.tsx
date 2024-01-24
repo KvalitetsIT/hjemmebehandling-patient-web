@@ -31,16 +31,17 @@ export default class InternalToExternalMapper extends BaseMapper {
         return toReturn;
     }
 
-    mapQuestionAnswerPair(questions: Map<Question, Answer> | undefined): QuestionAnswerPairDto[] | undefined {
+    mapQuestionAnswerPair(questions: Map<Question, Answer<any>> | undefined): QuestionAnswerPairDto[] | undefined {
         const toReturn: QuestionAnswerPairDto[] = []
         questions?.forEach((answer, question) => {
 
             const answerType = this.mapAnswerType(answer)
+
             const value = this.mapAnswerValue(answer)
             
             let subAnswers: AnswerDto[] = [];
             if (answer instanceof GroupAnswer) {
-                answer.subAnswers?.map(sa => {
+                answer.answer?.map(sa => {
                     subAnswers.push({
                         linkId: sa.questionId,
                         answerType: this.mapAnswerType(sa),
@@ -48,7 +49,6 @@ export default class InternalToExternalMapper extends BaseMapper {
                     })
                 })
             }
-            
             
             const qapair: QuestionAnswerPairDto = {
                 answer: {
@@ -84,7 +84,7 @@ export default class InternalToExternalMapper extends BaseMapper {
 
     }
 
-    mapAnswerType(answer: Answer): AnswerDtoAnswerTypeEnum {
+    mapAnswerType(answer: Answer<any>): AnswerDtoAnswerTypeEnum {
         if (answer instanceof NumberAnswer)
             return AnswerDtoAnswerTypeEnum.Quantity
 
@@ -100,7 +100,7 @@ export default class InternalToExternalMapper extends BaseMapper {
         throw new Error('Could not map answer')
     }
 
-    mapAnswerValue(answer: Answer): string {
+    mapAnswerValue(answer: Answer<any>): string {
         let value = '';
         if (answer instanceof NumberAnswer) {
             value = answer.ToString();

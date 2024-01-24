@@ -108,7 +108,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         const questionnaireResponse = new QuestionnaireResponse();
         questionnaireResponse.questionnaireId = this.props.match.params.questionnaireId;
         questionnaireResponse.carePlanId = careplan!.id!
-        questionnaireResponse.questions = new Map<Question, Answer>();
+        questionnaireResponse.questions = new Map<Question, Answer<any>>();
         questionnaireResponse.status = QuestionnaireResponseStatus.NotAnswered;
         questionnaireResponse.patient = careplan.patient!;
         this.setState({ questionnaireResponse: questionnaireResponse });
@@ -219,7 +219,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             const questionAnswerTuple = this.questionnaireResponseService.GetQuestionAnswerFromMap(this.state.questionnaireResponse.questions, question.enableWhen.questionId);
             const booleanAnswer: BooleanAnswer = questionAnswerTuple?.answer as BooleanAnswer;
 
-            if (booleanAnswer) {
+            if (booleanAnswer.answer) {
                 const shouldShowQuestion = question?.enableWhen?.ShouldBeEnabled(booleanAnswer.answer)
                 return shouldShowQuestion
             }
@@ -320,7 +320,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         )
     }
 
-    setAnswerToQuestion(question: Question, answer: Answer): void {
+    setAnswerToQuestion(question: Question, answer: Answer<any>): void {
         const response = this.state.questionnaireResponse;
 
         const oldAnswer = response.questions?.get(question); //When you answered all questions, and go back to a question again - You will have an oldAnswer

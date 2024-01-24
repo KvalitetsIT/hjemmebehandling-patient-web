@@ -24,7 +24,7 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         questionnaireResponse1.examinedTime = this.getDate();
         questionnaireResponse1.status = QuestionnaireResponseStatus.Processed
 
-        questionnaireResponse1.questions = new Map<Question, Answer>();
+        questionnaireResponse1.questions = new Map<Question, Answer<any>>();
 
         const question1 = new Question();
         question1.question = "Hvad er din temperatur?"
@@ -32,7 +32,7 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         question1.type = QuestionTypeEnum.OBSERVATION
         question1.Id = "temp"
 
-        const answer1 = new NumberAnswer();
+        const answer1 = new NumberAnswer("answer1");
         answer1.answer = 37;
         questionnaireResponse1.questions.set(question1, answer1);
 
@@ -42,7 +42,7 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         question2.type = QuestionTypeEnum.OBSERVATION
         question2.Id = "CRP"
 
-        const answer2 = new NumberAnswer();
+        const answer2 = new NumberAnswer("answer2");
         answer2.answer = 8;
         questionnaireResponse1.questions.set(question2, answer2);
 
@@ -52,7 +52,7 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         question3.type = QuestionTypeEnum.BOOLEAN;
         question3.Id = "betterToday"
 
-        const answer3 = new BooleanAnswer();
+        const answer3 = new BooleanAnswer("answer3");
         answer3.answer = true
 
         questionnaireResponse1.questions.set(question3, answer3);
@@ -67,19 +67,18 @@ export default class FakeQuestionnaireResponseApi implements IQuestionnaireRespo
         questionnaireResponse2.answeredTime = this.getDate()
         questionnaireResponse2.status = QuestionnaireResponseStatus.NotAnswered
 
-        questionnaireResponse2.questions = new Map<Question, Answer>();
+        questionnaireResponse2.questions = new Map<Question, Answer<any>>();
 
-        const answerb1 = new NumberAnswer();
+        const answerb1 = new NumberAnswer("answer1");
         answerb1.answer = 20;
         questionnaireResponse2.questions.set(question1, answerb1);
 
 
-
-        const answerb2 = new NumberAnswer();
+        const answerb2 = new NumberAnswer("answer2");
         answerb2.answer = 12;
         questionnaireResponse2.questions.set(question2, answerb2);
 
-        const answerb3 = new BooleanAnswer();
+        const answerb3 = new BooleanAnswer("answer3");
         answerb3.answer = true
 
         questionnaireResponse2.questions.set(question3, answerb3);

@@ -26,8 +26,8 @@ export default class QuestionnaireResponseService extends BaseService implements
         this.api = api;
         this.datehelper = datehelper;
     }
-    GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer> | undefined, questionId: string): QuestionAnswerPair | undefined {
-        let toReturn: { question: Question, answer: Answer } | undefined = undefined;
+    GetQuestionAnswerFromMap(questionToAnswerMap: Map<Question, Answer<any>> | undefined, questionId: string): QuestionAnswerPair | undefined {
+        let toReturn: { question: Question, answer: Answer<any> } | undefined = undefined;
         questionToAnswerMap?.forEach((answer, question) => {
             if (question.Id === questionId)
                 toReturn = new QuestionAnswerPair(question, answer);
