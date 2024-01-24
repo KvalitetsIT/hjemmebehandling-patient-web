@@ -357,6 +357,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         this.setState({ loadingPage: true })
         try {
             const questionnaireResponse = this.state.questionnaireResponse;
+            console.log(questionnaireResponse)
+            console.log("questionnaireResponse", questionnaireResponse)
             questionnaireResponse.answeredTime = new Date();
             questionnaireResponse.status = QuestionnaireResponseStatus.NotProcessed
             const response = await this.questionnaireResponseService.SubmitQuestionnaireResponse(questionnaireResponse);

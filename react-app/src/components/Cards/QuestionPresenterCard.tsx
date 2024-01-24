@@ -201,8 +201,6 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         {this.props.question.options?.map(option => { return (<FormControlLabel value={option} control={<Radio />} label={option} />) })}
                     </RadioGroup>
                 </FormControl>
-
-
             </>
         )
     }

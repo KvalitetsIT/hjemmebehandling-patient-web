@@ -1,4 +1,4 @@
-import { Answer, BooleanAnswer, GroupAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
+import { Answer, BooleanAnswer, ChoiceAnswer, GroupAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
 import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
 import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
 import { DayEnum, Frequency } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
@@ -31,6 +31,7 @@ export default class InternalToExternalMapper extends BaseMapper {
         return toReturn;
     }
 
+
     mapQuestionAnswerPair(questions: Map<Question, Answer<any>> | undefined): QuestionAnswerPairDto[] | undefined {
         const toReturn: QuestionAnswerPairDto[] = []
         questions?.forEach((answer, question) => {
@@ -38,7 +39,7 @@ export default class InternalToExternalMapper extends BaseMapper {
             const answerType = this.mapAnswerType(answer)
 
             const value = this.mapAnswerValue(answer)
-            
+
             let subAnswers: AnswerDto[] = [];
             if (answer instanceof GroupAnswer) {
                 answer.answer?.map(sa => {
@@ -49,7 +50,7 @@ export default class InternalToExternalMapper extends BaseMapper {
                     })
                 })
             }
-            
+
             const qapair: QuestionAnswerPairDto = {
                 answer: {
                     linkId: question.Id,
@@ -101,11 +102,9 @@ export default class InternalToExternalMapper extends BaseMapper {
     }
 
     mapAnswerValue(answer: Answer<any>): string {
-        let value = '';
-        if (answer instanceof NumberAnswer) {
-            value = answer.ToString();
-        }
-        else if (answer instanceof BooleanAnswer) {
+        let value = answer.ToString();
+        
+        if (answer instanceof BooleanAnswer) {
             value = answer.ToString() === 'Ja' ? 'true' : 'false'
         }
 
