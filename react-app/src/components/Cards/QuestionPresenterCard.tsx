@@ -158,15 +158,14 @@ export default class QuestionPresenterCard extends Component<Props, State>{
 
     getGroupInput(): JSX.Element {
         return (
-            <Grid container columnSpacing={2} justifyContent="center" direction={"column"}>
-                <Grid item xs={12}  >
-                    {this.props.question.subQuestions?.map((subQuestion, index) => {
-                        const answer = this.state.tempAnswer as GroupAnswer;
-                        const subAnswer = answer.answer?.find(a => a.questionId === subQuestion.Id)
-                        console.log("blaaahh", subQuestion, answer, subAnswer)
-                        console.log("")
-                        return (
-                            <Grid container columnSpacing={2} justifyContent="center" direction={"row"}>
+            <Grid container spacing={1} justifyContent="center" direction={"column"}>
+                {this.props.question.subQuestions?.map((subQuestion, index) => {
+                    const answer = this.state.tempAnswer as GroupAnswer;
+                    const subAnswer = answer.answer?.find(a => a.questionId === subQuestion.Id)
+                    
+                    return (
+                        <Grid item xs={12}  >
+                            <Grid container spacing={2} justifyContent="center" direction={"row"}>
                                 <Grid item >
                                     <TextFieldValidation
                                         id={"questionInput_" + index}
@@ -180,12 +179,12 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                                         uniqueId={index} />
                                 </Grid>
                                 <Grid item>
-                                    <Typography>{subQuestion.question}</Typography>
+                                    <Typography>{subQuestion.measurementType?.displayName}</Typography>
                                 </Grid>
                             </Grid>
-                        )
-                    })}
-                </Grid>
+                        </Grid>
+                    )
+                })}
             </Grid>
         )
     }
