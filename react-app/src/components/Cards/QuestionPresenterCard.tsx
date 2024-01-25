@@ -158,29 +158,27 @@ export default class QuestionPresenterCard extends Component<Props, State>{
 
     getGroupInput(): JSX.Element {
         return (
-            <Grid container spacing={1} justifyContent="center" direction={"column"}>
+            <Grid container spacing={1} >
                 {this.props.question.subQuestions?.map((subQuestion, index) => {
                     const answer = this.state.tempAnswer as GroupAnswer;
                     const subAnswer = answer.answer?.find(a => a.questionId === subQuestion.Id)
                     
                     return (
-                        <Grid item xs={12}  >
-                            <Grid container spacing={2} justifyContent="center" direction={"row"}>
-                                <Grid item >
-                                    <TextFieldValidation
-                                        id={"questionInput_" + index}
-                                        onValidation={(uid, errors) => this.onValidation(uid, errors)}
-                                        validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, this.props.thresholds)}
-                                        required={true}
-                                        label="Svar"
-                                        type="number"
-                                        value={subAnswer?.AnswerAsString()}
-                                        onChange={input => this.updateAnswer(subQuestion.Id!, input.target.value)}
-                                        uniqueId={index} />
-                                </Grid>
-                                <Grid item>
-                                    <Typography>{subQuestion.measurementType?.displayName}</Typography>
-                                </Grid>
+                        <Grid container item spacing={1} justifyContent={"center"} alignItems="center" direction={"row"}>
+                            <Grid item xs={7} sx={{display: "flex", justifyContent:"flex-end"}}>
+                                <TextFieldValidation
+                                    id={"questionInput_" + index}
+                                    onValidation={(uid, errors) => this.onValidation(uid, errors)}
+                                    validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, this.props.thresholds)}
+                                    required={true}
+                                    label="Svar"
+                                    type="number"
+                                    value={subAnswer?.AnswerAsString()}
+                                    onChange={input => this.updateAnswer(subQuestion.Id!, input.target.value)}
+                                    uniqueId={index} />
+                            </Grid>
+                            <Grid item xs sx={{display: "flex", justifyContent: "flex-start"}}>
+                                <Typography>{subQuestion.measurementType?.displayName}</Typography>
                             </Grid>
                         </Grid>
                     )

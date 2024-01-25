@@ -31,15 +31,15 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         this.measurementTypeTemperatur.code = "Temp"
         this.measurementTypeTemperatur.system = "system"
 
-        this.measurementTypeSystolisk.displayName = "SYS"
+        this.measurementTypeSystolisk.displayName = "Blodtryk systolsk;Arm"
         this.measurementTypeSystolisk.code = "SYS"
         this.measurementTypeSystolisk.system = "system"
 
-        this.measurementTypeDiastolisk.displayName = "DIA"
+        this.measurementTypeDiastolisk.displayName = "Blodtryk diastolsk;Arm"
         this.measurementTypeDiastolisk.code = "DIA"
         this.measurementTypeDiastolisk.system = "system"
 
-        this.measurementTypePuls.displayName = "PUL"
+        this.measurementTypePuls.displayName = "Puls;Hjerte"
         this.measurementTypePuls.code = "PUL"
         this.measurementTypePuls.system = "system"
         
@@ -261,17 +261,17 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
 
         const questionBlodtrykSys = new Question();
         questionBlodtrykSys.Id = "blodtryk_sys"
-        questionBlodtrykSys.question = "sys?"
+        questionBlodtrykSys.question = ""
         questionBlodtrykSys.type = QuestionTypeEnum.OBSERVATION
         questionBlodtrykSys.measurementType = this.measurementTypeSystolisk;
         const questionBlodtrykDia = new Question();
         questionBlodtrykDia.Id = "blodtryk_dia"
-        questionBlodtrykDia.question = "dia?"
+        questionBlodtrykDia.question = ""
         questionBlodtrykDia.type = QuestionTypeEnum.OBSERVATION
         questionBlodtrykDia.measurementType = this.measurementTypeDiastolisk
         const questionBlodtrykPul = new Question();
         questionBlodtrykPul.Id = "blodtryk_pul"
-        questionBlodtrykPul.question = "pul?"
+        questionBlodtrykPul.question = ""
         questionBlodtrykPul.type = QuestionTypeEnum.OBSERVATION
         questionBlodtrykPul.measurementType = this.measurementTypePuls
         

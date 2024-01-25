@@ -57,8 +57,8 @@ export default class QuestionAndAnswerTable extends Component<Props, {}>{
                         {array.map(questionAnswer => {
                             return (
                                 <TableRow>
-                                    <TableCell>{questionAnswer.q.question}</TableCell>
-                                    <TableCell>{questionAnswer.a.ToString()}</TableCell>
+                                    <TableCell>{questionAnswer.q.question ? questionAnswer.q.question : questionAnswer.q.measurementType?.displayName}</TableCell>
+                                    <TableCell>{questionAnswer.a instanceof GroupAnswer ? "": questionAnswer.a.ToString()}</TableCell>
                                     {this.props.lastRowJsx ? <TableCell>{this.props.lastRowJsx(questionAnswer.q.Id!)}</TableCell> : <></>}
                                 </TableRow>
                             )
