@@ -3,13 +3,18 @@ import { Document, Page } from 'react-pdf';
 import { ExternalLinkTarget } from 'react-pdf/dist/cjs/shared/types';
 import { pdfjs } from 'react-pdf';
 import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from '@mui/material';
+import { fileURLToPath } from 'url';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
+    '//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.js',
     import.meta.url,
 ).toString();
 
-export function PdfViewer(props: { title?: String, file: String }) {
+console.log(import.meta.url)
+console.log(pdfjs.GlobalWorkerOptions.workerSrc)
+
+
+export function PdfViewer(props: { title?: string, file: string }) {
     const [numPages, setNumPages] = useState<number>();
     const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -48,7 +53,7 @@ export function PdfViewer(props: { title?: String, file: String }) {
 
         const handleResize = () => {
             console.log("Resize")
-            setDimensions(getDimensions())
+            setDimensions({height:800,width:600})
         }
         window.addEventListener("resize", handleResize)
         handleResize()
@@ -73,7 +78,7 @@ export function PdfViewer(props: { title?: String, file: String }) {
                 </CardHeader>
                 <CardContent>
                     <CardMedia id={"viewer"}>
-                        <Document renderMode='canvas' file={"/kvikguide.pdf"} onLoadSuccess={onDocumentLoadSuccess} onLoadError={console.error}>
+                        <Document renderMode='canvas' file={props.file} onLoadSuccess={onDocumentLoadSuccess} onLoadError={console.error}>
                             <Page height={dimensions.height} width={dimensions.width} renderAnnotationLayer={false} renderTextLayer={false} pageNumber={pageNumber} />
                         </Document>
                     </CardMedia>
