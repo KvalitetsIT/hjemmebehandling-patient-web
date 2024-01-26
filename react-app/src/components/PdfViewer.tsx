@@ -53,7 +53,7 @@ export function PdfViewer(props: { title?: string, file: string }) {
 
         const handleResize = () => {
             console.log("Resize")
-            setDimensions({height:800,width:600})
+            setDimensions({height:800,width:550})
         }
         window.addEventListener("resize", handleResize)
         handleResize()
