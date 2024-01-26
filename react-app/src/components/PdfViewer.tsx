@@ -73,7 +73,7 @@ export function PdfViewer(props: { title?: String, file: String }) {
                 </CardHeader>
                 <CardContent>
                     <CardMedia id={"viewer"}>
-                        <Document renderMode='canvas' file={"/kvikguide.pdf"} onLoadSuccess={onDocumentLoadSuccess}>
+                        <Document renderMode='canvas' file={"/kvikguide.pdf"} onLoadSuccess={onDocumentLoadSuccess} onLoadError={console.error}>
                             <Page height={dimensions.height} width={dimensions.width} renderAnnotationLayer={false} renderTextLayer={false} pageNumber={pageNumber} />
                         </Document>
                     </CardMedia>
