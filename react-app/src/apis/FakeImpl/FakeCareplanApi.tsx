@@ -252,10 +252,28 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
 
         questionnaire3.questions = [];
         //questionnaire2.staticReviewSummaryHtml = ""
+        const t3 = new ThresholdCollection();
+        t3.questionId = "blodtryk_sys"
+        const t3green = new ThresholdNumber();
+        t3green.category = CategoryEnum.GREEN;
+        t3green.from = 0;
+        t3green.to = 25;
+        const t3yellow = new ThresholdNumber();
+        t3yellow.category = CategoryEnum.YELLOW;
+        t3yellow.from = 25;
+        t3yellow.to = 50;
+        const t3red = new ThresholdNumber();
+        t3red.category = CategoryEnum.RED;
+        t3red.from = 50;
+        t3red.to = 100;
+
+
+        t3.thresholdNumbers = [t3green, t3yellow, t3red]
+        questionnaire3.thresholds = [t3];
 
         const questionBlodtryk = new Question();
         questionBlodtryk.Id = "blodtryk"
-        questionBlodtryk.question = "Intast blodtryk?"
+        questionBlodtryk.question = "Intast blodtryk?xx"
         questionBlodtryk.helperText = "SYS er det øverste tal på blodtryksapparatet, DIA er det mellemste tal og PUL er det nederste."
         questionBlodtryk.type = QuestionTypeEnum.GROUP
 

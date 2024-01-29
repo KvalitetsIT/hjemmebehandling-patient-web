@@ -4,12 +4,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
-import { CardHeader, Grid, Skeleton } from '@mui/material';
+import { CardHeader, Divider, Grid, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { Questionnaire } from '@kvalitetsit/hjemmebehandling/Models/Questionnaire';
 import { QuestionnaireResponse } from '@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse';
 import ApiContext, { IApiContext } from '../../pages/_context';
 import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
-import { NumberAnswer } from '@kvalitetsit/hjemmebehandling/Models/Answer';
+import { GroupAnswer, NumberAnswer } from '@kvalitetsit/hjemmebehandling/Models/Answer';
 import { Question, QuestionTypeEnum } from '@kvalitetsit/hjemmebehandling/Models/Question';
 import ResponseViewCard from '@kvalitetsit/hjemmebehandling/Charts/ResponseViewCard';
 import ChartData from '@kvalitetsit/hjemmebehandling/Charts/ChartData';
@@ -111,7 +111,7 @@ export class ObservationCard extends Component<Props, State> {
             let question = questionIterator?.next()
 
             while (!question?.done) {
-                if (question?.value.type === QuestionTypeEnum.OBSERVATION)
+                if (question?.value.type === QuestionTypeEnum.OBSERVATION || question?.value.type === QuestionTypeEnum.GROUP)
                     allQuestions.push(question?.value)
                 question = questionIterator?.next()
             }
@@ -172,25 +172,106 @@ export class ObservationCard extends Component<Props, State> {
                     const dateToString = (date: Date) => this.dateHelper.DateToString(date, { showDate: true, showTime: true, showMonth: true, showYear: false });
                     const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
                     
+                    let rows: string[] = [];
+                    let groupData: (string | number | undefined)[][] = [];
+                    let groupHeader: string[] = ['Dato'];
+                    if (question.type === QuestionTypeEnum.GROUP) {
+                        const sorted = this.state.questionnaireResponses.sort((a, b) => a.answeredTime && b.answeredTime ? a.answeredTime.compareTo(b.answeredTime) : 0)
+
+                        question.subQuestions?.forEach(sq => {
+                            groupHeader.push(sq.measurementType?.displayName!)
+                            rows.push(sq.Id!)
+                        })
+                        
+                        sorted.forEach(qr => {
+                            const questionnaireQuestion = Array.from(qr.questions!.keys()).find(x => x.Id === question.Id);
+                            const answer = qr.questions!.get(questionnaireQuestion!) as GroupAnswer | undefined
+
+                            if (answer) {
+                                let row: (string|number|undefined)[] = [];
+                                row.push(dateToString(qr.answeredTime!));
+                                
+                                for (let i = 0; i < rows.length; i++) {
+                                    const subQuestionId = rows[i];
+                                    const subAnswer = answer!.answer?.find(sa => sa.questionId === subQuestionId) as NumberAnswer;
+                                    
+                                    row.push(subAnswer!.answer!)
+                                }
+                                groupData.push(row)
+                            }
+
+                        })
+                    }
                     const subheader = question.abbreviation ?? question.question ?? "";
                     return (
                         <Grid paddingLeft={isFirst ? 0 : 2} item xs={12}>
                             {/* <ResponseViewCard chartData={chartData} /> */}  
                             
-                            <ResponseViewCard
-                                chartData={chartData}
-                                graph={<LineChart renderChart={(options, data, plugins) => <Line style={{ minHeight: "400px", maxHeight: "600px" }} plugins={plugins} options={options} data={data as any} />} chartData={chartData} />}
-                                table={<TableChart chartData={chartData} />}
-                            />
-
-                            <IsEmptyCard object={threshold} jsxWhenEmpty="Ingen alarmgrænser">
-                                <Card marginTop={1} component={Box}>
-                                    <CardHeader subheader={subheader + " - Alarmgrænser"} />
+                            {question.type === QuestionTypeEnum.OBSERVATION ?
+                                <ResponseViewCard
+                                    chartData={chartData}
+                                    graph={<LineChart renderChart={(options, data, plugins) => <Line style={{ minHeight: "400px", maxHeight: "600px" }} plugins={plugins} options={options} data={data as any} />} chartData={chartData} />}
+                                    table={<TableChart chartData={chartData} />}
+                                />
+                                :
+                                <Card>
+                                    <CardHeader subheader={<Typography variant="h6" fontWeight="bold">{chartData.label}</Typography>} />
+                                    <Divider />
                                     <CardContent>
-                                        {threshold && threshold.thresholdNumbers ? <ThresholdSlider threshold={threshold.thresholdNumbers} question={question} /> : <></>}
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    {groupHeader.map(value => {
+                                                        return (
+                                                            <TableCell>{value}</TableCell>
+                                                        )
+                                                    })}
+
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {groupData.map((row, i) => {
+                                                    return (
+                                                        <TableRow>
+                                                            {row.map(value => {
+                                                               return (
+                                                                   <TableCell>{value}</TableCell>
+                                                                ) 
+                                                            })}
+                                                        </TableRow>
+                                                    )
+                                                })}
+                                            </TableBody>
+                                        </Table>
                                     </CardContent>
                                 </Card>
-                            </IsEmptyCard>
+                            }
+
+                            <Card marginTop={1} component={Box}>
+                                <CardHeader subheader={subheader + " - Alarmgrænser"} />
+                                <Divider />
+                                <CardContent>
+                                    {question.type === QuestionTypeEnum.OBSERVATION && threshold && threshold.thresholdNumbers ? <ThresholdSlider threshold={threshold.thresholdNumbers} question={question} /> : <></>}
+                                    {question.type === QuestionTypeEnum.GROUP ?
+                                    <>
+                                    {question.subQuestions?.map(subQuestion => {
+                                        const subQuestionThreshold = this.props.questionnaire!.thresholds?.find(x => x.questionId === subQuestion.Id)
+                                        console.log("find threshold", subQuestion.Id, subQuestionThreshold)
+                                        if (subQuestionThreshold && subQuestionThreshold.thresholdNumbers) {
+                                            return (
+                                                <ThresholdSlider threshold={subQuestionThreshold?.thresholdNumbers} question={subQuestion} displayType={subQuestion.measurementType?.displayName}/>
+                                            )
+                                        }
+                                        else {
+                                            <></>
+                                        }
+                                    })}
+                                    </>
+                                    :
+                                    <></>
+                                }
+                                </CardContent>
+                            </Card>
                         </Grid>
                     )
                 })}
