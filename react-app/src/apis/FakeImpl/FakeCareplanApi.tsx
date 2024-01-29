@@ -195,7 +195,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         question4.type = QuestionTypeEnum.CHOICE
         question4.helperText = "Vælg en af de følgende valgmuligheder"
         question4.question = "Hvor mange måltider får du dagligt?"
-        question4.options = ["1", "2",  "3"]
+        question4.options = [{option: "1", comment:"", triage: CategoryEnum.GREEN}, {option: "2", comment:"", triage: CategoryEnum.YELLOW},{option: "3", comment:"", triage: CategoryEnum.RED}]
 
 
         const question5= new Question();
@@ -203,7 +203,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         question5.type = QuestionTypeEnum.CHOICE
         question5.helperText = "Slutter dit CPR-nummer på ulige er du 'mand', ellers er du 'kvinde'"
         question5.question = "Er du mand eller kvinde?"
-        question5.options = ["Mand", "Kvinde"]
+        question5.options = [{option: "Mand", comment:"", triage: CategoryEnum.GREEN}, {option: "Kvinde", comment:"", triage: CategoryEnum.RED}]
 
 
         questionnaire.questions[4] = question5;
@@ -238,8 +238,8 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         const questionb3 = new Question();
         questionb3.Id = "umad"
         questionb3.question = "Føler du dig sur, fordi lastbilchaufører er sure?"
-        questionb3.type = QuestionTypeEnum.CHOICE
-        questionb3.options = ["Ja", "Nej"]
+        questionb3.type = QuestionTypeEnum.BOOLEAN
+        //questionb3.options = ["Ja", "Nej"]
         questionnaire2.questions[2] = question3;
 
 
@@ -413,7 +413,7 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         questionb3.Id = "umad"
         questionb3.question = "Føler du dig sur, fordi lastbilchaufører er sure?"
         questionb3.type = QuestionTypeEnum.CHOICE
-        questionb3.options = ["Ja", "Nej"]
+        questionb3.options = [{option: "Ja", comment: "Kommentar", triage: CategoryEnum.BLUE}, {option: "Nej", comment: "Kommentar", triage: CategoryEnum.BLUE}]
         questionnaire2.questions[2] = question3;
 
 

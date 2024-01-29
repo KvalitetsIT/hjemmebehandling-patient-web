@@ -24,6 +24,7 @@ import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallTo
 import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
 import { ThresholdNumber } from "@kvalitetsit/hjemmebehandling/Models/ThresholdNumber";
 import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
+import { common } from "@mui/material/colors";
 
 
 /**
@@ -208,10 +209,16 @@ export default class ExternalToInternalMapper extends BaseMapper {
             question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])
         }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {
-            question.options = ["Ja", "Nej"]
+            question.options = [{option: "Ja", comment: "", triage:  CategoryEnum.BLUE}, {option: "Nej", comment: "", triage:  CategoryEnum.RED}]
         }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Choice) {
-            question.options = questionDto.options
+            question.options = questionDto.options?.map(x => {
+                return {
+                    option: x.option ?? "", 
+                    comment: x.comment ?? "", 
+                    triage: CategoryEnum.BLUE
+                }
+            })
         }
         if (questionDto.measurementType !== undefined) {
             question.measurementType = this.mapMeasurementType(questionDto.measurementType);

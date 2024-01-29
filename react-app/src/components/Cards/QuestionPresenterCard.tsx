@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Typography, Button, Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Grid, Typography, Button, Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from '@mui/material';
 import ApiContext, { IApiContext } from "../../pages/_context";
 import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper"
 import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
@@ -64,7 +64,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
 
             case QuestionTypeEnum.GROUP:
                 const groupAnswer = new GroupAnswer(question.Id);
-                groupAnswer.answer = question.subQuestions ? question.subQuestions.map(subQuestion =>  this.createInitialAnswer(subQuestion)) : []
+                groupAnswer.answer = question.subQuestions ? question.subQuestions.map(subQuestion => this.createInitialAnswer(subQuestion)) : []
                 return groupAnswer
 
             default:
@@ -162,10 +162,10 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                 {this.props.question.subQuestions?.map((subQuestion, index) => {
                     const answer = this.state.tempAnswer as GroupAnswer;
                     const subAnswer = answer.answer?.find(a => a.questionId === subQuestion.Id)
-                    
+
                     return (
                         <Grid container item spacing={1} justifyContent={"center"} alignItems="center" direction={"row"}>
-                            <Grid item xs={7} sx={{display: "flex", justifyContent:"flex-end"}}>
+                            <Grid item xs={7} sx={{ display: "flex", justifyContent: "flex-end" }}>
                                 <TextFieldValidation
                                     id={"questionInput_" + index}
                                     onValidation={(uid, errors) => this.onValidation(uid, errors)}
@@ -177,7 +177,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                                     onChange={input => this.updateAnswer(subQuestion.Id!, input.target.value)}
                                     uniqueId={index} />
                             </Grid>
-                            <Grid item xs sx={{display: "flex", justifyContent: "flex-start"}}>
+                            <Grid item xs sx={{ display: "flex", justifyContent: "flex-start" }}>
                                 <Typography>{subQuestion.measurementType?.displayName}</Typography>
                             </Grid>
                         </Grid>
@@ -194,8 +194,8 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         name="radio-buttons-group"
-                        onChange={x => this.updateAnswer(this.state.tempAnswer.questionId ,x.target.value)}>
-                        {this.props.question.options?.map(option => { return (<FormControlLabel value={option} control={<Radio />} label={option} />) })}
+                        onChange={x => this.updateAnswer(this.state.tempAnswer.questionId, x.target.value)}>
+                        {this.props.question.options?.map(option => { return (<FormControlLabel value={option} control={<Radio />} label={<Stack justifyContent="start"><Typography fontWeight={"bold"}>{option.option}</Typography>{ (option.comment !== undefined  || option.comment !== "") && <Typography>{option.comment}</Typography>}</Stack>} />) })}
                     </RadioGroup>
                 </FormControl>
             </>
