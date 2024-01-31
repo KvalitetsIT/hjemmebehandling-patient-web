@@ -119,7 +119,6 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         if (this.state.tempAnswer instanceof GroupAnswer) {
             const empty = this.state.tempAnswer.answer?.find(sa => !(sa.AnswerAsString()));
             if (!empty) {
-                console.log("disabling buttoin?", empty)
                 emptyAnswer = false
             }
         }
@@ -129,7 +128,6 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         else {
             const empty = this.state.tempAnswer.AnswerAsString();
             if (empty) {
-                console.log("disabling buttoin?", empty)
                 emptyAnswer = false
             }
         }
@@ -194,8 +192,9 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         name="radio-buttons-group"
+                        defaultValue={this.state.tempAnswer.answer}
                         onChange={x => this.updateAnswer(this.state.tempAnswer.questionId, x.target.value)}>
-                        {this.props.question.options?.map(option => { return (<FormControlLabel value={option} control={<Radio />} label={<Stack justifyContent="start"><Typography fontWeight={"bold"}>{option.option}</Typography>{ (option.comment !== undefined  || option.comment !== "") && <Typography>{option.comment}</Typography>}</Stack>} />) })}
+                        {this.props.question.options?.map(option => { return (<FormControlLabel value={option.option} control={<Radio />} label={<Stack justifyContent="start"><Typography fontWeight={"bold"}>{option.option}</Typography>{ (option.comment !== undefined  || option.comment !== "") && <Typography>{option.comment}</Typography>}</Stack>} />) })}
                     </RadioGroup>
                 </FormControl>
             </>

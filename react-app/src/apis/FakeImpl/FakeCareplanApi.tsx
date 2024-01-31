@@ -296,7 +296,26 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         questionBlodtryk.subQuestions = [questionBlodtrykSys, questionBlodtrykDia, questionBlodtrykPul]
         questionnaire3.questions[0] = questionBlodtryk;
 
-        careplan.questionnaires = [questionnaire3, questionnaire, questionnaire2]
+        const questionnaire4 = new Questionnaire();
+        questionnaire4.id = "infektionsmedicinsk-q4"
+        questionnaire4.name = "multiple-choice"
+        questionnaire4.frequency = new Frequency();
+        questionnaire4.frequency.days = [DayEnum.Thursday]
+        questionnaire4.frequency.deadline = "11:00"
+
+        const kage = new Question();
+        kage.Id = "kage"
+        kage.question = "Favoritkage";
+        kage.type = QuestionTypeEnum.CHOICE;
+
+        const kage1 = { option: "kiks", comment: "kiks er godt", triage: CategoryEnum.BLUE }
+        const kage2 = { option: "kage", comment: "kage er bedre", triage: CategoryEnum.BLUE }
+        
+        kage.options = [kage1, kage2]
+
+        questionnaire4.questions = [kage]
+
+        careplan.questionnaires = [questionnaire4, questionnaire3, questionnaire, questionnaire2]
 
         careplan.organization = new SimpleOrganization();
         careplan.organization.id = "someOrgId"
