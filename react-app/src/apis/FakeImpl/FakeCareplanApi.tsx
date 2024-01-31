@@ -303,17 +303,35 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
         questionnaire4.frequency.days = [DayEnum.Thursday]
         questionnaire4.frequency.deadline = "11:00"
 
-        const kage = new Question();
-        kage.Id = "kage"
-        kage.question = "Favoritkage";
-        kage.type = QuestionTypeEnum.CHOICE;
+        const choiceTal = new Question();
+        choiceTal.Id = "smerte_tal"
+        choiceTal.question = "Hvor store var dine smerter i aktivitet igår?";
+        choiceTal.type = QuestionTypeEnum.CHOICE;
 
-        const kage1 = { option: "kiks", comment: "kiks er godt", triage: CategoryEnum.BLUE }
-        const kage2 = { option: "kage", comment: "kage er bedre", triage: CategoryEnum.BLUE }
+        const optionTal1 = { option: "1", comment: "Ingen smerte", triage: CategoryEnum.BLUE }
+        const optionTal2 = { option: "2", comment: "", triage: CategoryEnum.BLUE }
+        const optionTal3 = { option: "3", comment: "", triage: CategoryEnum.BLUE }
+        const optionTal4 = { option: "4", comment: "", triage: CategoryEnum.BLUE }
+        const optionTal5 = { option: "5", comment: "", triage: CategoryEnum.BLUE }
+        const optionTal6 = { option: "6", comment: "", triage: CategoryEnum.BLUE }
+        const optionTal7 = { option: "7", comment: "", triage: CategoryEnum.BLUE }
+        const optionTal8 = { option: "8", comment: "", triage: CategoryEnum.BLUE }
+        const optionTal9 = { option: "9", comment: "", triage: CategoryEnum.BLUE }
+        const optionTal10 = { option: "10", comment: "Værst tænkelige/uudholdelige smerte", triage: CategoryEnum.BLUE }
+        choiceTal.options = [optionTal1, optionTal2, optionTal3, optionTal4, optionTal5, optionTal6, optionTal7, optionTal8, optionTal9, optionTal10]
+
+        const choiceTekst = new Question();
+        choiceTekst.Id = "smerte_tekst"
+        choiceTekst.question = "Da du havde smerter ved aktivitet, hvilken type aktivitet var det?";
+        choiceTekst.type = QuestionTypeEnum.CHOICE;
+
+        const optionTekst1 = { option: "Dagligedagens gøremål", comment: "Dette kan være at lave mad, tage ud og handle eller lignende", triage: CategoryEnum.BLUE }
+        const optionTekst2 = { option: "Let aktivitet", comment: "Aktivitet uden høj puls. Eks. gå en tur med hunden eller rengøring", triage: CategoryEnum.BLUE }
+        const optionTekst3 = { option: "Moderat aktivitet", comment: "Aktivitet med mellem høj puls. Eks. frisk gang eller badminton", triage: CategoryEnum.BLUE }
+        const optionTekst4 = { option: "Høj aktivitet", comment: "Aktivitet med høj puls. Eks. løb eller hård styrketræning", triage: CategoryEnum.BLUE }
+        choiceTekst.options = [optionTekst1, optionTekst2, optionTekst3, optionTekst4]
         
-        kage.options = [kage1, kage2]
-
-        questionnaire4.questions = [kage]
+        questionnaire4.questions = [choiceTal, choiceTekst]
 
         careplan.questionnaires = [questionnaire4, questionnaire3, questionnaire, questionnaire2]
 

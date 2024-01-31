@@ -186,6 +186,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     }
 
     getChoiceInput(): JSX.Element {
+        const isNumbers = this.props.question.options?.every(x => !Number.isNaN(parseFloat(x.option)))
         return (
             <>
                 <FormControl>
@@ -194,7 +195,21 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                         name="radio-buttons-group"
                         defaultValue={this.state.tempAnswer.answer}
                         onChange={x => this.updateAnswer(this.state.tempAnswer.questionId, x.target.value)}>
-                        {this.props.question.options?.map(option => { return (<FormControlLabel value={option.option} control={<Radio />} label={<Stack justifyContent="start"><Typography fontWeight={"bold"}>{option.option}</Typography>{ (option.comment !== undefined  || option.comment !== "") && <Typography>{option.comment}</Typography>}</Stack>} />) })}
+                        {this.props.question.options?.map(option => {
+                            return (
+                                <FormControlLabel sx={isNumbers ? {} : {paddingTop: '4px'}}
+                                    value={option.option}
+                                    control={<Radio />}
+                                    label={
+                                        <Stack justifyContent="start" alignItems={"flex-start"} direction={isNumbers ? "row" : "column"} >
+                                            <Typography fontWeight={"bold"}>{option.option}</Typography>
+                                            {isNumbers ? <Typography>&nbsp; - &nbsp;</Typography> : <></> }
+                                            { (option.comment !== undefined  || option.comment !== "") && <Typography variant={isNumbers ? "body1" : "caption"}>{option.comment}</Typography>}
+                                        </Stack>
+                                    }
+                                />
+                            )
+                        })}
                     </RadioGroup>
                 </FormControl>
             </>
