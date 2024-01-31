@@ -219,7 +219,7 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             const questionAnswerTuple = this.questionnaireResponseService.GetQuestionAnswerFromMap(this.state.questionnaireResponse.questions, question.enableWhen.questionId);
             const booleanAnswer: BooleanAnswer = questionAnswerTuple?.answer as BooleanAnswer;
 
-            if (booleanAnswer.answer) {
+            if (booleanAnswer && booleanAnswer.answer != undefined) {
                 const shouldShowQuestion = question?.enableWhen?.ShouldBeEnabled(booleanAnswer.answer)
                 return shouldShowQuestion
             }
@@ -241,6 +241,14 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         }
 
         if (!this.shouldShowQuestion(question)) {
+            if (question) {
+                const questionAnswerMap = this.state.questionnaireResponse.questions;
+                if (questionAnswerMap?.has(question)) {
+                    // fjern evt tidligere svar på spørgsmål, hvis det ikke skal vises må det være et underspørgsmål
+                    questionAnswerMap.delete(question);
+                }
+            }
+
             const isGoingBack = this.state.indexJourney.length === 1 ? false : this.GetLastElement(this.state.indexJourney) < this.GetLastElement(this.state.indexJourney, 1)
             if (isGoingBack)
                 this.GoToPreviousPage();
