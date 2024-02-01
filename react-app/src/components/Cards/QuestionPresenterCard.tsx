@@ -17,6 +17,7 @@ interface Props {
 }
 
 interface State {
+    displayValue: Map<string,string>;
     tempAnswer: Answer<any>;
     errorArray: InvalidInputModel[];
 }
@@ -37,7 +38,16 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             answer = this.createInitialAnswer(this.props.question);
         }
 
+        const displayValues = new Map<string, string>();
+        if (answer instanceof GroupAnswer) {
+            answer.answer?.forEach(subAnswer => displayValues.set(subAnswer.questionId, subAnswer.answer.toString()));
+        }
+        else {
+            displayValues.set(answer.questionId, answer.answer?.toString());
+        }
+
         this.state = {
+            displayValue: displayValues,
             tempAnswer: answer!,
             errorArray: []
         }
@@ -117,8 +127,15 @@ export default class QuestionPresenterCard extends Component<Props, State>{
 
         let emptyAnswer = true;
         if (this.state.tempAnswer instanceof GroupAnswer) {
-            const empty = this.state.tempAnswer.answer?.find(sa => !(sa.AnswerAsString()));
-            if (!empty) {
+            const noneEmpty = this.state.tempAnswer.answer?.every(sa => !(isNaN(sa.answer)));
+            if (noneEmpty) {
+                emptyAnswer = false
+            }
+        }
+        else if (this.state.tempAnswer instanceof NumberAnswer) {
+            const empty = !isNaN(this.state.tempAnswer.answer!);
+
+            if (empty) {
                 emptyAnswer = false
             }
         }
@@ -171,7 +188,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                                     required={true}
                                     label="Svar"
                                     type="number"
-                                    value={subAnswer?.AnswerAsString()}
+                                    value={this.state.displayValue.get(subAnswer.questionId)}
                                     onChange={input => this.updateAnswer(subQuestion.Id!, input.target.value)}
                                     uniqueId={index} />
                             </Grid>
@@ -245,7 +262,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                 required={true}
                 label="Svar"
                 type="number"
-                value={this.state.tempAnswer.AnswerAsString()}
+                value={this.state.displayValue.get(this.state.tempAnswer.questionId)}
                 onChange={input => this.updateAnswer(this.state.tempAnswer.questionId, input.target.value)}
                 uniqueId={0} />
         )
@@ -266,7 +283,6 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             answer = tmpAnswer;
         }
         else if (this.state.tempAnswer instanceof BooleanAnswer) {
-            console.log("ugf", answerValue)
             const tmpAnswer = this.state.tempAnswer as BooleanAnswer;
             tmpAnswer.answer = answerValue.toLowerCase() === "true";
             answer = tmpAnswer;
@@ -274,7 +290,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
         else if (this.state.tempAnswer instanceof GroupAnswer) {
             const tmpAnswer = this.state.tempAnswer as GroupAnswer;
             const subAnswer = tmpAnswer.answer?.find(a => a.questionId === questionId);
-            console.log("updateAnswer: group", tmpAnswer, subAnswer)
+            //console.log("updateAnswer: group", tmpAnswer, subAnswer)
             if (subAnswer instanceof NumberAnswer) {
                 subAnswer.answer = parseFloat(answerValue);
             }
@@ -287,7 +303,10 @@ export default class QuestionPresenterCard extends Component<Props, State>{
             answer = tmpAnswer;
         }
 
-        this.setState({ tempAnswer: answer! });
+        const displayValues = this.state.displayValue;
+        displayValues.set(questionId, answerValue);
+
+        this.setState({ displayValue: displayValues, tempAnswer: answer! });
     }
 
     onValidation(from: number, invalid: InvalidInputModel[]): void {
