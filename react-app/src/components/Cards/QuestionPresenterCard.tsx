@@ -40,7 +40,7 @@ export default class QuestionPresenterCard extends Component<Props, State>{
 
         const displayValues = new Map<string, string>();
         if (answer instanceof GroupAnswer) {
-            answer.answer?.forEach(subAnswer => displayValues.set(subAnswer.questionId, subAnswer.answer.toString()));
+            answer.answer?.forEach(subAnswer => displayValues.set(subAnswer.questionId, subAnswer.answer?.toString()));
         }
         else {
             displayValues.set(answer.questionId, answer.answer?.toString());
