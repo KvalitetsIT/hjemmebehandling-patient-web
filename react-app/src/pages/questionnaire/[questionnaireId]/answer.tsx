@@ -27,6 +27,8 @@ import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/Measuremen
 import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
 import { error } from "console";
 import DOMPurify from "dompurify";
+import { ValidateInputEvent, ValidateInputEventData } from '@kvalitetsit/hjemmebehandling/Events/ValidateInputEvent';
+import { BaseApiError } from "@kvalitetsit/hjemmebehandling/Errorhandling/BaseApiError";
 
 interface Props {
     match: { params: { questionnaireId: string } };
@@ -41,6 +43,7 @@ interface State {
     callToAction?: CallToActionMessage;
     questionnaireResponse: QuestionnaireResponse; //The new response
     measurementTypes: MeasurementType[];
+    questionnaireUnavailable: boolean;
 }
 
 export default class QuestionnaireResponseCreationPage extends Component<Props, State>{
@@ -60,7 +63,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             questionnaireResponse: newQuestionnaireResponse,
             careplan: undefined,
             callToAction: undefined,
-            measurementTypes: []
+            measurementTypes: [],
+            questionnaireUnavailable: false
         }
         this.setAnswerToQuestion = this.setAnswerToQuestion.bind(this)
     }
@@ -89,6 +93,10 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
         try {
             const careplans = await this.careplanService.GetActiveCareplans();
             const careplan = this.findCareplanContainingQuestionnaireWithId(this.props.match.params.questionnaireId, careplans)
+            if (!careplan) {
+                this.setState({questionnaireUnavailable: true})
+                return;
+            }
 
             this.ResetResponse(careplan);
             const questionnaire = careplan.questionnaires.find(x => x.id === this.props.match.params.questionnaireId);
@@ -116,6 +124,10 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
     render(): JSX.Element {
         this.initializeServices();
+        if (this.state.questionnaireUnavailable) {
+            new CreateToastEvent(new CreateToastEventData("Spørgeskemaet er ikke længere tilgængeligt", "", "warning")).dispatchEvent();
+            return (<Redirect push to={"/"} />)
+        }
         if (this.state.submitted) {
             new CreateToastEvent(new CreateToastEventData("Din besvarelse blev sendt", "", "success")).dispatchEvent();
             return (<Redirect push to={"/"} />)
@@ -376,6 +388,8 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
 
             this.setState({ loadingPage: false, submitted: submitted, callToAction: response })
         } catch (error) {
+            if (error instanceof BaseApiError)
+                console.log("ERROR", error.errorMessage, error.errorCode)
             this.setState(() => { throw error })
         }
 

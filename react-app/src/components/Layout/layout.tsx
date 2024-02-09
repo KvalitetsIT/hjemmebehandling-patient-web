@@ -15,6 +15,7 @@ import { Toast } from '@kvalitetsit/hjemmebehandling/Errorhandling/Toast';
 import AboutPage from '../../pages/about';
 import { Box } from '@mui/material';
 import { Guide, KvikGuide } from '../../pages/guide';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 export interface State {
   drawerIsOpen: boolean,
@@ -58,9 +59,12 @@ export class Layout extends Component<{}, State> {
                 <Topbar />
                 <Box padding={3} pt={6}>
                   <ErrorBoundary ekstraText="Fejlen der opstod kræver opdatering af siden (F5)" showReloadButton={true}>
-                    {this.state.createToastData ?
-                      <Toast onClose={() => this.resetToast()} icon={<CheckmarkIcon color='white' size='2rem' />} positionVertical='top' positionhorizontal='center' snackbarTitle={this.state.createToastData.title} snackbarColor='error'></Toast>
-                      : <></>
+                    {!this.state.createToastData
+                      ? <></>
+                      : (this.state.createToastData.alertColor === 'success'
+                          ? <Toast onClose={() => this.resetToast()} icon={<CheckmarkIcon color='white' size='2rem' />} positionVertical='top' positionhorizontal='center' snackbarTitle={this.state.createToastData.title} snackbarColor='error'></Toast>
+                          : <Toast onClose={() => this.resetToast()} icon={<WarningAmberIcon sx={{color: 'white'}} />} positionVertical='top' positionhorizontal='center' snackbarTitle={this.state.createToastData.title} snackbarColor='error'></Toast>
+                      )
                     }
 
                     <Switch>
