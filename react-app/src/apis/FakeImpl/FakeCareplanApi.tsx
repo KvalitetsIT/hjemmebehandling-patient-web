@@ -67,11 +67,23 @@ export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
             thresholdSimple.category = CategoryEnum.GREEN;
             thresholdSimple.from = 0;
             thresholdSimple.to = 10;
+            
 
-            this.measurementTypeSystolisk.threshold = thresholdSimple;
+            const thresholdSys = new ThresholdNumber();
+            thresholdSys.category = CategoryEnum.GREEN;
+            thresholdSys.from = 0;
+            thresholdSys.to = 10;
+
+            const thresholdDia = new ThresholdNumber();
+            thresholdDia.category = CategoryEnum.GREEN;
+            thresholdDia.from = 0;
+            thresholdDia.to = 15;
+
+            this.measurementTypeSystolisk.threshold = thresholdSys;
+            this.measurementTypeDiastolisk.threshold = thresholdDia;
             this.measurementTypeTemperatur.threshold = thresholdSimple;
 
-            return [measurementType, this.measurementTypeSystolisk, this.measurementTypeTemperatur];
+            return [measurementType, this.measurementTypeSystolisk, this.measurementTypeDiastolisk, this.measurementTypeTemperatur];
 
         } catch (error) {
             return await this.HandleError(error);

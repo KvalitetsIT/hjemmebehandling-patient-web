@@ -269,12 +269,16 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
             return <></>
         }
 
-        const thresholds = new ThresholdCollection();
+        const thresholds: ThresholdCollection[] = [];
         if (question!.type === QuestionTypeEnum.OBSERVATION) {
             const measurementType = this.state.measurementTypes.find(m => m.code === question?.measurementType?.code);
 
             if (measurementType && measurementType.threshold) {
-                thresholds.thresholdNumbers = [measurementType.threshold]
+                const threshold = new ThresholdCollection();
+                threshold.questionId = question!.Id!;
+                threshold.thresholdNumbers = [measurementType.threshold]
+
+                thresholds.push(threshold);
             }
         }
         else if (question!.type === QuestionTypeEnum.GROUP && question?.subQuestions?.find(sq => sq.type === QuestionTypeEnum.OBSERVATION)) {
@@ -282,7 +286,11 @@ export default class QuestionnaireResponseCreationPage extends Component<Props, 
                 const measurementType = this.state.measurementTypes.find(m => m.code === q?.measurementType?.code);
 
                 if (measurementType && measurementType.threshold) {
-                    thresholds.thresholdNumbers?.push(measurementType.threshold)
+                    const threshold = new ThresholdCollection();
+                    threshold.questionId = q.Id!;
+                    threshold.thresholdNumbers = [measurementType.threshold]
+                    
+                    thresholds.push(threshold)
                 }
             })
 

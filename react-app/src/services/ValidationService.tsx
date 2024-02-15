@@ -90,7 +90,7 @@ export default class ValidationService extends BaseService implements IValidatio
 
             return min <= Number.parseFloat(value) && Number.parseFloat(value) <= max
         })
-       console.log("thresholdCollection.thresholdNumbers", thresholdCollection.thresholdNumbers)
+       //console.log("thresholdCollection.thresholdNumbers", thresholdCollection.thresholdNumbers)
         if (!valueIsValid) {
             const error = new InvalidInputModel(propName, "Indtastning ligger uden for normal området")
             errors.push(error)

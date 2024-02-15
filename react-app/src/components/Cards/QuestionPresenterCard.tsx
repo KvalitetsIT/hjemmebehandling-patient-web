@@ -11,7 +11,7 @@ import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/Thresh
 
 interface Props {
     question: Question;
-    thresholds: ThresholdCollection;
+    thresholds: ThresholdCollection[];
     answer?: Answer<any>;
     setQuestionAnswer: (question: Question, answer: Answer<any>) => void;
 }
@@ -178,13 +178,15 @@ export default class QuestionPresenterCard extends Component<Props, State>{
                     const answer = this.state.tempAnswer as GroupAnswer;
                     const subAnswer = answer.answer?.find(a => a.questionId === subQuestion.Id)
 
+                    const threshold = this.props.thresholds.find(t => t.questionId === subQuestion.Id);
+
                     return (
                         <Grid container item spacing={1} justifyContent={"center"} alignItems="center" direction={"row"}>
                             <Grid item xs={7} sx={{ display: "flex", justifyContent: "flex-end" }}>
                                 <TextFieldValidation
                                     id={"questionInput_" + index}
                                     onValidation={(uid, errors) => this.onValidation(uid, errors)}
-                                    validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, this.props.thresholds)}
+                                    validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, threshold)}
                                     required={true}
                                     label="Svar"
                                     type="number"
@@ -254,11 +256,12 @@ export default class QuestionPresenterCard extends Component<Props, State>{
     }
 
     getNumberInput(): JSX.Element {
+        const threshold = this.props.thresholds.find(t => t.questionId === this.props.question.Id);
         return (
             <TextFieldValidation
                 id="questionInput"
                 onValidation={(uid, errors) => this.onValidation(uid, errors)}
-                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, this.props.thresholds)}
+                validate={(cpr) => this.validationService.ValidateQuestionInput(cpr, threshold)}
                 required={true}
                 label="Svar"
                 type="number"
