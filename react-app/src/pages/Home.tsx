@@ -7,7 +7,7 @@ import QuestionnaireAnswerCard from "../components/Cards/QuestionnaireAnswerCard
 import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
 import { LoadingBackdropComponent } from "../components/Layout/LoadingBackdropComponent";
 import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import { BaseQuestion, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
+import { BaseQuestion, QuestionTypeEnum, Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
 import ScrollableRow from "../components/ScrollableRow";
 import QuestionnaireResponseTable from "../components/Tables/QuestionnaireResponseTable";
 import ICareplanService from "../services/interfaces/ICareplanService";
@@ -57,7 +57,7 @@ export default class HomePage extends Component<{}, State> {
     renderPage(): JSX.Element {
         const questionnaires = this.state.careplans?.flatMap(c => c.questionnaires);
 
-        const observarionQuestions = questionnaires?.flatMap(questionnaire => questionnaire?.questions?.map(question => new QuestionQuestionnaire(question, questionnaire))).filter(x => x?.question.type === QuestionTypeEnum.OBSERVATION) ?? [];
+        const observarionQuestions = questionnaires?.flatMap(questionnaire => questionnaire?.questions?.map(question => new QuestionQuestionnaire(question, questionnaire))).filter(x => x?.question.type === QuestionTypeEnum.OBSERVATION || x?.question.type === QuestionTypeEnum.GROUP) ?? [];
         const careplan = this.state.careplans;
         const jsxList = this.state.careplans?.flatMap(careplan => careplan.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)) ?? [];
 
@@ -87,13 +87,7 @@ export default class HomePage extends Component<{}, State> {
                             <Grid item xs={12}>
                                 <IsEmptyCard list={allQuestionnaires} jsxWhenEmpty={"Ingen spørgeskemaer fundet"}>
                                     <IsEmptyCard object={(allQuestionnaires).find(qu => qu.questions?.find(x => x.type === QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={""}>
-                                        <ScrollableRow cols={3} jsxList={observarionQuestions.map((q) => {
-                                            const careplan: PatientCareplan = careplans?.find(careplan => careplan.questionnaires.find(questionnaire => q?.questionnaire.id == questionnaire.id))!
-                                            return (
-                                                <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}>
-                                                    {q ? <MiniChartRow questionnaire={q.questionnaire} careplan={careplan} question={q.question!} /> : <></>}
-                                                </IsEmptyCard>)
-                                        })} />                                            
+                                        <ScrollableRow cols={3} jsxList={this.renderList(observarionQuestions)}/>                                            
                                     </IsEmptyCard>
                                 </IsEmptyCard>
                             </Grid>
@@ -120,6 +114,35 @@ export default class HomePage extends Component<{}, State> {
                 </ErrorBoundary>
             </>
         )
+    }
+
+    renderList(observarionQuestions: (QuestionQuestionnaire | undefined)[]): JSX.Element[] {
+        const result: JSX.Element[] = [];
+
+        observarionQuestions.forEach(q => {
+            const careplan: PatientCareplan = this.state.careplans?.find(careplan => careplan.questionnaires.find(questionnaire => q?.questionnaire.id == questionnaire.id))!
+            if (q && q.question!.type === QuestionTypeEnum.GROUP) {
+
+                const groupQuestion = q.question as Question;
+                groupQuestion.subQuestions?.map(subQuestion => {
+                    result.push(
+                        <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}>
+                            {q ? <MiniChartRow questionnaire={q.questionnaire} careplan={careplan} question={q.question!} subQuestion={subQuestion} /> : <></>}
+                        </IsEmptyCard>
+                        )
+                    })
+                                                
+            }
+            else if (q && q.question!.type === QuestionTypeEnum.OBSERVATION) {
+                result.push(
+                    <IsEmptyCard object={q} jsxWhenEmpty={"Intet spørgsmål fundet"}>
+                        {q ? <MiniChartRow questionnaire={q.questionnaire} careplan={careplan} question={q.question!} /> : <></>}
+                    </IsEmptyCard>
+                )
+
+            }
+        })
+        return result;
     }
 }
 

@@ -204,7 +204,7 @@ export class ObservationCard extends Component<Props, State> {
                     }
                     const subheader = question.abbreviation ?? question.question ?? "";
                     return (
-                        <Grid paddingLeft={isFirst ? 0 : 2} item xs={12}>
+                        <Grid paddingLeft={isFirst ? 0 : 2} item xs={12} marginTop={6}>
                             {/* <ResponseViewCard chartData={chartData} /> */}  
                             
                             {question.type === QuestionTypeEnum.OBSERVATION ?
@@ -256,7 +256,7 @@ export class ObservationCard extends Component<Props, State> {
                                     <>
                                     {question.subQuestions?.map(subQuestion => {
                                         const subQuestionThreshold = this.props.questionnaire!.thresholds?.find(x => x.questionId === subQuestion.Id)
-                                        console.log("find threshold", subQuestion.Id, subQuestionThreshold)
+                                        
                                         if (subQuestionThreshold && subQuestionThreshold.thresholdNumbers) {
                                             return (
                                                 <ThresholdSlider threshold={subQuestionThreshold?.thresholdNumbers} question={subQuestion} displayType={subQuestion.measurementType?.displayName}/>

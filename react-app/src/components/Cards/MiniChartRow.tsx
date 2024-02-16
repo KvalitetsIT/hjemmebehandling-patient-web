@@ -1,23 +1,27 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
-import { Skeleton, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Skeleton, Typography } from '@mui/material';
 import { Questionnaire } from '@kvalitetsit/hjemmebehandling/Models/Questionnaire';
 import { QuestionnaireResponse } from '@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse';
 import ApiContext, { IApiContext } from '../../pages/_context';
 import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
-import { Question } from '@kvalitetsit/hjemmebehandling/Models/Question';
+import { Question, QuestionTypeEnum } from '@kvalitetsit/hjemmebehandling/Models/Question';
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
 import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
 import ChartData from '@kvalitetsit/hjemmebehandling/Charts/ChartData';
 import { Link } from 'react-router-dom';
 import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
 import LatestResponseCard from './LatestResponseCard';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { GroupAnswer } from '@kvalitetsit/hjemmebehandling/Models/Answer';
+import { group } from 'console';
 
 export interface Props {
     careplan: PatientCareplan;
     questionnaire: Questionnaire
     question: Question;
+    subQuestion?: Question;
 }
 
 export interface State {
@@ -77,19 +81,79 @@ export class MiniChartRow extends Component<Props, State> {
         const dateToString = (date: Date) => this.dateHelper.DateToString(date);
         const chartData = new ChartData(this.state.questionnaireResponses, question, threshold, dateToString);
 
-        return (
-            <IsEmptyCard
-                list={this.state.questionnaireResponses}
-                jsxWhenEmpty={
-                    <>
-                        <Typography variant="subtitle2">{question.question}</Typography>
-                        <Typography variant="caption">Ingen tilgængelige målinger</Typography>
-                    </>
-                }>
-                <Link to="/measurements" style={{flexGrow: 1, display: 'flex'}}>
-                    <LatestResponseCard chartData={chartData} />
-                </Link>
-            </IsEmptyCard>
-        );
+        if (question.type === QuestionTypeEnum.GROUP && this.props.subQuestion) {
+            const sorted = this.state.questionnaireResponses.sort((a, b) => a.answeredTime && b.answeredTime ? a.answeredTime.compareTo(b.answeredTime) : 0)
+            
+            const answerData: number[] = [];
+            for (let i = 0; i < sorted.length; i++) {
+                const response = sorted[i];
+                if (response && response.questions) {
+                    const questionnaireQuestion = Array.from(response.questions?.keys()).find(x => x.Id === question.Id);
+                    const groupAnswer = response.questions?.get(questionnaireQuestion!) as GroupAnswer 
+                    if (groupAnswer) {
+                        const latestAnswer = groupAnswer.answer?.find(sa => sa.questionId === this.props.subQuestion?.Id)
+                        if (latestAnswer) {
+                            answerData.push(latestAnswer.answer);
+                        }
+                    }
+                }
+            }
+            
+            const latestData = answerData.pop();
+            const secondLatestData = answerData.pop();
+    
+            let status = "Værdien er stabil"
+            if (latestData !== undefined && secondLatestData !== undefined) {
+              if (latestData > secondLatestData)
+                  status = "Værdien er stigende"
+              if (latestData < secondLatestData)
+                  status = "Værdien er faldende"
+            }
+           
+            const subHeader = (question.abbreviation ?? question.question ?? "") + ' - ' + this.props.subQuestion?.measurementType?.displayName;
+            return (
+                <IsEmptyCard
+                    list={this.state.questionnaireResponses}
+                    jsxWhenEmpty={
+                        <>
+                            <Typography variant="subtitle2">{subHeader}</Typography>
+                            <Typography variant="caption">Ingen tilgængelige målinger</Typography>
+                        </>
+                    }>
+                    
+                    <Link to="/measurements" style={{flexGrow: 1, display: 'flex'}}>
+                        <Card >
+                            <CardHeader subheader={subHeader}/>
+                            <Divider />
+                            <CardContent sx={{ textAlign: "center" }}>
+                                <Typography>Seneste værdi</Typography>
+                                <Typography variant="h2">{latestData}</Typography>
+                                <Typography>{status}</Typography>
+                            </CardContent>
+                            <Divider />
+                            <CardActions sx={{ float: "right" }}>
+                                <Button endIcon={<NavigateNextIcon />} variant="text">Se målinger</Button>
+                            </CardActions>
+                        </Card>
+                    </Link>
+                </IsEmptyCard>
+            )
+        }
+        else {
+            return (
+                <IsEmptyCard
+                    list={this.state.questionnaireResponses}
+                    jsxWhenEmpty={
+                        <>
+                            <Typography variant="subtitle2">{question.question}</Typography>
+                            <Typography variant="caption">Ingen tilgængelige målinger</Typography>
+                        </>
+                    }>
+                    <Link to="/measurements" style={{flexGrow: 1, display: 'flex'}}>
+                        <LatestResponseCard chartData={chartData} />
+                    </Link>
+                </IsEmptyCard>
+            );
+        }
     }
 }
