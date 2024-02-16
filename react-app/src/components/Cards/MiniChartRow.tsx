@@ -110,20 +110,19 @@ export class MiniChartRow extends Component<Props, State> {
                   status = "Værdien er faldende"
             }
            
-            const subHeader = (question.abbreviation ?? question.question ?? "") + ' - ' + this.props.subQuestion?.measurementType?.displayName;
             return (
                 <IsEmptyCard
                     list={this.state.questionnaireResponses}
                     jsxWhenEmpty={
                         <>
-                            <Typography variant="subtitle2">{subHeader}</Typography>
+                            <Typography variant="subtitle2">{this.props.subQuestion?.measurementType?.displayName}</Typography>
                             <Typography variant="caption">Ingen tilgængelige målinger</Typography>
                         </>
                     }>
                     
                     <Link to="/measurements" style={{flexGrow: 1, display: 'flex'}}>
                         <Card >
-                            <CardHeader subheader={subHeader}/>
+                            <CardHeader subheader={this.props.subQuestion?.measurementType?.displayName}/>
                             <Divider />
                             <CardContent sx={{ textAlign: "center" }}>
                                 <Typography>Seneste værdi</Typography>
