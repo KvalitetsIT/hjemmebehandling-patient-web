@@ -55,14 +55,12 @@ export default class HomePage extends Component<{}, State> {
     }
 
     renderPage(): JSX.Element {
+        const careplans = this.state.careplans
         const questionnaires = this.state.careplans?.flatMap(c => c.questionnaires);
 
-        const observarionQuestions = questionnaires?.flatMap(questionnaire => questionnaire?.questions?.map(question => new QuestionQuestionnaire(question, questionnaire))).filter(x => x?.question.type === QuestionTypeEnum.OBSERVATION || x?.question.type === QuestionTypeEnum.GROUP) ?? [];
-        const careplan = this.state.careplans;
+        const observationQuestions = questionnaires?.flatMap(questionnaire => questionnaire?.questions?.map(question => new QuestionQuestionnaire(question, questionnaire))).filter(x => x?.question.type === QuestionTypeEnum.OBSERVATION || x?.question.type === QuestionTypeEnum.GROUP) ?? [];
         const jsxList = this.state.careplans?.flatMap(careplan => careplan.questionnaires.map(q => <QuestionnaireAnswerCard careplan={careplan} questionnaire={q} />)) ?? [];
 
-        const allQuestionnaires: Questionnaire[] = this.state.careplans?.flatMap(careplan => careplan.questionnaires) ?? [];
-        const careplans = this.state.careplans
         return (
             <>
                 <ErrorBoundary>
@@ -74,7 +72,7 @@ export default class HomePage extends Component<{}, State> {
                                 <Typography className="headline">Spørgeskemaer til besvarelse</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <IsEmptyCard list={allQuestionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
+                                <IsEmptyCard list={questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer på behandlingsplanen"}>
                                     <ErrorBoundary>
                                         <ScrollableRow cols={2} jsxList={jsxList} />
                                     </ErrorBoundary>
@@ -85,10 +83,8 @@ export default class HomePage extends Component<{}, State> {
                                 <Typography className="headline">Mine målinger</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <IsEmptyCard list={allQuestionnaires} jsxWhenEmpty={"Ingen spørgeskemaer fundet"}>
-                                    <IsEmptyCard object={(allQuestionnaires).find(qu => qu.questions?.find(x => x.type === QuestionTypeEnum.OBSERVATION))} jsxWhenEmpty={""}>
-                                        <ScrollableRow cols={3} jsxList={this.renderList(observarionQuestions)}/>                                            
-                                    </IsEmptyCard>
+                                <IsEmptyCard list={questionnaires} jsxWhenEmpty={"Ingen spørgeskemaer fundet"}>
+                                    <ScrollableRow cols={3} jsxList={this.renderObservationsList(observationQuestions)}/>                                            
                                 </IsEmptyCard>
                             </Grid>
                             <Grid item container xs={12} mt={6} alignItems="center">
@@ -99,10 +95,10 @@ export default class HomePage extends Component<{}, State> {
                                     <Button component={Link} to="/questionnaire/answered" variant="outlined" className="showAllButton">Vis alle</Button>
                                 </Grid>
 
-                                <IsEmptyCard object={careplan} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
+                                <IsEmptyCard object={careplans} jsxWhenEmpty={"Ingen behandlingsplan fundet"}>
                                     <Grid item mt={0} mx={-3} sx={{ maxWidth: `calc(100% + 48px)`, flexBasis: `calc(100% + 48px)` }}>
                                         <ErrorBoundary>
-                                            <QuestionnaireResponseTable careplans={this.state.careplans!} />
+                                            <QuestionnaireResponseTable careplans={careplans!} />
                                         </ErrorBoundary>
                                     </Grid>
                                 </IsEmptyCard>
@@ -116,7 +112,7 @@ export default class HomePage extends Component<{}, State> {
         )
     }
 
-    renderList(observarionQuestions: (QuestionQuestionnaire | undefined)[]): JSX.Element[] {
+    renderObservationsList(observarionQuestions: (QuestionQuestionnaire | undefined)[]): JSX.Element[] {
         const result: JSX.Element[] = [];
 
         observarionQuestions.forEach(q => {
