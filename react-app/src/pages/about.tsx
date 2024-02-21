@@ -33,7 +33,7 @@ export default class AboutPage extends Component<{}> {
                                     </ListItemIcon>
                                     <ListItemText disableTypography
                                         primary={<Typography className="headline" color={'inherit'}>Medicinsk udstyr</Typography>}
-                                        secondary={<Typography>Versionsnummer på software: 2.0.0-2023-06-07</Typography>}
+                                        secondary={<Typography>Versionsnummer på software: 3.0.0-2024-02-22</Typography>}
                                     />
                                 </ListItem>
 
