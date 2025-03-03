@@ -1,10 +1,12 @@
 import { ValueSetApi, Configuration } from "../../generated";
-import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
+
 import IValueSetApi from "../interfaces/IValueSetApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
 import InternalToExternalMapper from "../Mappers/InternalToExternalMapper";
-import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
+
 import FhirUtils from "../../util/FhirUtils";
+import BaseApi from "../../components/BaseLayer/BaseApi";
+import { MeasurementType } from "../../components/Models/MeasurementType";
 
 export default class RealValueSetApi extends BaseApi implements IValueSetApi{
     valuesetapi : ValueSetApi;

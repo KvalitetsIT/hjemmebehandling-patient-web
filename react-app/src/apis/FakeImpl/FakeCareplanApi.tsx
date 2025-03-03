@@ -1,20 +1,35 @@
 
-import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
-import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
-import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
-import { DayEnum, Frequency } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
-import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
-import SimpleOrganization from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganization";
-import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
-import { ThresholdNumber } from "@kvalitetsit/hjemmebehandling/Models/ThresholdNumber";
-import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
+
+
+
+
+
+
+
+
+
+
+
+
+import BaseApi from "../../components/BaseLayer/BaseApi";
+import { Address } from "../../components/Models/Address";
+import { CategoryEnum } from "../../components/Models/CategoryEnum";
+import { ContactDetails } from "../../components/Models/Contact";
+import { EnableWhen } from "../../components/Models/EnableWhen";
+import { Frequency, DayEnum } from "../../components/Models/Frequency";
+import { MeasurementType } from "../../components/Models/MeasurementType";
+import { PatientCareplan } from "../../components/Models/PatientCareplan";
+import { PatientDetail } from "../../components/Models/PatientDetail";
+import { PrimaryContact } from "../../components/Models/PrimaryContact";
+import { Question, QuestionTypeEnum } from "../../components/Models/Question";
+import { Questionnaire } from "../../components/Models/Questionnaire";
+import SimpleOrganization from "../../components/Models/SimpleOrganization";
+import { ThresholdCollection } from "../../components/Models/ThresholdCollection";
+import { ThresholdNumber } from "../../components/Models/ThresholdNumber";
 import ICareplanApi from "../interfaces/ICareplanApi";
-import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
-import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
-import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
+
+
+
 
 export default class FakeCareplanApi extends BaseApi implements ICareplanApi {
     timeToWait: number = 1000;

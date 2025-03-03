@@ -1,5 +1,7 @@
-import { BaseServiceError, DisplaySettings } from "@kvalitetsit/hjemmebehandling/Errorhandling/BaseServiceError";
-import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
+import { BaseServiceError, DisplaySettings } from "../Errorhandling/BaseServiceError";
+import { CallToActionMessage } from "../Models/CallToActionMessage";
+
+
 
 export class CallToActionError extends BaseServiceError {
     message: string;

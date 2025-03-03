@@ -1,4 +1,5 @@
-import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
+import { MeasurementType } from "../../components/Models/MeasurementType";
+
 
 /**
  * ValueSetService

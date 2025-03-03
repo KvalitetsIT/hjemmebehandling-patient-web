@@ -1,6 +1,9 @@
 import IOrganizationApi from "../apis/interfaces/IOrganizationApi";
-import Department from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
-import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
+import BaseService from "../components/BaseLayer/BaseService";
+
+
+import Department from "../components/Models/DetailedOrganization";
+
 import IOrganizationService from "./interfaces/IOrganizationService";
 
 export default class OrganizationService extends BaseService implements IOrganizationService{

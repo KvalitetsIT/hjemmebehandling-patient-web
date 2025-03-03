@@ -1,6 +1,7 @@
 import { Card, CardHeader, Divider, CardContent, Typography, CardActions } from "@mui/material"
 import { PhoneIcon } from "../icons/Icons"
-import Department from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+import Department from "../../components/Models/DetailedOrganization";
+
 import DOMPurify from "dompurify";
 
 

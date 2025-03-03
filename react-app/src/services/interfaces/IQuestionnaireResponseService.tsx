@@ -1,8 +1,13 @@
-import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
-import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
-import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
-import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+
+
+
+
+
+import { Answer } from "../../components/Models/Answer";
+import { CallToActionMessage } from "../../components/Models/CallToActionMessage";
+import { Question } from "../../components/Models/Question";
+import { Questionnaire } from "../../components/Models/Questionnaire";
+import { QuestionnaireResponse } from "../../components/Models/QuestionnaireResponse";
 import { LatestResponseEnum } from "../QuestionnaireResponseService";
 
 /**

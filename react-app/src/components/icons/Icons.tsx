@@ -1,4 +1,5 @@
-import {BaseIcon, BaseIconProps} from "@kvalitetsit/hjemmebehandling/Icons/BaseIcon"
+import { BaseIconProps, BaseIcon } from "../Icons/BaseIcon";
+
 
 export function HomeIcon(props?: BaseIconProps): JSX.Element {
     return (

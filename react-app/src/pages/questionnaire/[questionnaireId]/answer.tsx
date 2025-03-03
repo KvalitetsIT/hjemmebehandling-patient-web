@@ -1,34 +1,46 @@
 import { Box } from "@mui/system";
 import React, { Component } from "react";
 import { Button, Grid, Typography } from "@mui/material";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+
 import ICareplanService from "../../../services/interfaces/ICareplanService";
 import ApiContext, { IApiContext } from "../../_context";
 import IQuestionnaireResponseService from "../../../services/interfaces/IQuestionnaireResponseService";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+
 import { LoadingBackdropComponent } from "../../../components/Layout/LoadingBackdropComponent";
-import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
-import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { Answer, BooleanAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
+
+
+
+
 import LinearProgress from '@mui/material/LinearProgress';
 import QuestionPresenterCard from "../../../components/Cards/QuestionPresenterCard";
 import QuestionAndAnswerTable from "../../../components/Tables/QuestionAndAnswerTable";
 import { Prompt, Redirect } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
+
 import { CallToActionError } from "../../../components/Errors/CallToActionError";
-import { DialogError } from "@kvalitetsit/hjemmebehandling/Errorhandling/DialogError";
+
 import ErrorIcon from '@mui/icons-material/Error';
-import { CreateToastEvent, CreateToastEventData } from "@kvalitetsit/hjemmebehandling/Events/CreateToastEvent";
+
 import IValueSetService from "../../../services/interfaces/IValueSetService";
-import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
-import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
+
+
 import { error } from "console";
 import DOMPurify from "dompurify";
-import { ValidateInputEvent, ValidateInputEventData } from '@kvalitetsit/hjemmebehandling/Events/ValidateInputEvent';
-import { BaseApiError } from "@kvalitetsit/hjemmebehandling/Errorhandling/BaseApiError";
+import { BaseApiError } from "../../../components/Errorhandling/BaseApiError";
+import { DialogError } from "../../../components/Errorhandling/DialogError";
+import IsEmptyCard from "../../../components/Errorhandling/IsEmptyCard";
+import { CreateToastEvent, CreateToastEventData } from "../../../components/Events/CreateToastEvent";
+import { Answer, BooleanAnswer } from "../../../components/Models/Answer";
+import { CallToActionMessage } from "../../../components/Models/CallToActionMessage";
+import { MeasurementType } from "../../../components/Models/MeasurementType";
+import { PatientCareplan } from "../../../components/Models/PatientCareplan";
+import { QuestionTypeEnum, Question } from "../../../components/Models/Question";
+import { Questionnaire } from "../../../components/Models/Questionnaire";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../../components/Models/QuestionnaireResponse";
+import { ThresholdCollection } from "../../../components/Models/ThresholdCollection";
+
+
 
 interface Props {
     match: { params: { questionnaireId: string } };

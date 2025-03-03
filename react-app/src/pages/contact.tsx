@@ -1,14 +1,16 @@
 import { Card, CardActions, CardContent, CardHeader, Divider, Grid, Typography } from "@mui/material";
 import { Component } from "react";
-import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
-import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
+
+
 import { LoadingBackdropComponent } from "../components/Layout/LoadingBackdropComponent";
-import Department from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+
 import ICareplanService from "../services/interfaces/ICareplanService";
 import IOrganizationService from "../services/interfaces/IOrganizationService";
 import ApiContext, { IApiContext } from "./_context";
 import { PhoneIcon } from "../components/icons/Icons";
 import { ContactCard } from "../components/Cards/ContactCard";
+import { ErrorBoundary } from "../components/Errorhandling/ErrorBoundary";
+import Department from "../components/Models/DetailedOrganization";
 
 interface State {
     departments?: Department[],

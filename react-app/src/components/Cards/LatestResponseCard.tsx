@@ -1,8 +1,9 @@
-import ChartData from "@kvalitetsit/hjemmebehandling/Charts/ChartData";
+
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from "@mui/material";
 import React from "react";
 import { Component, ReactNode } from "react";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ChartData from "../Charts/ChartData";
 
 export enum DisplayModeEnum {
     GRAPH = "Graf",

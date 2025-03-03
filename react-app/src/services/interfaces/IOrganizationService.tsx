@@ -1,4 +1,4 @@
-import Department from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+import Department from "../../components/Models/DetailedOrganization";
 
 /**
  * OrganizationService

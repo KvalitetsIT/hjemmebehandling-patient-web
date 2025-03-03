@@ -3,9 +3,10 @@ import { Component } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItem from '@mui/material/ListItem';
 import { Link } from 'react-router-dom';
-import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
+
 import { PatientMenu } from '../Cards/PatientMenu';
 import { ContactIcon, GrapphIcon, HomeIcon, SurveyIcon, AboutIcon } from '../icons/Icons';
+import { ErrorBoundary } from '../Errorhandling/ErrorBoundary';
 
 export interface State {
   drawerIsOpen: boolean,

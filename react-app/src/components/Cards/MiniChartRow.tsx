@@ -1,21 +1,30 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
+
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, Skeleton, Typography } from '@mui/material';
-import { Questionnaire } from '@kvalitetsit/hjemmebehandling/Models/Questionnaire';
-import { QuestionnaireResponse } from '@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse';
+
+
 import ApiContext, { IApiContext } from '../../pages/_context';
-import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
-import { Question, QuestionTypeEnum } from '@kvalitetsit/hjemmebehandling/Models/Question';
+
+
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
-import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
-import ChartData from '@kvalitetsit/hjemmebehandling/Charts/ChartData';
+
+
 import { Link } from 'react-router-dom';
-import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
+
 import LatestResponseCard from './LatestResponseCard';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { GroupAnswer } from '@kvalitetsit/hjemmebehandling/Models/Answer';
+
 import { group } from 'console';
+import ChartData from '../Charts/ChartData';
+import IsEmptyCard from '../Errorhandling/IsEmptyCard';
+import { ICollectionHelper } from '../Helpers/interfaces/ICollectionHelper';
+import IDateHelper from '../Helpers/interfaces/IDateHelper';
+import { GroupAnswer } from '../Models/Answer';
+import { PatientCareplan } from '../Models/PatientCareplan';
+import { Question, QuestionTypeEnum } from '../Models/Question';
+import { Questionnaire } from '../Models/Questionnaire';
+import { QuestionnaireResponse } from '../Models/QuestionnaireResponse';
 
 export interface Props {
     careplan: PatientCareplan;

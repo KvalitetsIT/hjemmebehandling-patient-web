@@ -2,13 +2,13 @@
 
 import { createContext } from 'react';
 
-import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
-import DanishDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/DanishDateHelper';
+
+
 
 import ValidationService from '../services/ValidationService';
 import IValidationService from '../services/interfaces/IValidationService';
-import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
-import { CollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/CollectionHelper';
+
+
 import QuestionnaireResponseService from '../services/QuestionnaireResponseService';
 import FakeQuestionnaireResponseApi from '../apis/FakeImpl/FakeQuestionnaireResponseApi';
 import FakeCareplanApi from '../apis/FakeImpl/FakeCareplanApi';
@@ -23,6 +23,10 @@ import ValueSetService from '../services/ValueSetService';
 import PatientService from '../services/PatientService';
 import FakePatientApi from '../apis/FakeImpl/FakePatientApi';
 import IPatientService from '../services/interfaces/IPatientService';
+import { CollectionHelper } from '../components/Helpers/danishImpl/CollectionHelper';
+import DanishDateHelper from '../components/Helpers/danishImpl/DanishDateHelper';
+import { ICollectionHelper } from '../components/Helpers/interfaces/ICollectionHelper';
+import IDateHelper from '../components/Helpers/interfaces/IDateHelper';
 
 export interface IApiContext {
     patientService: IPatientService;

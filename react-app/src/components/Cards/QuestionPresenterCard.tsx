@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import { Grid, Typography, Button, Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from '@mui/material';
 import ApiContext, { IApiContext } from "../../pages/_context";
-import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper"
-import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
+
+
 import IValidationService from "../../services/interfaces/IValidationService";
 import { TextFieldValidation } from "../Inputs/TextFieldValidation";
-import { Answer, BooleanAnswer, GroupAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
-import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
-import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
+import { InvalidInputModel } from "../Errorhandling/ServiceErrors/InvalidInputError";
+import IDateHelper from "../Helpers/interfaces/IDateHelper";
+import { Answer, GroupAnswer, NumberAnswer, StringAnswer, BooleanAnswer } from "../Models/Answer";
+import { Question, QuestionTypeEnum } from "../Models/Question";
+import { ThresholdCollection } from "../Models/ThresholdCollection";
+
+
+
 
 interface Props {
     question: Question;

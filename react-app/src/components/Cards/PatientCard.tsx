@@ -3,19 +3,22 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
 import { Divider, Skeleton, Typography } from '@mui/material';
-import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
+
 import ApiContext, { IApiContext } from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';
-import { PatientDetail } from '@kvalitetsit/hjemmebehandling/Models/PatientDetail';
-import { ContactDetails } from '@kvalitetsit/hjemmebehandling/Models/Contact';
+
+
 import { type } from 'os';
-import { PrimaryContact } from '@kvalitetsit/hjemmebehandling/Models/PrimaryContact';
-import SimpleOrganization from '@kvalitetsit/hjemmebehandling/Models/SimpleOrganization';
+
+
 import IPatientService from '../../services/interfaces/IPatientService';
 import IOrganizationApi from '../../apis/interfaces/IOrganizationApi';
 import IOrganizationService from '../../services/interfaces/IOrganizationService';
 import { OrganizationDto } from '../../generated';
-import DetailedOrganization from '@kvalitetsit/hjemmebehandling/Models/DetailedOrganization';
+import DetailedOrganization from '../Models/DetailedOrganization';
+import { PatientDetail } from '../Models/PatientDetail';
+import { PrimaryContact } from '../Models/PrimaryContact';
+import {ContactDetails} from "../Models/Contact"
 
 export interface State {
     loading: boolean;

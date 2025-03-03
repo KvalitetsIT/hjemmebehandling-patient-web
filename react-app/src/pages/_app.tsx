@@ -3,15 +3,13 @@ import '../styles/globals.css'
 import { Layout } from '../components/Layout/layout'
 import ApiContext from './_context';
 
-import DanishDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/DanishDateHelper';
+
 
 import React from 'react';
 
 import ValidationService from '../services/ValidationService';
-import { CollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/danishImpl/CollectionHelper';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
+
 import FakeQuestionnaireResponseApi from '../apis/FakeImpl/FakeQuestionnaireResponseApi';
 import QuestionnaireResponseService from '../services/QuestionnaireResponseService';
 
@@ -35,6 +33,10 @@ import { PatientApi } from '../generated';
 import IPatientApi from '../apis/interfaces/iPatientApi';
 import RealPatientApi from '../apis/RealImpl/RealPatientApi';
 import FakePatientApi from '../apis/FakeImpl/FakePatientApi';
+import { CssBaseline } from '@mui/material';
+import { ErrorBoundary } from '../components/Errorhandling/ErrorBoundary';
+import { CollectionHelper } from '../components/Helpers/danishImpl/CollectionHelper';
+import DanishDateHelper from '../components/Helpers/danishImpl/DanishDateHelper';
 
 function MyApp(): JSX.Element {
 

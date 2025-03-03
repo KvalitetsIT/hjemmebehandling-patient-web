@@ -1,11 +1,13 @@
 import { Grid, Typography } from "@mui/material"
 import { Component } from "react"
-import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
+
 import { ObservationCard } from "../../../components/Cards/ObservationCard"
 import { LoadingBackdropComponent } from "../../../components/Layout/LoadingBackdropComponent"
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan"
+
 import ICareplanService from "../../../services/interfaces/ICareplanService"
 import ApiContext, { IApiContext } from "../../_context"
+import IsEmptyCard from "../../../components/Errorhandling/IsEmptyCard"
+import { PatientCareplan } from "../../../components/Models/PatientCareplan"
 
 interface State {
     loadingPage: boolean

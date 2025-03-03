@@ -1,18 +1,23 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { Component } from "react";
 import { Link } from "react-router-dom";
-import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
+
 import { MiniChartRow } from "../components/Cards/MiniChartRow";
 import QuestionnaireAnswerCard from "../components/Cards/QuestionnaireAnswerCard";
-import { ErrorBoundary } from "@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary";
+
 import { LoadingBackdropComponent } from "../components/Layout/LoadingBackdropComponent";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import { BaseQuestion, QuestionTypeEnum, Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
+
+
 import ScrollableRow from "../components/ScrollableRow";
 import QuestionnaireResponseTable from "../components/Tables/QuestionnaireResponseTable";
 import ICareplanService from "../services/interfaces/ICareplanService";
 import ApiContext, { IApiContext } from "./_context";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
+import { ErrorBoundary } from "../components/Errorhandling/ErrorBoundary";
+import IsEmptyCard from "../components/Errorhandling/IsEmptyCard";
+import { PatientCareplan } from "../components/Models/PatientCareplan";
+import { QuestionTypeEnum, Question, BaseQuestion } from "../components/Models/Question";
+import { Questionnaire } from "../components/Models/Questionnaire";
+
 
 interface State {
     careplans?: PatientCareplan[],

@@ -1,14 +1,17 @@
 import React, { Component } from "react";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+
+
 import ApiContext, { IApiContext } from "../../../_context";
 import ResponseStatusCard from "../../../../components/Cards/ResponseStatusCard"
 import IQuestionnaireResponseService from "../../../../services/interfaces/IQuestionnaireResponseService";
-import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
+
 import { LoadingBackdropComponent } from "../../../../components/Layout/LoadingBackdropComponent";
 import ICareplanService from "../../../../services/interfaces/ICareplanService";
 import { Grid, Typography, Card, Box } from "@mui/material";
 import QuestionAndAnswerTable from "../../../../components/Tables/QuestionAndAnswerTable";
+import IsEmptyCard from "../../../../components/Errorhandling/IsEmptyCard";
+import { PatientCareplan } from "../../../../components/Models/PatientCareplan";
+import { QuestionnaireResponse } from "../../../../components/Models/QuestionnaireResponse";
 
 interface Props {
     match: { params: { questionnaireId: string, questionnaireResponseId: string } };

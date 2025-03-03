@@ -1,29 +1,33 @@
-
-import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
-import { Answer, NumberAnswer, StringAnswer, BooleanAnswer, GroupAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
-import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
-import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
-import DetailedOrganization, { PhoneHour } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
-import { DayEnum, Frequency, FrequencyEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
-import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinition";
-import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import SimpleDepartment from "@kvalitetsit/hjemmebehandling/Models/SimpleOrganization";
-import { Task } from "@kvalitetsit/hjemmebehandling/Models/Task";
-import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
-import { User } from "@kvalitetsit/hjemmebehandling/Models/User";
-import { AddressDto, AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto, EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, PrimaryContactDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { Address } from "../../components/Models/Address";
+import { Answer, GroupAnswer, StringAnswer, NumberAnswer, BooleanAnswer } from "../../components/Models/Answer";
+import { CallToActionMessage } from "../../components/Models/CallToActionMessage";
+import { CategoryEnum } from "../../components/Models/CategoryEnum";
+import { ContactDetails } from "../../components/Models/Contact";
+import DetailedOrganization, { PhoneHour } from "../../components/Models/DetailedOrganization";
+import { EnableWhen } from "../../components/Models/EnableWhen";
+import { DayEnum, Frequency, FrequencyEnum } from "../../components/Models/Frequency";
+import { MeasurementType } from "../../components/Models/MeasurementType";
+import { PatientCareplan } from "../../components/Models/PatientCareplan";
+import { PatientDetail } from "../../components/Models/PatientDetail";
+import PersonContact from "../../components/Models/PersonContact";
+import { PlanDefinition } from "../../components/Models/PlanDefinition";
+import { PrimaryContact } from "../../components/Models/PrimaryContact";
+import { Question, QuestionTypeEnum } from "../../components/Models/Question";
+import { Questionnaire } from "../../components/Models/Questionnaire";
+import { QuestionnaireResponseStatus, QuestionnaireResponse } from "../../components/Models/QuestionnaireResponse";
+import { Task } from "../../components/Models/Task";
+import { ThresholdCollection } from "../../components/Models/ThresholdCollection";
+import { ThresholdNumber } from "../../components/Models/ThresholdNumber";
+import { User } from "../../components/Models/User";
+import { AddressDto, AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto,  EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, PrimaryContactDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
-import PersonContact from "@kvalitetsit/hjemmebehandling/Models/PersonContact";
-import { EnableWhen } from "@kvalitetsit/hjemmebehandling/Models/EnableWhen";
-import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
-import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
-import { ThresholdNumber } from "@kvalitetsit/hjemmebehandling/Models/ThresholdNumber";
-import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
+
+import SimpleDepartment from '../../components/Models/SimpleOrganization'
+
+
+
+
 import { common } from "@mui/material/colors";
 
 
