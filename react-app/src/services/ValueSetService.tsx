@@ -1,8 +1,10 @@
 import IValueSetApi from "../apis/interfaces/IValueSetApi";
-import BaseService, { StatusCodeMap } from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
+
 import IValueSetService from "./interfaces/IValueSetService";
 import { NoMeasurementTypesFound } from "./Errors/NoMeasurementTypesFound";
-import { MeasurementType } from "@kvalitetsit/hjemmebehandling/Models/MeasurementType";
+import BaseService, { StatusCodeMap } from "../components/BaseLayer/BaseService";
+import { MeasurementType } from "../components/Models/MeasurementType";
+
 
 export default class ValueSetService extends BaseService implements IValueSetService {
     api : IValueSetApi;

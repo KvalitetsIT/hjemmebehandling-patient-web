@@ -1,13 +1,21 @@
 import IQuestionnaireResponseApi from "../apis/interfaces/IQuestionnaireResponseApi";
-import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import BaseService from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseService";
+import BaseService from "../components/BaseLayer/BaseService";
+import IDateHelper from "../components/Helpers/interfaces/IDateHelper";
+import { Answer } from "../components/Models/Answer";
+import { CallToActionMessage } from "../components/Models/CallToActionMessage";
+import { DayEnum } from "../components/Models/Frequency";
+import { Question } from "../components/Models/Question";
+import { Questionnaire } from "../components/Models/Questionnaire";
+import { QuestionnaireResponse } from "../components/Models/QuestionnaireResponse";
+
+
 import IQuestionnaireResponseService, { QuestionAnswerPair } from "./interfaces/IQuestionnaireResponseService";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
-import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
-import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
-import { Answer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
-import { Question } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
+
+
+
+
+
+
 
 export enum LatestResponseEnum {
     NeverAnswered,

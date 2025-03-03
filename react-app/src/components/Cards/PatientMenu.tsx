@@ -2,13 +2,14 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Component } from 'react';
 import { Card, CardContent, ListItem, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
-import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
+
 import ApiContext from '../../pages/_context';
 import ICareplanService from '../../services/interfaces/ICareplanService';
 import { PatientCard } from './PatientCard';
-import { ErrorBoundary } from '@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary';
+
 import { ProfileIcon } from '../icons/Icons';
 import { LoadingSmallComponent } from '../Layout/LoadingSmallComponent';
+import { ErrorBoundary } from '../Errorhandling/ErrorBoundary';
 
 export interface State {
     expand: boolean

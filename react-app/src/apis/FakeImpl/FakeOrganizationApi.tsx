@@ -1,9 +1,10 @@
-import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
-import Department, { PhoneHour, TimePeriod } from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
-import { DayEnum } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
-import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
-import IOrganizationApi from "../interfaces/IOrganizationApi";
+import BaseApi from "../../components/BaseLayer/BaseApi";
+import { Address } from "../../components/Models/Address";
+import { TimePeriod, PhoneHour } from "../../components/Models/DetailedOrganization";
+import { DayEnum } from "../../components/Models/Frequency";
+import Department from "../../components/Models/DetailedOrganization"
 
+import IOrganizationApi from "../interfaces/IOrganizationApi";
 export default class FakeCareplanApi extends BaseApi implements IOrganizationApi{
     
     async getOrganizations(): Promise<Department[]> {

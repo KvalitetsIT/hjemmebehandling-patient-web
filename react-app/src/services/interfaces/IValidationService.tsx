@@ -1,6 +1,9 @@
-import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinition";
-import { InvalidInputModel } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError";
-import { ThresholdCollection } from "@kvalitetsit/hjemmebehandling/Models/ThresholdCollection";
+import { InvalidInputModel } from "../../components/Errorhandling/ServiceErrors/InvalidInputError";
+import { PlanDefinition } from "../../components/Models/PlanDefinition";
+import { ThresholdCollection } from "../../components/Models/ThresholdCollection";
+
+
+
 
 /**
  * CareplanService

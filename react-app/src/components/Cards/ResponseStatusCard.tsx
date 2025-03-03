@@ -1,11 +1,15 @@
 import { Component } from "react";
 import { Card, Avatar, Grid, Typography } from '@mui/material';
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
+
+
+
 import ApiContext, { IApiContext } from "../../pages/_context";
-import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
+
 import { CheckmarkIcon, MessagesIcon } from "../icons/Icons";
+import IsEmptyCard from "../Errorhandling/IsEmptyCard";
+import IDateHelper from "../Helpers/interfaces/IDateHelper";
+import { PatientCareplan } from "../Models/PatientCareplan";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../Models/QuestionnaireResponse";
 
 interface Props{
     questionnaireResponse : QuestionnaireResponse;

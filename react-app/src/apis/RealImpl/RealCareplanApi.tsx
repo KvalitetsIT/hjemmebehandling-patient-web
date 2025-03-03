@@ -1,6 +1,8 @@
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+
+import BaseApi from "../../components/BaseLayer/BaseApi";
+import { PatientCareplan } from "../../components/Models/PatientCareplan";
 import { CarePlanApi, Configuration } from "../../generated";
-import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
+
 import ICareplanApi from "../interfaces/ICareplanApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
 import InternalToExternalMapper from "../Mappers/InternalToExternalMapper";

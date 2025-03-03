@@ -1,13 +1,16 @@
 import { Component } from "react";
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, Skeleton, Typography } from '@mui/material';
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
+
 import { Link } from "react-router-dom";
 import ApiContext, { IApiContext } from "../../pages/_context";
-import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+
+
 import ICareplanService from "../../services/interfaces/ICareplanService";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
 import { LatestResponseEnum } from "../../services/QuestionnaireResponseService";
+import IDateHelper from "../Helpers/interfaces/IDateHelper";
+import { PatientCareplan } from "../Models/PatientCareplan";
+import { Questionnaire } from "../Models/Questionnaire";
 
 interface Props {
     questionnaire: Questionnaire

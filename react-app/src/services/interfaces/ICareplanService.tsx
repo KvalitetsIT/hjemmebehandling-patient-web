@@ -1,4 +1,5 @@
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+import { PatientCareplan } from "../../components/Models/PatientCareplan";
+
 
 /**
  * CareplanService

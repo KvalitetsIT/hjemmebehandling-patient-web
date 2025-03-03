@@ -1,10 +1,13 @@
-import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+
+import BaseApi from "../../components/BaseLayer/BaseApi";
+import { CallToActionMessage } from "../../components/Models/CallToActionMessage";
+import { QuestionnaireResponse } from "../../components/Models/QuestionnaireResponse";
 import { Configuration, QuestionnaireResponseApi } from "../../generated";
-import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
+
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
 import InternalToExternalMapper from "../Mappers/InternalToExternalMapper";
-import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
+
 
 export default class RealQuestionnaireResponseApi extends BaseApi implements IQuestionnaireResponseApi {
     questionnaireResponseApi: QuestionnaireResponseApi;

@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import { Button, ButtonGroup, Table as MuiTable, TableBody, TableCell as MuiTableCell, TableContainer, TableHead as MuiTableHead, TableRow as MuiTableRow, Stack, Typography, styled } from '@mui/material';
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard"
+
+
+
 import ApiContext, { IApiContext } from "../../pages/_context";
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
-import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
+
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Link } from "react-router-dom";
 import { LoadingSmallComponent } from "../Layout/LoadingSmallComponent";
 import { CheckmarkIcon, MessagesIcon } from "../icons/Icons";
+import IsEmptyCard from "../Errorhandling/IsEmptyCard";
+import IDateHelper from "../Helpers/interfaces/IDateHelper";
+import { PatientCareplan } from "../Models/PatientCareplan";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../Models/QuestionnaireResponse";
 
 const Table = styled(MuiTable)(() => ({
     borderCollapse: 'separate',

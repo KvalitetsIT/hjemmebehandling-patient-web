@@ -3,24 +3,24 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Component } from 'react';
-import { PatientCareplan } from '@kvalitetsit/hjemmebehandling/Models/PatientCareplan';
+
 import { CardHeader, Divider, Grid, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
-import { Questionnaire } from '@kvalitetsit/hjemmebehandling/Models/Questionnaire';
-import { QuestionnaireResponse } from '@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse';
+
+
 import ApiContext, { IApiContext } from '../../pages/_context';
-import IDateHelper from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper';
-import { GroupAnswer, NumberAnswer } from '@kvalitetsit/hjemmebehandling/Models/Answer';
-import { Question, QuestionTypeEnum } from '@kvalitetsit/hjemmebehandling/Models/Question';
-import ResponseViewCard from '@kvalitetsit/hjemmebehandling/Charts/ResponseViewCard';
-import ChartData from '@kvalitetsit/hjemmebehandling/Charts/ChartData';
-import { ThresholdSlider } from '@kvalitetsit/hjemmebehandling/Charts/ThresholdSlider';
+
+
+
+
+
+
 import IQuestionnaireResponseService from '../../services/interfaces/IQuestionnaireResponseService';
-import IsEmptyCard from '@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard';
-import { ICollectionHelper } from '@kvalitetsit/hjemmebehandling/Helpers/interfaces/ICollectionHelper';
-import { ThresholdNumber } from '@kvalitetsit/hjemmebehandling/Models/ThresholdNumber';
-import { CategoryEnum } from '@kvalitetsit/hjemmebehandling/Models/CategoryEnum';
-import { LineChart} from '@kvalitetsit/hjemmebehandling/Charts/LineChart';
-import { TableChart} from '@kvalitetsit/hjemmebehandling/Charts/TableChart';
+
+
+
+
+
+
 import { Line } from 'react-chartjs-2';
 import annotationPlugin from "chartjs-plugin-annotation";
 
@@ -33,6 +33,20 @@ import {
     Title,
     Legend,
   } from 'chart.js';
+import ChartData from '../Charts/ChartData';
+import { LineChart } from '../Charts/LineChart';
+import ResponseViewCard from '../Charts/ResponseViewCard';
+import { TableChart } from '../Charts/TableChart';
+import { ThresholdSlider } from '../Charts/ThresholdSlider';
+import { ICollectionHelper } from '../Helpers/interfaces/ICollectionHelper';
+import IDateHelper from '../Helpers/interfaces/IDateHelper';
+import { NumberAnswer, GroupAnswer } from '../Models/Answer';
+import { CategoryEnum } from '../Models/CategoryEnum';
+import { PatientCareplan } from '../Models/PatientCareplan';
+import { Question, QuestionTypeEnum } from '../Models/Question';
+import { Questionnaire } from '../Models/Questionnaire';
+import { QuestionnaireResponse } from '../Models/QuestionnaireResponse';
+import { ThresholdNumber } from '../Models/ThresholdNumber';
   
   ChartJS && ChartJS.register(
   

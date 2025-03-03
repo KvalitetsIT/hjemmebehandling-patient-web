@@ -1,10 +1,12 @@
-import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
-import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
+
+
 import IPatientApi from "../interfaces/iPatientApi";
 import { Configuration, OrganizationApi, PatientApi } from "../../generated";
 import InternalToExternalMapper from "../Mappers/InternalToExternalMapper";
-import DetailedOrganization from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
+import BaseApi from "../../components/BaseLayer/BaseApi";
+import { PatientDetail } from "../../components/Models/PatientDetail";
 
 export default class FakePatientApi extends BaseApi implements IPatientApi{
     

@@ -1,11 +1,13 @@
-import DetailedOrganization from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+
 import {  Configuration, OrganizationApi } from "../../generated";
-import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
+
 
 import IOrganizationApi from "../interfaces/IOrganizationApi";
 import ExternalToInternalMapper from "../Mappers/ExternalToInternalMapper";
 import InternalToExternalMapper from "../Mappers/InternalToExternalMapper";
 import FhirUtils from "../../util/FhirUtils";
+import BaseApi from "../../components/BaseLayer/BaseApi";
+import DetailedOrganization from "../../components/Models/DetailedOrganization";
 
 export default class RealOrganizationApi extends BaseApi implements IOrganizationApi {
     organizationApi: OrganizationApi;

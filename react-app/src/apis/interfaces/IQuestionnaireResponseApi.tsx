@@ -1,5 +1,7 @@
-import { QuestionnaireResponse } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
-import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
+import { CallToActionMessage } from "../../components/Models/CallToActionMessage";
+import { QuestionnaireResponse } from "../../components/Models/QuestionnaireResponse";
+
+
 
 /**
  * Containing methods that are using the auto-generated classes to contact the real api

@@ -1,18 +1,29 @@
-import { Answer, BooleanAnswer, ChoiceAnswer, GroupAnswer, NumberAnswer, StringAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
-import { CategoryEnum } from "@kvalitetsit/hjemmebehandling/Models/CategoryEnum";
-import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
-import { DayEnum, Frequency } from "@kvalitetsit/hjemmebehandling/Models/Frequency";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
-import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
-import { PlanDefinition } from "@kvalitetsit/hjemmebehandling/Models/PlanDefinition";
-import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+
+
+
+
+
+
+
+
+
+
+import { Answer, GroupAnswer, NumberAnswer, StringAnswer, BooleanAnswer } from "../../components/Models/Answer";
+import { CategoryEnum } from "../../components/Models/CategoryEnum";
+import { ContactDetails } from "../../components/Models/Contact";
+import { Frequency, DayEnum } from "../../components/Models/Frequency";
+import { PatientCareplan } from "../../components/Models/PatientCareplan";
+import { PatientDetail } from "../../components/Models/PatientDetail";
+import { PlanDefinition } from "../../components/Models/PlanDefinition";
+import { PrimaryContact } from "../../components/Models/PrimaryContact";
+import { Question, QuestionTypeEnum } from "../../components/Models/Question";
+import { Questionnaire } from "../../components/Models/Questionnaire";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
 import { AnswerDto, AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, PrimaryContactDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
 import FhirUtils, { Qualifier } from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
-import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
-import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
+
+
 
 
 /**

@@ -1,8 +1,10 @@
 import { Component } from "react";
 import { Card, TableContainer, TableHead, TableBody, TableRow, TableCell, Table } from '@mui/material';
-import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question"
-import { Answer, GroupAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer"
+
+
 import ApiContext from "../../pages/_context";
+import { Answer, GroupAnswer } from "../Models/Answer";
+import { Question, QuestionTypeEnum } from "../Models/Question";
 
 interface Props {
     questionAnswerMap: Map<Question, Answer<any>>;

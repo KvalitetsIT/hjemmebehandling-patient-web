@@ -1,8 +1,13 @@
-import { NotFoundError } from "@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/NotFoundError";
-import { Answer, BooleanAnswer, NumberAnswer } from "@kvalitetsit/hjemmebehandling/Models/Answer";
-import { CallToActionMessage } from "@kvalitetsit/hjemmebehandling/Models/CallToActionMessage";
-import { Question, QuestionTypeEnum } from "@kvalitetsit/hjemmebehandling/Models/Question";
-import { QuestionnaireResponse, QuestionnaireResponseStatus } from "@kvalitetsit/hjemmebehandling/Models/QuestionnaireResponse";
+
+
+
+
+
+import { NotFoundError } from "../../components/Errorhandling/ServiceErrors/NotFoundError";
+import { Answer, NumberAnswer, BooleanAnswer } from "../../components/Models/Answer";
+import { CallToActionMessage } from "../../components/Models/CallToActionMessage";
+import { Question, QuestionTypeEnum } from "../../components/Models/Question";
+import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
 import IQuestionnaireResponseApi from "../interfaces/IQuestionnaireResponseApi";
 
 export default class FakeQuestionnaireResponseApi implements IQuestionnaireResponseApi {

@@ -1,4 +1,5 @@
-import DetailedOrganization from "@kvalitetsit/hjemmebehandling/Models/DetailedOrganization";
+import DetailedOrganization from "../../components/Models/DetailedOrganization";
+
 
 /**
  * Containing methods that are using the auto-generated classes to contact the real api

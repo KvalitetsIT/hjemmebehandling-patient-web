@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import ApiContext from '../../pages/_context';
 import { FormControl, TextField } from '@mui/material';
-import { CriticalLevelEnum, InvalidInputModel } from '@kvalitetsit/hjemmebehandling/Errorhandling/ServiceErrors/InvalidInputError';
+import { InvalidInputModel, CriticalLevelEnum } from '../Errorhandling/ServiceErrors/InvalidInputError';
+
 
 export interface Props {
     value? : string;

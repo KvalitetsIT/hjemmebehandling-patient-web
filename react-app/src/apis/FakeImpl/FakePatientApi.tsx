@@ -1,9 +1,14 @@
-import BaseApi from "@kvalitetsit/hjemmebehandling/BaseLayer/BaseApi";
-import { PatientDetail } from "@kvalitetsit/hjemmebehandling/Models/PatientDetail";
+
+
+import BaseApi from "../../components/BaseLayer/BaseApi";
+import { Address } from "../../components/Models/Address";
+import { ContactDetails } from "../../components/Models/Contact";
+import { PatientDetail } from "../../components/Models/PatientDetail";
+import { PrimaryContact } from "../../components/Models/PrimaryContact";
 import IPatientApi from "../interfaces/iPatientApi";
-import { Address } from "@kvalitetsit/hjemmebehandling/Models/Address";
-import { ContactDetails } from "@kvalitetsit/hjemmebehandling/Models/Contact";
-import { PrimaryContact } from "@kvalitetsit/hjemmebehandling/Models/PrimaryContact";
+
+
+
 
 export default class FakePatientApi extends BaseApi implements IPatientApi{
     

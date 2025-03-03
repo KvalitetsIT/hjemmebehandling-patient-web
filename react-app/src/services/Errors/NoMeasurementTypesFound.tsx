@@ -1,4 +1,5 @@
-import { BaseServiceError, DisplaySettings } from "@kvalitetsit/hjemmebehandling/Errorhandling/BaseServiceError";
+import { BaseServiceError, DisplaySettings } from "../../components/Errorhandling/BaseServiceError";
+
 
 
 export class NoMeasurementTypesFound extends BaseServiceError {

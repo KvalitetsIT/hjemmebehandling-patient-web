@@ -1,17 +1,21 @@
 
 import { Grid, Typography } from "@mui/material";
 import React, { Component } from "react";
-import IsEmptyCard from "@kvalitetsit/hjemmebehandling/Errorhandling/IsEmptyCard";
+
 import { LoadingBackdropComponent } from "../../components/Layout/LoadingBackdropComponent";
-import { PatientCareplan } from "@kvalitetsit/hjemmebehandling/Models/PatientCareplan";
+
 import QuestionnaireResponseTable from "../../components/Tables/QuestionnaireResponseTable";
 import QuestionnaireAnswerCard from "../../components/Cards/QuestionnaireAnswerCard";
 import ICareplanService from "../../services/interfaces/ICareplanService";
 import ApiContext, { IApiContext } from "../_context";
-import IDateHelper from "@kvalitetsit/hjemmebehandling/Helpers/interfaces/IDateHelper";
-import { Questionnaire } from "@kvalitetsit/hjemmebehandling/Models/Questionnaire";
+
+
 import IQuestionnaireResponseService from "../../services/interfaces/IQuestionnaireResponseService";
 import ScrollableRow from "../../components/ScrollableRow";
+import IsEmptyCard from "../../components/Errorhandling/IsEmptyCard";
+import IDateHelper from "../../components/Helpers/interfaces/IDateHelper";
+import { PatientCareplan } from "../../components/Models/PatientCareplan";
+import { Questionnaire } from "../../components/Models/Questionnaire";
 
 interface State {
     loadingPage: boolean;

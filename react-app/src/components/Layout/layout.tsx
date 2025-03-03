@@ -5,17 +5,20 @@ import AnsweredPage from '../../pages/questionnaire/answered';
 import ApiContext from '../../pages/_context';
 import QuestionnaireResponseDetailsPage from '../../pages/questionnaire/[questionnaireId]/response/[questionnaireResponseId]';
 import QuestionnaireResponseCreationPage from '../../pages/questionnaire/[questionnaireId]/answer';
-import { ErrorBoundary } from '@kvalitetsit/hjemmebehandling/Errorhandling/ErrorBoundary';
-import { CreateToastEvent, CreateToastEventData } from '@kvalitetsit/hjemmebehandling/Events/CreateToastEvent';
+
+
 import ObservationPage from '../../pages/questionnaire/[questionnaireId]/observations';
 import HomePage from '../../pages/Home';
 import ContactPage from '../../pages/contact';
 import { CheckmarkIcon } from '../icons/Icons';
-import { Toast } from '@kvalitetsit/hjemmebehandling/Errorhandling/Toast';
+
 import AboutPage from '../../pages/about';
 import { Box } from '@mui/material';
 import { Guide, KvikGuide } from '../../pages/guide';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { ErrorBoundary } from '../Errorhandling/ErrorBoundary';
+import { Toast } from '../Errorhandling/Toast';
+import { CreateToastEventData, CreateToastEvent } from '../Events/CreateToastEvent';
 
 export interface State {
   drawerIsOpen: boolean,
