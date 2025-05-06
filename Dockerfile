@@ -16,7 +16,7 @@ COPY --from=api-generator /generator/generated ./src/generated
 RUN npm run build
 
 # Download and build our environment injector
-FROM golang:1.19.3-alpine3.16 as go-downloader
+FROM golang:1.24.2-alpine3.21 as go-downloader
 RUN apk update && apk upgrade && apk add --no-cache bash git openssh
 RUN go install github.com/lithictech/runtime-js-env@latest
 
