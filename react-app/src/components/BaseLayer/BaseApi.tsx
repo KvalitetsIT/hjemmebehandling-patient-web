@@ -11,7 +11,6 @@ export default class BaseApi {
     async HandleError(error: any): Promise<any> {
         
         console.debug("Transforming error to ServiceError. Error:", error)
-    
         if ((error as any).response  instanceof Response || error instanceof Response) {
             
             let response : Response  = ((error as any).response  instanceof Response ) ? (error as any).response as Response : error as Response
@@ -20,8 +19,8 @@ export default class BaseApi {
             let errorDto : IRawApiError = {}
 
             try {
-                bodyText = await response.text() //Body can only be read once, and if it is not json, we want to display the non-json body
 
+                bodyText = await response.text() //Body can only be read once, and if it is not json, we want to display the non-json body
                 errorDto = JSON.parse(bodyText);
             } catch (error) { 
                 //When json-parser tries to parse fx "" we end up here

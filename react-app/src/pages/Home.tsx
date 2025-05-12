@@ -46,6 +46,7 @@ export default class HomePage extends Component<{}, State> {
             await this.populateCareplan();
             this.setState({ loading: false })
         } catch (error) {
+            console.log("error", error)
             this.setState(() => { throw error });
         }
 

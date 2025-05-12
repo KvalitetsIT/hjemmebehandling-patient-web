@@ -109,6 +109,9 @@ export default class ExternalToInternalMapper extends BaseMapper {
         department.name = carePlanDto.departmentName
         carePlan.organization = department
 
+
+        console.log("careplan is", carePlan);
+    
         return carePlan
     }
 
@@ -213,7 +216,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.abbreviation = questionDto.abbreviation
 
         if (questionDto.enableWhens !== undefined) {
-            question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])
+            question.enableWhen = questionDto.enableWhens[0] ? this.mapEnableWhen(questionDto.enableWhens[0]) : undefined
         }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {
             question.options = [{option: "Ja", comment: "", triage:  CategoryEnum.BLUE}, {option: "Nej", comment: "", triage:  CategoryEnum.RED}]
