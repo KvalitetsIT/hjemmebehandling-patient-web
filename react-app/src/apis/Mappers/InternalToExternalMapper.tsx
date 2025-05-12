@@ -19,7 +19,7 @@ import { PrimaryContact } from "../../components/Models/PrimaryContact";
 import { Question, QuestionTypeEnum } from "../../components/Models/Question";
 import { Questionnaire } from "../../components/Models/Questionnaire";
 import { QuestionnaireResponse, QuestionnaireResponseStatus } from "../../components/Models/QuestionnaireResponse";
-import { AnswerDto, AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, FrequencyDtoWeekdaysEnum, PatientDto, PlanDefinitionDto, PrimaryContactDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
+import { AnswerDto, AnswerDtoAnswerTypeEnum, CarePlanDto, ContactDetailsDto, FrequencyDto, WeekDayDto, PatientDto, PlanDefinitionDto, PrimaryContactDto, QuestionAnswerPairDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto } from "../../generated/models";
 import FhirUtils, { Qualifier } from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 
@@ -158,22 +158,22 @@ export default class InternalToExternalMapper extends BaseMapper {
         }
     }
 
-    mapDayEnum(day: DayEnum): FrequencyDtoWeekdaysEnum {
+    mapDayEnum(day: DayEnum): WeekDayDto {
         switch (day) {
             case DayEnum.Monday:
-                return FrequencyDtoWeekdaysEnum.Mon
+                return WeekDayDto.Mon
             case DayEnum.Tuesday:
-                return FrequencyDtoWeekdaysEnum.Tue;
+                return WeekDayDto.Tue;
             case DayEnum.Wednesday:
-                return FrequencyDtoWeekdaysEnum.Wed;
+                return WeekDayDto.Wed;
             case DayEnum.Thursday:
-                return FrequencyDtoWeekdaysEnum.Thu;
+                return WeekDayDto.Thu;
             case DayEnum.Friday:
-                return FrequencyDtoWeekdaysEnum.Fri;
+                return WeekDayDto.Fri;
             case DayEnum.Saturday:
-                return FrequencyDtoWeekdaysEnum.Sat;
+                return WeekDayDto.Sat;
             case DayEnum.Sunday:
-                return FrequencyDtoWeekdaysEnum.Sun;
+                return WeekDayDto.Sun;
 
             default:
                 throw new Error('Could not map category ' + day);
@@ -193,11 +193,6 @@ export default class InternalToExternalMapper extends BaseMapper {
         }
     }
 
-    mapWeekday(weekday: DayEnum): FrequencyDtoWeekdaysEnum {
-        console.log(weekday);
-        return FrequencyDtoWeekdaysEnum.Mon;
-
-    }
 
 
     mapQuestionnaire(questionnaire: Questionnaire): QuestionnaireWrapperDto {
