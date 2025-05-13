@@ -24,6 +24,7 @@ export default class RealCareplanApi extends BaseApi implements ICareplanApi{
     async GetActiveCareplans() : Promise<PatientCareplan[]> {
         try{
             const careplansFromApi = await this.careplanapi.getActiveCarePlans();
+            console.log("careplanFromApi", careplansFromApi)
             return careplansFromApi.map(x => this.toInternal.mapCarePlanDto(x));
         } catch(error){
             return await this.HandleError(error);

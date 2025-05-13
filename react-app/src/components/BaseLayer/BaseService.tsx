@@ -23,6 +23,7 @@ export default class BaseService {
 
     statusCodeToErrorMethod: StatusCodeMap[] = []
 
+
     constructor() {
         this.AddStatusCodeToErrorMap(new StatusCodeMap(400, this.ReturnError400));
         this.AddStatusCodeToErrorMap(new StatusCodeMap(401, this.ReturnError401));

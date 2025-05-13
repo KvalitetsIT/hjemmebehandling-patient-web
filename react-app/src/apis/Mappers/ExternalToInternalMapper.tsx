@@ -19,7 +19,7 @@ import { Task } from "../../components/Models/Task";
 import { ThresholdCollection } from "../../components/Models/ThresholdCollection";
 import { ThresholdNumber } from "../../components/Models/ThresholdNumber";
 import { User } from "../../components/Models/User";
-import { AddressDto, AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto,  EnableWhen as EnableWhenDto, FrequencyDto, FrequencyDtoWeekdaysEnum, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, PhoneHourDtoWeekdaysEnum, PlanDefinitionDto, PrimaryContactDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
+import { AddressDto, AnswerDto, AnswerDtoAnswerTypeEnum, CallToActionDTO, CarePlanDto, ContactDetailsDto,  EnableWhen as EnableWhenDto, FrequencyDto, MeasurementTypeDto, OrganizationDto, PatientDto, PhoneHourDto, WeekDayDto, PlanDefinitionDto, PrimaryContactDto, QuestionDto, QuestionDtoQuestionTypeEnum, QuestionnaireResponseDto, QuestionnaireResponseDtoExaminationStatusEnum, QuestionnaireResponseDtoTriagingCategoryEnum, QuestionnaireWrapperDto, ThresholdDto, ThresholdDtoTypeEnum, UserContext } from "../../generated/models";
 import FhirUtils from "../../util/FhirUtils";
 import BaseMapper from "./BaseMapper";
 
@@ -84,17 +84,20 @@ export default class ExternalToInternalMapper extends BaseMapper {
     mapPhoneHourDto(phoneHourDto: PhoneHourDto): PhoneHour {
         const phoneHour = new PhoneHour()
 
-        phoneHour.days = phoneHourDto?.weekdays?.map(d => this.mapPhoneHourDtoWeekdaysEnum(d)) ?? []
+        phoneHour.days = phoneHourDto?.weekdays?.map(d => this.mapWeekDayDtoEnum(d)) ?? []
         phoneHour.timePeriods = [{ fromTime: phoneHourDto.from, toTime: phoneHourDto.to }]
 
         return phoneHour
     }
 
     mapCarePlanDto(carePlanDto: CarePlanDto): PatientCareplan {
-
+        
+        console.log("mapCarePlanDto called");
+        console.log("careplanDto is", carePlanDto);
+    
         const carePlan = new PatientCareplan();
 
-        carePlan.id = FhirUtils.unqualifyId(carePlanDto.id);
+        carePlan.id = carePlanDto.id ? FhirUtils.unqualifyId(carePlanDto.id) : undefined;
         carePlan.planDefinitions = carePlanDto.planDefinitions?.map(p => this.mapPlanDefinitionDto(p)) ?? []
         carePlan.questionnaires = carePlanDto?.questionnaires?.map(q => this.mapQuestionnaireDto(q)) ?? []
         carePlan.patient = this.mapPatientDto(carePlanDto.patientDto!);
@@ -106,6 +109,9 @@ export default class ExternalToInternalMapper extends BaseMapper {
         department.name = carePlanDto.departmentName
         carePlan.organization = department
 
+
+        console.log("careplan is", carePlan);
+    
         return carePlan
     }
 
@@ -117,7 +123,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         task.firstname = carePlan.patientDto!.givenName
         task.lastname = carePlan.patientDto!.familyName
         task.questionnaireResponseStatus = undefined
-        task.carePlanId = carePlan.id
+        task.carePlanId = carePlan.id!
 
         const questionnaire = carePlan.questionnaires![0].questionnaire!
         task.questionnaireId = questionnaire.id!
@@ -191,10 +197,10 @@ export default class ExternalToInternalMapper extends BaseMapper {
         return thresholds;
 
     }
-    mapWeekdayDto(weekdays: FrequencyDtoWeekdaysEnum[]): DayEnum[] {
+    mapWeekdayDto(weekdays: WeekDayDto[]): DayEnum[] {
         const dayEnums: DayEnum[] = [];
         for (const weekday of weekdays) {
-            dayEnums.push(this.mapFrequencyDtoWeekdaysEnum(weekday));
+            dayEnums.push(this.mapWeekDayDtoEnum(weekday));
         }
         return dayEnums;
     }
@@ -210,7 +216,7 @@ export default class ExternalToInternalMapper extends BaseMapper {
         question.abbreviation = questionDto.abbreviation
 
         if (questionDto.enableWhens !== undefined) {
-            question.enableWhen = this.mapEnableWhen(questionDto.enableWhens![0])
+            question.enableWhen = questionDto.enableWhens[0] ? this.mapEnableWhen(questionDto.enableWhens[0]) : undefined
         }
         if (questionDto.questionType === QuestionDtoQuestionTypeEnum.Boolean) {
             question.options = [{option: "Ja", comment: "", triage:  CategoryEnum.BLUE}, {option: "Nej", comment: "", triage:  CategoryEnum.RED}]
@@ -287,44 +293,23 @@ export default class ExternalToInternalMapper extends BaseMapper {
         }
     }
 
-    mapFrequencyDtoWeekdaysEnum(weekday: FrequencyDtoWeekdaysEnum): DayEnum {
+    mapWeekDayDtoEnum(weekday: WeekDayDto): DayEnum {
         switch (weekday) {
-            case FrequencyDtoWeekdaysEnum.Mon:
+            case WeekDayDto.Mon:
                 return DayEnum.Monday;
-            case FrequencyDtoWeekdaysEnum.Tue:
+            case WeekDayDto.Tue:
                 return DayEnum.Tuesday;
-            case FrequencyDtoWeekdaysEnum.Wed:
+            case WeekDayDto.Wed:
                 return DayEnum.Wednesday;
-            case FrequencyDtoWeekdaysEnum.Thu:
+            case WeekDayDto.Thu:
                 return DayEnum.Thursday;
-            case FrequencyDtoWeekdaysEnum.Fri:
+            case WeekDayDto.Fri:
                 return DayEnum.Friday;
-            case FrequencyDtoWeekdaysEnum.Sat:
+            case WeekDayDto.Sat:
                 return DayEnum.Saturday;
-            case FrequencyDtoWeekdaysEnum.Sun:
+            case WeekDayDto.Sun:
                 return DayEnum.Sunday;
 
-            default:
-                throw new Error('Could not map weekday ' + weekday);
-        }
-    }
-
-    mapPhoneHourDtoWeekdaysEnum(weekday: PhoneHourDtoWeekdaysEnum): DayEnum {
-        switch (weekday) {
-            case PhoneHourDtoWeekdaysEnum.Mon:
-                return DayEnum.Monday;
-            case PhoneHourDtoWeekdaysEnum.Tue:
-                return DayEnum.Tuesday;
-            case PhoneHourDtoWeekdaysEnum.Wed:
-                return DayEnum.Wednesday;
-            case PhoneHourDtoWeekdaysEnum.Thu:
-                return DayEnum.Thursday;
-            case PhoneHourDtoWeekdaysEnum.Fri:
-                return DayEnum.Friday;
-            case PhoneHourDtoWeekdaysEnum.Sat:
-                return DayEnum.Saturday;
-            case PhoneHourDtoWeekdaysEnum.Sun:
-                return DayEnum.Sunday;
             default:
                 throw new Error('Could not map weekday ' + weekday);
         }
