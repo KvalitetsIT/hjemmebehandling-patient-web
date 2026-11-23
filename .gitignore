@@ -43,3 +43,5 @@ node_modules
 .next/
 generated
 .vscode
+# CRA build output
+react-app/build
